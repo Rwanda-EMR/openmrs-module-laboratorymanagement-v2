@@ -249,33 +249,6 @@ Request Form</legend>
 				</table>
 			</c:if>
 
-
-			<c:if test="${gdParentConcept.name.name eq hemostasis}">
-				<table>
-					<tr>
-						<td><b>${gdParentConcept.name.name}</b></td>
-					</tr>
-					<c:forEach var="labOrder" items="${parentConcepts}"
-						varStatus="status">
-						<c:set var="childrenConcepts" value="${labOrder.childrenConcept}" />
-						<c:set var="parentConcept" value="${labOrder.parentConcept}" />
-						<c:set var="fieldNameP"
-							value="lab-${gdParentConcept}-${labOrder.parentConcept.conceptId}" />
-						<tr>
-							<td><input name="${fieldNameP}"
-								value="${parentConcept.conceptId}" type="checkbox"
-								id="parent_${labOrder.parentConcept.conceptId}" class="parent"><c:out
-								value="${labOrder.parentConcept.name}" /></td>
-
-						</tr>
-
-					</c:forEach>
-				</table>
-			</c:if>
-
-
-
-
 			<c:if test="${gdParentConcept.name.name eq parasitology }">
 				<table>
 					<tr>
@@ -398,11 +371,36 @@ Request Form</legend>
 					</c:forEach>
 
 				</table>
-
-
-
-
 			</c:if>
+
+
+
+			<c:if test="${gdParentConcept.name.name eq hemostasis}">
+				<table>
+					<tr>
+						<td><b>${gdParentConcept.name.name}</b></td>
+					</tr>
+					<c:forEach var="labOrder" items="${parentConcepts}"
+						varStatus="status">
+						<c:set var="childrenConcepts" value="${labOrder.childrenConcept}" />
+						<c:set var="parentConcept" value="${labOrder.parentConcept}" />
+						<c:set var="fieldNameP"
+							value="lab-${gdParentConcept}-${labOrder.parentConcept.conceptId}" />
+						<tr>
+							<td><input name="${fieldNameP}"
+								value="${parentConcept.conceptId}" type="checkbox"
+								id="parent_${labOrder.parentConcept.conceptId}" class="parent"><c:out
+								value="${labOrder.parentConcept.name}" /></td>
+
+						</tr>
+
+					</c:forEach>
+				</table>
+			</c:if>
+
+
+
+
 
 		</c:forEach></td>
 		<!-- Second Column -->

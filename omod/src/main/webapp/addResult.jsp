@@ -2,14 +2,11 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="localHeader.jsp"%>
 
-<openmrs:htmlInclude
-	file="/moduleResources/laboratorymanagement/menuStyle.css" />
-<openmrs:htmlInclude file="/moduleResources/laboratorymanagement/chosen.jquery.min.js" />
-<openmrs:htmlInclude file="/moduleResources/laboratorymanagement/chosen.css" />
-<openmrs:htmlInclude
-	file="/moduleResources/laboratorymanagement/jsControl.js" />
-<openmrs:htmlInclude
-	file="/moduleResources/laboratorymanagement/jsCreateFields.js" />
+<openmrs:htmlInclude file="/moduleResources/laboratorymodule/menuStyle.css" />
+<openmrs:htmlInclude file="/moduleResources/laboratorymodule/chosen.jquery.min.js" />
+<openmrs:htmlInclude file="/moduleResources/laboratorymodule/chosen.css" />
+<openmrs:htmlInclude file="/moduleResources/laboratorymodule/jsControl.js" />
+<openmrs:htmlInclude file="/moduleResources/laboratorymodule/jsCreateFields.js" />
 
 <script>
 	var $t = jQuery.noConflict();
@@ -32,14 +29,14 @@
 <form name="laboForm" id="labotryform" method="get">
 <table>
 	<tr>
-		<td><spring:message code="laboratorymanagement.labCode" /></td>
+		<td><spring:message code="laboratorymodule.labCode" /></td>
 		<td><input type="text" name="labCode" value="${labCode}"></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td><input type="submit"
-			value="<spring:message code="laboratorymanagement.Search"/>" /><input
-			type="reset" value="<spring:message code="laboratorymanagement.cancel"/>" /></td>
+			value="<spring:message code="laboratorymodule.Search"/>" /><input
+			type="reset" value="<spring:message code="laboratorymodule.cancel"/>" /></td>
 	</tr>
 </table>
 </form>

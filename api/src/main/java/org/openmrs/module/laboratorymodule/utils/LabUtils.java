@@ -256,7 +256,7 @@ public class LabUtils {
 
 		// Initilializes an integer array of length 2 where the first element is
 		// 7005, second element is 7006 and so on.
-		int intLabSetIds[] = { 7836, 7217, 7192, 7243, 7244, 7265, 7222, 7193,	8046, 7991, 7193 };
+		int intLabSetIds[] = { 7836, 7217, 7192, 7243, 7244, 7265, 7222, 7193,	8046, 7991};
 		@SuppressWarnings("unused")
 		Object testStatus[] = null;
 		for (int labSetid : intLabSetIds) {
@@ -340,7 +340,8 @@ public class LabUtils {
 		Map<Concept, Collection<Order>> mappedLabOrders = new HashMap<Concept, Collection<Order>>();
 		ConceptService cptService = Context.getConceptService();
 
-		int intLabSetIds[] = { 8004, 7836, 7217, 7192, 7243, 7244, 7265, 7222, 7193, 7918, 7991,7835, 8046,105406,105411,105417};
+		int intLabSetIds[] = { 8004,7836,7217,7192,7243,7244,7265,7222,7193,7918,7991,7835,8046,105406,105411,105417};
+
 
 		for (int labSetid : intLabSetIds) {
 			Concept cpt = cptService.getConcept(labSetid);
@@ -375,8 +376,7 @@ public class LabUtils {
 		LocationService locService = Context.getLocationService();
 		String locationStr = Context.getAuthenticatedUser().getUserProperties()
 				.get(OpenmrsConstants.USER_PROPERTY_DEFAULT_LOCATION);
-		Location dftLoc = locService.getDefaultLocation();
-		dftLoc = locService.getLocation(Integer.valueOf(locationStr));
+		Location dftLoc = locService.getLocation(Integer.valueOf(locationStr));
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		LaboratoryService laboratoryService = Context
 				.getService(LaboratoryService.class);
@@ -388,7 +388,7 @@ public class LabUtils {
 				.getPatientEncountersByDate(patientId, startDate, encounterType);
 
 		if (encountersList.size() == 0) {
-			labEncounter = labEncounter = new Encounter();
+			labEncounter = new Encounter();
 			labEncounter.setEncounterDatetime(new Date());
 			labEncounter.setEncounterType(encounterType);
 			labEncounter.setPatient(Context.getPatientService().getPatient(

@@ -37,7 +37,7 @@ public class MappedLabExamManagement {
 		LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
 		// Initilializes an integer array where by each element is a group
 		// concepts of Lab tests
-		int intLabSetIds[]={7836, 7217, 7192, 7243, 7244, 7265, 7222,7193,7918, 7835,8046};
+		int intLabSetIds[]={7836,7217,7192,7243,7244,7265,7222,7193,7918,7835,8046};
 		List<Obs> obsWithValues = null;
 		@SuppressWarnings("unused")
 		Object testStatus[] = null;
@@ -106,7 +106,7 @@ public class MappedLabExamManagement {
 
 		// Initilializes an integer array of length 2 where the first element is
 		// 7005, second element is 7006 and so on.
-		int intLabSetIds[] = { 7836, 7217, 7192, 7243, 7244, 7265, 7835, 7222 };
+		int intLabSetIds[] = { 7836,7217,7192,7243,7244,7265,7835,7222 };
 		List<Obs> testWithResult = null;
 		@SuppressWarnings("unused")
 		Object testStatus[] = null;
@@ -180,8 +180,7 @@ public class MappedLabExamManagement {
 
 		// Initilializes an integer array of length 2 where the first element is
 		// 7005, second element is 7006 and so on.
-		int intLabSetIds[] = { 7836, 7217, 7192, 7243, 7244, 7265, 7222, 7193,
-				8046, 7991, 7193 };
+		int intLabSetIds[] = { 7836,7217,7192,7243,7244,7265,7222,7193,8046,7991,7193 };
 		@SuppressWarnings("unused")
 		Object testStatus[] = null;
 		for (int labSetid : intLabSetIds) { //
