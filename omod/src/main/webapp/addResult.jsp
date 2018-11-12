@@ -2,11 +2,15 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="localHeader.jsp"%>
 
-<openmrs:htmlInclude file="/moduleResources/laboratorymodule/menuStyle.css" />
+<openmrs:htmlInclude
+	file="/moduleResources/laboratorymodule/menuStyle.css" />
+<openmrs:htmlInclude file="/moduleResources/laboratorymodule/jquery.js" />
 <openmrs:htmlInclude file="/moduleResources/laboratorymodule/chosen.jquery.min.js" />
 <openmrs:htmlInclude file="/moduleResources/laboratorymodule/chosen.css" />
-<openmrs:htmlInclude file="/moduleResources/laboratorymodule/jsControl.js" />
-<openmrs:htmlInclude file="/moduleResources/laboratorymodule/jsCreateFields.js" />
+<openmrs:htmlInclude
+	file="/moduleResources/laboratorymodule/jsControl.js" />
+<openmrs:htmlInclude
+	file="/moduleResources/laboratorymodule/jsCreateFields.js" />
 
 <script>
 	var $t = jQuery.noConflict();
@@ -16,10 +20,27 @@
 				var buttonId = this.id;
 				var conceptId = buttonId.split("_")[1];
 				$t("#cmt_" + conceptId).show(); //show the field when the user clicks on button.
+
 				});
 			$t(".my_select_box").chosen({max_selected_options: 5});
 
+			var nonEmptyVal = '';
+			var forParams = $t('form').serialize();
 
+			var forParamsArr = forParams.split("&");
+			var fieldNameValArr = '';
+			var nameArr = '';
+			var val = '';
+			for(var i = 0; i < forParamsArr.length; i++) {
+				fieldNameValArr = forParamsArr[i].split('=');
+
+				if(fieldNameValArr[0].split('-').length > 0) {
+					val = fieldNameValArr[1].toString();
+					if(val.length > 0) {
+						$t('input[name='+fieldNameValArr[0]+']').attr('disabled','disabled');
+					}
+				}
+			}
 
 		});
 </script>
@@ -40,9 +61,7 @@
 	</tr>
 </table>
 </form>
-</div>
-<br>
-<br>
+</div><br><br>
 
 <c:if test="${fn:length(mapLabeTest)!=0}">
 	<form
@@ -84,7 +103,7 @@
 							<c:if test="${concept.name.name eq 'WIDAL TEST'}">
 								<td colspan="3" style="width: 250px; font-weight: italic"><c:out
 									value="${concept.name}" /></td>
-								<td><textarea name="${fieldName}" rows="1" cols="30">${obsResult != null ? obsResult.valueText : ''}</textarea></td>
+								<td><textarea name="${fieldName}" rows="1" cols="30"  >${obsResult != null ? obsResult.valueText : ''}</textarea></td>
 							</c:if>
 							<c:if test="${concept.name.name != 'WIDAL TEST'}">
 								<td colspan="3" style="width: 250px; font-weight: italic"><c:out
@@ -92,7 +111,6 @@
 								<td><input type="text" name="${fieldName}"
 									value="${obsResult != null ? obsResult.valueText : ''}" /></td>
 							</c:if>
-
 
 						</tr>
 					</table>
@@ -104,28 +122,26 @@
 							<td colspan="3" style="width: 250px; font-weight: italic"><c:out
 								value="${concept.name}" /></td>
 							<td><c:choose>
-								 <c:when test="${multipleAnswerConcepts[concept]}">
+								  <c:when test="${multipleAnswerConcepts[concept]}">
 									<c:forEach items="${concept.answers}" var="answer">
 										<input type="checkbox" name="${fieldName}"
 											checked="${obsResult.valueCoded != null ? 'checked' : ''}"
-											value="${answer.answerConcept.conceptId}" />
+											value="${answer.answerConcept.conceptId}"  />
 										${answer.answerConcept.name}
 										&nbsp;&nbsp;&nbsp;
-
 									</c:forEach>
-							</c:when>
-						<c:otherwise>
-						 <select name="${fieldName}"  style="width: 650px; display: none;" class="my_select_box" data-placeholder ="Select Lab results" multiple = "multiple">
+						 </c:when>
+						   <c:otherwise>
+						   <select name="${fieldName}"  style="width: 650px; display: none;" class="my_select_box" data-placeholder ="Select Lab results" multiple = "multiple">
 		                             <option value="-2"></option>
-									<c:forEach items="${concept.answers}" var="answer">
+								<c:forEach items="${concept.answers}" var="answer">
 											<option value="${answer.answerConcept.conceptId}"
 												<c:if test="${obsResult != null && obsResult.valueCoded.conceptId == answer.answerConcept.conceptId}">
 													selected="selected"
 												</c:if>>${answer.answerConcept.name}
-									  		</option>
-								 	</c:forEach>
-							</select>
-
+									  	</option>
+								 </c:forEach>
+						  </select>
 							</c:otherwise>
 							</c:choose></td>
 							<td><input name="${resultComment}" type="text" value=""
@@ -137,13 +153,13 @@
 					</table>
 				</c:when>
 
-				<c:when test="${concept.datatype.answerOnly}">
+				  <c:when test="${concept.datatype.answerOnly}">
 					<c:forEach var="oneGroupedtest" items="${groupedTests}"
 						varStatus="num">
 						<c:set var="conceptName" value="${concept.name}" />
 						<c:set var="concptNameFromMap" value="${oneGroupedtest.key.name}" />
 
-						<c:if test="${conceptName eq concptNameFromMap}">
+					<c:if test="${conceptName eq concptNameFromMap}">
 
 
 							<fieldset><legend>${concept.name}</legend> <c:forEach
@@ -163,13 +179,15 @@
 										varStatus="num">
                                <c:set var="fieldName1"  value="labTest-${gdChildConcept.concept.conceptId}-${order.orderId}-${concept.conceptId}" />
 
+
 										<c:if test="${gdChildConcept.concept.datatype.text}">
 											<table>
 												<tr>
 													<td colspan="3" style="width: 250px; font-weight: italic"><c:out
 														value="${gdChildConcept.concept.name}" /></td>
 													<td><input type="text" name="${fieldName1}"
-														value="${childResult != null ? childResult.valueText : ''}" /></td>
+													value="${childResult != null ? childResult.valueText : ''}" /></td>
+
 													<td><input name="${resultComment}" type="text"
 														value="" class="cmt"
 														id="cmt_${gdChildConcept.concept.conceptId}"><span
@@ -182,14 +200,14 @@
 										</c:if>
 									</c:forEach>
 								</c:if>
-								<c:choose>
+							   <c:choose>
 									<c:when test="${childConcept.datatype.numeric}">
 										<table>
 											<tr>
 												<td colspan="3" style="width: 250px; font-weight: italic"><c:out
 													value="${childConcept.name}" /></td>
 												<td><input type="text" name="${fieldName}"
-													value="${childResult != null ? childResult.valueNumeric : ''}" /><c:out
+													value="${childResult != null ? childResult.valueNumeric : ''}"  /><c:out
 													value="${unit}" /></td>
 												<td><input name="${resultComment}" type="text" value=""
 													class="cmt" id="cmt_${concept.conceptId}"><span
@@ -210,7 +228,7 @@
 													<td colspan="3" style="width: 250px; font-weight: italic"><c:out
 														value="${childConcept.name}" /></td>
 
-													<td><textarea name="${fieldName}" rows="1" cols="30">${childResult != null ? childResult.valueText : ''}</textarea></td>
+													<td><textarea name="${fieldName}" rows="1" cols="30" >${childResult != null ? childResult.valueText : ''}" </textarea></td>
 
 												</c:if>
 												<c:if
@@ -226,36 +244,33 @@
 														style="cursor: pointer;" /></span></td>
 												</c:if>
 
-
 											</tr>
 										</table>
 									</c:when>
 
 									<c:when test="${childConcept.datatype.coded}">
-
 										<table>
 											<tr>
 												<td colspan="3" style="width: 250px; font-weight: italic"><c:out
 													value="${childConcept.name}" /></td>
 												<td><c:choose>
-
-													<c:when test="${multipleAnswerConcepts[childConcept]}">
+										 <c:when test="${multipleAnswerConcepts[childConcept]}">
 														<c:forEach items="${childConcept.answers}" var="answer">
 															<input type="checkbox" name="${fieldName}"	value="${answer.answerConcept.conceptId}" />
 														${answer.answerConcept.name}
 														&nbsp;&nbsp;&nbsp;
 													 </c:forEach>
 												  	</c:when>
-												 <c:otherwise>
-												<select name="${fieldName}" multiple = "multiple">
+										<c:otherwise>
+													 <select name="${fieldName}" multiple = "multiple">
 															<c:forEach items="${childConcept.answers}" var="answer">
 															 <option value="${answer.answerConcept.conceptId}"
 																	<c:if test="${childResult != null && childResult.valueCoded.conceptId == answer.answerConcept.conceptId}">
 																	selected="selected"
-																</c:if>>${answer.answerConcept.name}
+															</c:if>>${answer.answerConcept.name}
 														 </option>
 													    </c:forEach>
-														</select>
+													</select>
 													</c:otherwise>
 												</c:choose></td>
 											</tr>
@@ -264,7 +279,7 @@
 								</c:choose>
 
 							</c:forEach></fieldset>
-						</c:if>
+					</c:if>
 
 					</c:forEach>
 				</c:when>

@@ -1,7 +1,6 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <openmrs:htmlInclude file="/moduleResources/quarterlyreporting/style.css" />
-<openmrs:htmlInclude file="/moduleResources/laboratorymodule/jquery.js" />
 <openmrs:htmlInclude file="/moduleResources/laboratorymodule/jquery.PrintArea.js" />
 	
 <script type="text/javascript" language="JavaScript">

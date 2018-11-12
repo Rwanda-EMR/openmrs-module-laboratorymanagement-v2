@@ -585,12 +585,19 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		todayDate.setAlignment(Element.ALIGN_RIGHT);
 		todayDate.add(chk);
 		document.add(todayDate);
-		document.add(fontTitle.process("REPUBLIQUE DU RWANDA\n"));
+		/*document.add(fontTitle.process("REPUBLIQUE DU RWANDA\n"));
 		document.add(fontTitle.process("POLICE NATIONALE\n"));
 		document.add(fontTitle.process("KACYIRU POLICE HOSPITAL\n"));
 		document.add(fontTitle.process("B.P. 6183 KIGALI\n"));
 		document.add(fontTitle.process("T�l : 584897\n"));
-		document.add(fontTitle.process("E-mail : medical@police.gov.rw"));
+		document.add(fontTitle.process("E-mail : medical@police.gov.rw"));*/
+		document.add(fontTitle.process(Context.getAdministrationService().getGlobalProperty("laboratorymodule.healthfacility.name")));
+		document.add(fontTitle.process("\n"));
+		document.add(fontTitle.process(Context.getAdministrationService().getGlobalProperty("laboratorymodule.healthfacility.POBOX")));
+		document.add(fontTitle.process("\n"));
+		document.add(fontTitle.process(Context.getAdministrationService().getGlobalProperty("laboratorymodule.healthfacility.telephone")));
+		document.add(fontTitle.process("\n"));
+		document.add(fontTitle.process("E-mail : "+Context.getAdministrationService().getGlobalProperty("laboratorymodule.healthfacility.email")));
 		// End Report title
 
 		document.add(new Paragraph("\n"));
@@ -715,11 +722,16 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 
 		}
 
-		cell = new PdfPCell(fontTitleSelector
+		/*cell = new PdfPCell(fontTitleSelector
 				.process("Names, Signature et Stamp of Lab Chief\n"
 						//+ Context.getAuthenticatedUser().getPersonName()));
 						+ Context.getUserService().getUser(140).getPersonName()));
-		
+		*/
+		cell = new PdfPCell(fontTitleSelector
+				.process("Names, Signature et Stamp of Lab Chief\n"
+						//+ Context.getAuthenticatedUser().getPersonName()));
+						+ Context.getAuthenticatedUser().getPersonName().getFullName()));
+
 		
 		
 		
@@ -917,7 +929,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 
 		SQLQuery query = null;
 		List<Order> ordersList = new ArrayList<Order>();
-		OrderService orderServic = Context.getOrderService();
+		//OrderService orderServic = Context.getOrderService();
 		StringBuffer strbuf = new StringBuffer();
 		strbuf
 				.append("SELECT  o.order_id  FROM orders o where  o.voided = 0 and  o.accession_number ='"
@@ -1035,7 +1047,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 
 		strencout.append("select * from encounter where patient_id ="+patientId+" and encounter_type="+encounterType.getEncounterTypeId()+"");
 
-		SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery(strencout.toString());
+		SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery(strencout.toString()).addEntity(Encounter.class);
 		Collection<Encounter> encounterslist = query.list();
 
 		if (encounterslist.size() > 0) {

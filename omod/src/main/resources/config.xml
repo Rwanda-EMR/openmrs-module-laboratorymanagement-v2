@@ -8,7 +8,7 @@
 	<name>@MODULE_NAME@</name>
 	<version>@MODULE_VERSION@</version>
 	<package>@MODULE_PACKAGE@</package>
-	<author>MANIRAGENA Faustin</author>
+	<author>PIH</author>
 	<description>
 			Laboratory Module. helpful track the flow of patient lab.
 	</description>
@@ -80,6 +80,27 @@
 		<property>@MODULE_ID@.labExamCategory</property>
 		<defaultValue>8004,7222,7192,7244,7265,7243</defaultValue>
 		<description>This is the Lab Exam Category</description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>@MODULE_ID@.healthfacility.name</property>
+		<defaultValue>Healtfacility.name</defaultValue>
+		<description>Health facility name</description>
+	</globalProperty>
+	<globalProperty>
+		<property>@MODULE_ID@.healthfacility.POBOX</property>
+		<defaultValue>Healtfacility.POBOX</defaultValue>
+		<description>Health facility P.O.BOX</description>
+	</globalProperty>
+	<globalProperty>
+		<property>@MODULE_ID@.healthfacility.telephone</property>
+		<defaultValue>Healtfacility.telephone</defaultValue>
+		<description>Health facility telephone number</description>
+	</globalProperty>
+	<globalProperty>
+		<property>@MODULE_ID@.healthfacility.email</property>
+		<defaultValue>Healtfacility.email</defaultValue>
+		<description>Health facility email account</description>
 	</globalProperty>
 	
 	<!-- Required Privileges -->

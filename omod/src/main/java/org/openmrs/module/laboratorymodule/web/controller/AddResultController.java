@@ -57,8 +57,7 @@ public class AddResultController extends ParameterizableViewController {
 				List<Object[]> orderHistryList = null;
 				Object[] orderHistory = null;
 
-				//int intLabSetIds[] = {7836,7217, 7192, 7202, 7243, 7244, 7265,7222, 7193, 7918, 7835, 8046 };
-				int[] intLabSetIds = { 8004, 7217, 7192, 7202, 7243, 7244, 7265, 7222, 7193, 7918, 7835, 8046,105406,105411,105417 };
+				int intLabSetIds[] = {7836,7217, 7192, 7202, 7243, 7244, 7265,7222, 7193, 7918, 7835, 8046,105411,105417,105406 };
 				for (int labConceptId : intLabSetIds) {
 					Concept labConcept = Context.getConceptService().getConcept(labConceptId);
 					List<ConceptSet> cptSets = Context.getConceptService().getConceptSets(labConcept);

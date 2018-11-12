@@ -1,7 +1,6 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="localHeader.jsp"%>
-<openmrs:htmlInclude file="/moduleResources/laboratorymodule/jquery.js" />
 <script language="javascript" type="text/javascript">
 	var $k = jQuery.noConflict();
 </script>
@@ -109,9 +108,3 @@
 </div>
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>
-
-
-
-
-
-

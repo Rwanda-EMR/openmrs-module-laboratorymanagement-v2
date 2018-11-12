@@ -256,7 +256,7 @@ public class LabUtils {
 
 		// Initilializes an integer array of length 2 where the first element is
 		// 7005, second element is 7006 and so on.
-		int intLabSetIds[] = { 7836, 7217, 7192, 7243, 7244, 7265, 7222, 7193,	8046, 7991};
+		int intLabSetIds[] = { 7836, 7217, 7192, 7243, 7244, 7265, 7222, 7193, 8046, 7991, 7193 };
 		@SuppressWarnings("unused")
 		Object testStatus[] = null;
 		for (int labSetid : intLabSetIds) {
@@ -340,8 +340,7 @@ public class LabUtils {
 		Map<Concept, Collection<Order>> mappedLabOrders = new HashMap<Concept, Collection<Order>>();
 		ConceptService cptService = Context.getConceptService();
 
-		int intLabSetIds[] = { 8004,7836,7217,7192,7243,7244,7265,7222,7193,7918,7991,7835,8046,105406,105411,105417};
-
+		int intLabSetIds[] = { 8004, 7836, 7217, 7192, 7243, 7244, 7265, 7222, 7193, 7918, 7991,7835, 8046,105411,105417,105406 };
 
 		for (int labSetid : intLabSetIds) {
 			Concept cpt = cptService.getConcept(labSetid);
@@ -381,7 +380,7 @@ public class LabUtils {
 		LaboratoryService laboratoryService = Context
 				.getService(LaboratoryService.class);
 		EncounterType encounterType = Context.getEncounterService()
-				.getEncounterType(14);
+				.getEncounterType(37);
 		// Get patient encounters by date
 		Encounter labEncounter = null;
 		Collection<Encounter> encountersList = laboratoryService
@@ -1094,8 +1093,7 @@ public static Object[] getIncompleteLabOrder(Concept cpt){
 			labTestConceptIds.add(order.getConcept().getConceptId());
 		}
 		// Lab concept to run through
-		int labConceptIds[] = {8004,7836, 7265, 7243, 7244, 7835, 7192, 7222,	7217, 7835, 7193, 7918, 8046, 7991, 7202 };
-
+		int labConceptIds[] = {8004,7836, 7265, 7243, 7244, 7835, 7192, 7222, 7217, 7193, 7918, 8046, 7991, 7202,105411,105417,105406 };
 		for (int labConceptId : labConceptIds) {
 			Concept groupConcept = cptService.getConcept(labConceptId);
 			List<Object[]> labExamHistory = new ArrayList<Object[]>();
@@ -1223,7 +1221,7 @@ public  static Object[] getPatientIdentificationFromLab(int patientId,Date start
 	Object patientIdentifElement [] = null;
     Collection<Order> labOrderList =  laboratoryService.getPatientLabordersBetweendates(patientId, startDate, endDate);
 
-	int labConceptIds[] = {8004,7836, 7265, 7243, 7244, 7835, 7192, 7222,	7217, 7835, 7193, 7918, 8046, 7991, 7202 };
+	int labConceptIds[] = {8004,7836, 7265, 7243, 7244, 7835, 7192, 7222, 7217, 7193, 7918, 8046, 7991, 7202};
 	for (Order order : labOrderList) {
 		labTestConceptIds.add(order.getConcept().getConceptId());
 	}
