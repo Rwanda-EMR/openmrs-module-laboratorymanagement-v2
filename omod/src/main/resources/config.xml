@@ -45,7 +45,7 @@
 	<globalProperty>
 		<property>@MODULE_ID@.labtests.conceptIds</property>
 		<defaultValue>5497,21,856,1553</defaultValue>
-		<description>This should be a list of conceptIds corresponding to lab-tests t</description>
+		<description>This should be a list of conceptIds corresponding to lab-tests </description>
 	</globalProperty>
 	
 	 
@@ -65,9 +65,8 @@
 	
 	<globalProperty>
 		<property>@MODULE_ID@.orderType.labOrderTypeId</property>
-		<defaultValue></defaultValue>
-		<description>The order type used to order lab exams 
-		</description>
+		<defaultValue>2</defaultValue>
+		<description>The order type used to order lab exams</description>
 	</globalProperty>
 	
 	<globalProperty>
@@ -78,7 +77,7 @@
 	 
 	<globalProperty>
 		<property>@MODULE_ID@.labExamCategory</property>
-		<defaultValue>8004,7222,7192,7244,7265,7243</defaultValue>
+		<defaultValue>8004,7222,7192,7244,7265,7243,7835,105411,105417,105406</defaultValue>
 		<description>This is the Lab Exam Category</description>
 	</globalProperty>
 
