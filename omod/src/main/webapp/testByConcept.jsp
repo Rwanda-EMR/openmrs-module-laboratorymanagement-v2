@@ -4,7 +4,7 @@
 <table cellpadding="0" cellspacing="0" border="0" class="display"
 		id="example">
 		
-		<tr><td><spring:message code="laboratorymodule.givenName" /></td></tr>
+		<tr><td><spring:message code="laboratorymanagement.givenName" /></td></tr>
 		
 <c:forEach var="testByConcept" items="${testTakenByConcept}"		varStatus="num">
 <tr>

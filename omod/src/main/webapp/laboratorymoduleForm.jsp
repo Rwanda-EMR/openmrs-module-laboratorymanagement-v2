@@ -3,12 +3,12 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="localHeader.jsp"%>
-<openmrs:htmlInclude file="/moduleResources/laboratorymodule/menuStyle.css" />
+<openmrs:htmlInclude file="/moduleResources/laboratorymanagement/menuStyle.css" />
 <openmrs:htmlInclude
-	file="/moduleResources/laboratorymodule/jsSelectOption.js" />
-<openmrs:htmlInclude file="/moduleResources/laboratorymodule/jquery.js" />
+	file="/moduleResources/laboratorymanagement/jsSelectOption.js" />
+<openmrs:htmlInclude file="/moduleResources/laboratorymanagement/jquery.js" />
 <openmrs:htmlInclude
-	file="/moduleResources/laboratorymodule/laboratoryFormValidator.js" />
+	file="/moduleResources/laboratorymanagement/laboratoryFormValidator.js" />
 <script>
 var $t = jQuery.noConflict();
 
@@ -30,14 +30,14 @@ var fieldGroupCount = 0;
 </script>
 <br />
 <b class="boxHeader" style="width: 100%"><spring:message
-	code="laboratorymodule.laboratoryForm" /></b>
+	code="laboratorymanagement.laboratoryForm" /></b>
 <div
 	style="background: #E2E4FF; border: 1px #808080 solid; padding: 0.5em; margin-bottom: 0em">
 <form name="laboForm" id="labotryform" method="get"
 	onsubmit="return checkform(this)">
 <table>
 	<tr>
-		<td><spring:message code="laboratorymodule.patientName" /></td>
+		<td><spring:message code="laboratorymanagement.patientName" /></td>
 		<td><openmrs:fieldGen type="org.openmrs.Patient"
 			formFieldName="patientId" val="${patient}" /></td>
 	</tr>
@@ -49,7 +49,7 @@ var fieldGroupCount = 0;
 	</tr>
 
 	<tr>
-		<td><spring:message code="laboratorymodule.site" /></td>
+		<td><spring:message code="laboratorymanagement.site" /></td>
 		<td><openmrs:fieldGen type="org.openmrs.Location"
 			formFieldName="locationId" val="${location}" /></td>
 	</tr>
@@ -66,7 +66,7 @@ var fieldGroupCount = 0;
 
 	</tr>
 	<tr>
-		<td><spring:message code="laboratorymodule.acquiredDate" /></td>
+		<td><spring:message code="laboratorymanagement.acquiredDate" /></td>
 		<td><openmrs_tag:dateField formFieldName="acquiredDate"
 			startValue="" /></td>
 
@@ -74,8 +74,8 @@ var fieldGroupCount = 0;
 	<tr>
 		<td></td>
 		<td><input type="submit"
-			value="<spring:message code="laboratorymodule.save"/>" /><input
-			type="reset" value="<spring:message code="laboratorymodule.cancel"/>" /></td>
+			value="<spring:message code="laboratorymanagement.save"/>" /><input
+			type="reset" value="<spring:message code="laboratorymanagement.cancel"/>" /></td>
 	</tr>
 </table>
 </form>

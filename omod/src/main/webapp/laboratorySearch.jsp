@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="localHeader.jsp"%>
-<openmrs:htmlInclude file="/moduleResources/laboratorymodule/style.css" />
+<openmrs:htmlInclude file="/moduleResources/laboratorymanagement/style.css" />
 <b class="boxHeader">Search by</b>
 <div class="box">
 <table>

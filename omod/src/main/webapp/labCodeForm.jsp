@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="localHeader.jsp"%>
 <openmrs:htmlInclude
-	file="/moduleResources/laboratorymodule/menuStyle.css" />
+	file="/moduleResources/laboratorymanagement/menuStyle.css" />
 
 
 <div

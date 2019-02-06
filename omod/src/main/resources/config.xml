@@ -101,7 +101,100 @@
 		<defaultValue>Healtfacility.email</defaultValue>
 		<description>Health facility email account</description>
 	</globalProperty>
-	
+
+
+	<globalProperty>
+		<property>laboratorymanagement.LabExamsToOrder</property>
+		<defaultValue>8004,7836,7265,7243,7244,7835,7192,7222,7217,7193,7918,8046,7991,7202,105411,105417,105406,7202</defaultValue>
+		<description>Concept set for Lab exams</description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>laboratorymanagement.appointmentInLaboratoryService</property>
+		<defaultValue>6710</defaultValue>
+		<description>Lab Services concept</description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>laboratorymanagement.appointmentInConsultationService</property>
+		<defaultValue>8053</defaultValue>
+		<description>Consultation Services concept</description>
+	</globalProperty>
+
+	<!--LabTestConstants gp-->
+
+	<globalProperty>
+		<property>laboratorymanagement.LabTestConstants.spermConcept</property>
+		<defaultValue>7202</defaultValue>
+		<description>spermConcept ID </description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>laboratorymanagement.LabTestConstants.hematology</property>
+		<defaultValue>8004</defaultValue>
+		<description>hematology concept id </description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>laboratorymanagement.LabTestConstants.PARASITOLOGY</property>
+		<defaultValue>7222</defaultValue>
+		<description>PARASITOLOGY concept id </description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>laboratorymanagement.LabTestConstants.hemostasis</property>
+		<defaultValue>7217</defaultValue>
+		<description>hemostasis concept id </description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>laboratorymanagement.LabTestConstants.bacteriology</property>
+		<defaultValue>7192</defaultValue>
+		<description>bacteriology concept id </description>
+	</globalProperty>
+
+
+
+	<globalProperty>
+		<property>laboratorymanagement.LabTestConstants.urineChemistry</property>
+		<defaultValue>7243</defaultValue>
+		<description>urineChemistry concept id </description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>laboratorymanagement.LabTestConstants.immunoSerology</property>
+		<defaultValue>7265</defaultValue>
+		<description>immunoSerology concept id </description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>laboratorymanagement.LabTestConstants.bloodChemistry</property>
+		<defaultValue>7244</defaultValue>
+		<description>bloodChemistry concept id </description>
+	</globalProperty>
+
+	<globalProperty>
+		<property>laboratorymanagement.LabTestConstants.toxicology</property>
+		<defaultValue>7835</defaultValue>
+		<description>toxicology concept id </description>
+	</globalProperty>
+	<globalProperty>
+		<property>laboratorymanagement.LabTestConstants.tumourMarker</property>
+		<defaultValue>105406</defaultValue>
+		<description>tumourMarker concept id </description>
+	</globalProperty>
+	<globalProperty>
+		<property>laboratorymanagement.LabTestConstants.thyroidFunction</property>
+		<defaultValue>105411</defaultValue>
+		<description>thyroidFunction concept id </description>
+	</globalProperty>
+	<globalProperty>
+		<property>laboratorymanagement.LabTestConstants.fertilityHormone</property>
+		<defaultValue>105417</defaultValue>
+		<description>fertilityHormone concept id </description>
+	</globalProperty>
+
+
 	<!-- Required Privileges -->
 	
 	<privilege>

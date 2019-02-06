@@ -23,16 +23,16 @@
 					initialValue="${param.locationId}" /></td>
 			</tr>
 			<tr>
-				<td><spring:message code="laboratorymodule.from" /></td>
+				<td><spring:message code="laboratorymanagement.from" /></td>
 				<td><openmrs_tag:dateField formFieldName="startDate"
 					startValue="${startdate}" /></td>
-				<td><spring:message code="laboratorymodule.to" /></td>
+				<td><spring:message code="laboratorymanagement.to" /></td>
 				<td><openmrs_tag:dateField formFieldName="endDate"
 					startValue="${enddate}" /></td>
 			</tr>
 			<tr>
 				<td><input type="submit"
-					value="<spring:message code="laboratorymodule.update"/>" /></td>
+					value="<spring:message code="laboratorymanagement.update"/>" /></td>
 			</tr>
 		</table>
 		</div>
@@ -47,7 +47,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td><spring:message code="laboratorymodule.test" /></td>
+				<td><spring:message code="laboratorymanagement.test" /></td>
 				<td><select name="conceptId">
 					<c:forEach items="${labConcepts}" var="labConcept">
 
@@ -77,7 +77,7 @@
 			<tr>
 				<td width="70%">${mappedLab.key.name}</td>
 				<td><a
-					href="${pageContext.request.contextPath}/module/laboratorymodule/testByConcept.form?testType=${mappedLab.key.conceptId}&patientId=${patientIdstr}&startDate=${startdate}&endDate=${enddate}&locationId=${locationIdstr}">${mappedLab.value}</a></td>
+					href="${pageContext.request.contextPath}/module/laboratorymanagement/testByConcept.form?testType=${mappedLab.key.conceptId}&patientId=${patientIdstr}&startDate=${startdate}&endDate=${enddate}&locationId=${locationIdstr}">${mappedLab.value}</a></td>
 			</tr>
 		</c:forEach>
 	</table>
@@ -100,7 +100,7 @@
 			<tr>
 				<td width="70%">${labExams.key.name}</td>
 				<td><a
-					href="${pageContext.request.contextPath}/module/laboratorymodule/testByConcept.form?lineNumber=${status.count}">${labExams.value}</a></td>
+					href="${pageContext.request.contextPath}/module/laboratorymanagement/testByConcept.form?lineNumber=${status.count}">${labExams.value}</a></td>
 			</tr>
 		</c:forEach>
 	</table>

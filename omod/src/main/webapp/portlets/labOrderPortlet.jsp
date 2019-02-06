@@ -1,23 +1,23 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <!--
 <openmrs:htmlInclude
-	file="/moduleResources/laboratorymodule/scripts/jquery1.js" /> -->
+	file="/moduleResources/laboratorymanagement/scripts/jquery1.js" /> -->
 <openmrs:htmlInclude
-	file="/moduleResources/laboratorymodule/scripts/demo_page1.css" />
+	file="/moduleResources/laboratorymanagement/scripts/demo_page1.css" />
 <openmrs:htmlInclude
-	file="/moduleResources/laboratorymodule/scripts/demo_table1.css" />
+	file="/moduleResources/laboratorymanagement/scripts/demo_table1.css" />
 
 <openmrs:htmlInclude
-	file="/moduleResources/laboratorymodule/scripts/jquery.dataTables1.js" />
+	file="/moduleResources/laboratorymanagement/scripts/jquery.dataTables1.js" />
 <openmrs:htmlInclude
-	file="/moduleResources/laboratorymodule/scripts/jquery.simplemodal.js" />
-<openmrs:htmlInclude	file="/moduleResources/laboratorymodule/scripts/basic.js" />
+	file="/moduleResources/laboratorymanagement/scripts/jquery.simplemodal.js" />
+<openmrs:htmlInclude	file="/moduleResources/laboratorymanagement/scripts/basic.js" />
 
 <openmrs:htmlInclude
-	file="/moduleResources/laboratorymodule/scripts/basic.css" />
+	file="/moduleResources/laboratorymanagement/scripts/basic.css" />
 
 <openmrs:htmlInclude
-	file="/moduleResources/laboratorymodule/scripts/jquery.PrintArea1.js" />
+	file="/moduleResources/laboratorymanagement/scripts/jquery.PrintArea1.js" />
 
 
 <style type="text/css">
@@ -666,7 +666,7 @@ Request Form</legend>
 <div id="container">
 
 <div style="float: right"><img id="print_lab_ordonance"
-	src="moduleResources/laboratorymodule/print_preview.gif"
+	src="moduleResources/laboratorymanagement/print_preview.gif"
 	style="cursor: pointer;" title="Print Preview" /></div>
 <table cellpadding="0" cellspacing="0" border="0" class="display"
 	id="example_table" style="width: 100%">
@@ -751,7 +751,7 @@ Request Form</legend>
 </table>
 </div>
 </div>
--+
+
 
 <div id="laborder-modal-content" style="display: none"><img
 	id="print_btn"
@@ -766,19 +766,20 @@ Request Form</legend>
 	cellspacing="0">
 	<tr align="left" valign="top">
 		<td width="40%" height="149">
-		<p>Kacyiru Police Hospital (KPH)</p>
+		<openmrs:globalProperty key="laboratorymanagement.healthfacility.name" var="healthfacility"/>
+		<openmrs:globalProperty key="laboratorymanagement.healthfacility.POBOX" var="POBOX"/>
+		<openmrs:globalProperty key="laboratorymanagement.healthfacility.email" var="email"/>
+		<openmrs:globalProperty key="laboratorymanagement.healthfacility.telephone" var="telephone"/>
+         <img src="moduleResources/laboratorymanagement/images/logo.jpg"
+			width="111" height="109" alt="REPUBLIC OF RWANDA" />
+		<p>REPUBLIC OF RWANDA</p>
+		<p>${healthfacility}</p>
 		<p>MEDICAL LABORATORY DEPARTMENT</p>
-		<p>PO. BOX: 6183 KIGALI- RWANDA</p>
+		<p>${POBOX}</p>
+		<p>${email}</p>
+		<p>${telephone}</p>
 		</td>
-		<td width="20%" align="center" valign="top">
-		<p><img src="moduleResources/laboratorymodule/images/kph_logo.gif"
-			width="111" height="109" alt="kph" /></p>
-		<p>POLICE NATIONALE</p>
-		</td>
-		<td width="40%">
-		<p>DEPARTMENT DE LABORATOIRE MEDICAL</p>
-		<p>BP: 6183 KIGALI - RWANDA</p>
-		</td>
+
 	</tr>
 </table>
 <table width="100%" border="1" cellspacing="0" cellpadding="0">
@@ -811,7 +812,7 @@ Request Form</legend>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<tr>
 		<td colspan="2">
-		<center>Lab Test</center>
+		<center>Lab Test<br/></center>
 		</td>
 	</tr>
 	<tr>

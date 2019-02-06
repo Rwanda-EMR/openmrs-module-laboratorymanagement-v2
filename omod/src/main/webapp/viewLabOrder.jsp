@@ -2,17 +2,17 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="localHeader.jsp"%>
 
-<openmrs:htmlInclude file="/moduleResources/laboratorymodule/style.css" />
+<openmrs:htmlInclude file="/moduleResources/laboratorymanagement/style.css" />
 <openmrs:htmlInclude
-	file="/moduleResources/laboratorymodule/jquery.dataTables.js" />
+	file="/moduleResources/laboratorymanagement/jquery.dataTables.js" />
 
 <openmrs:htmlInclude
-	file="/moduleResources/laboratorymodule/demo_page.css" />
+	file="/moduleResources/laboratorymanagement/demo_page.css" />
 
 <openmrs:htmlInclude
-	file="/moduleResources/laboratorymodule/demo_table.css" />	
+	file="/moduleResources/laboratorymanagement/demo_table.css" />	
 
-<b><spring:message code="laboratorymodule.searchBy" /></b>
+<b><spring:message code="laboratorymanagement.searchBy" /></b>
 <script language="javascript" type="text/javascript">
 	var $k = jQuery.noConflict();
 </script>
@@ -36,17 +36,17 @@
 			formFieldName="patientId" val="${patient}" /></td>
 	</tr>
 	<tr>
-		<td><spring:message code="laboratorymodule.from" /></td>
+		<td><spring:message code="laboratorymanagement.from" /></td>
 		<td><openmrs_tag:dateField formFieldName="startDate"
 			startValue="${startDate}" /></td>
-		<td><spring:message code="laboratorymodule.to" /></td>
+		<td><spring:message code="laboratorymanagement.to" /></td>
 		<td><openmrs_tag:dateField formFieldName="endDate"
 			startValue="${enddate}" /></td>
 
 	</tr>	
 	<tr>
 		<td><input type="submit" name="submitButton "
-			value="<spring:message code="laboratorymodule.search"/>"></td>
+			value="<spring:message code="laboratorymanagement.search"/>"></td>
 	</tr>
 </table>
 </form>
@@ -58,7 +58,7 @@
 	<div align="right">
 
 	<div align="right"><a
-		href="${pageContext.request.contextPath}/module/laboratorymodule/labCode.form?patientId=${patient.patientId}&startDate=${startDat}">Add
+		href="${pageContext.request.contextPath}/module/laboratorymanagement/labCode.form?patientId=${patient.patientId}&startDate=${startDat}">Add
 	LabCode</a></div>
 	</div>
 
@@ -66,19 +66,19 @@
 		style="border: 2px #000000 double; width: 100 %;">
 	<table style="">
 		<tr>
-			<td><spring:message code="laboratorymodule.tracNetId" />:</td>
+			<td><spring:message code="laboratorymanagement.patientId" />:</td>
 			<td>${patient.patientIdentifier}</td>
 		</tr>
 		<tr>
-			<td><spring:message code="laboratorymodule.givenName" /> :</td>
+			<td><spring:message code="laboratorymanagement.givenName" /> :</td>
 			<td>${patient.givenName}</td>
 		</tr>
 		<tr>
-			<td><spring:message code="laboratorymodule.familyName" />:</td>
+			<td><spring:message code="laboratorymanagement.familyName" />:</td>
 			<td>${patient.familyName}</td>
 		</tr>
 		<tr>
-			<td><spring:message code="laboratorymodule.gender" />:</td>
+			<td><spring:message code="laboratorymanagement.gender" />:</td>
 			<td><img
 				src="${pageContext.request.contextPath}/images/${patient.gender == 'M' ? 'male' : 'female'}.gif" /></td>
 		</tr>
@@ -90,11 +90,11 @@
 	<table cellpadding="0" cellspacing="0" border="0" class="display">
 		<thead>
 			<tr id="obsListingHeaderRow">
-				<th><spring:message code="laboratorymodule.testName" /></th>
-				<th><spring:message code="laboratorymodule.OrderedOn" /></th>
+				<th><spring:message code="laboratorymanagement.testName" /></th>
+				<th><spring:message code="laboratorymanagement.OrderedOn" /></th>
 				<th>Oderer</th>
-				<th><spring:message code="laboratorymodule.labCode" /></th>
-				<th><spring:message code="laboratorymodule.editOrder" /></th>
+				<th><spring:message code="laboratorymanagement.labCode" /></th>
+				<th><spring:message code="laboratorymanagement.editOrder" /></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -113,7 +113,7 @@
 						<td><openmrs:formatDate date="${labOrder.startDate}" /></td>
 						<td><c:out value="${labOrder.orderer.familyName}" /></td>						
 						<td><c:out value="${labOrder.accessionNumber}" /></td>
-						<td valign="top"><a href="editLabOrder.form?orderId=${labOrder.orderId}&&startDate=${startDat}&&labcode=${labOrder.accessionNumber}&&patientId=${labOrder.patient.patientId}"><spring:message code="laboratorymodule.edit" />
+						<td valign="top"><a href="editLabOrder.form?orderId=${labOrder.orderId}&&startDate=${startDat}&&labcode=${labOrder.accessionNumber}&&patientId=${labOrder.patient.patientId}"><spring:message code="laboratorymanagement.edit" />
 						</a>
 					</td>
 												

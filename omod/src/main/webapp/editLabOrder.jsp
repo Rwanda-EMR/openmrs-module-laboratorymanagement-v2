@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="localHeader.jsp"%>
 <openmrs:htmlInclude
-	file="/moduleResources/laboratorymodule/menuStyle.css" />
+	file="/moduleResources/laboratorymanagement/menuStyle.css" />
 <!-- If orderId is null ,display a lab code form with default value -->
 <div
 	style="background: #E2E4FF; border: 1px #808080 solid; padding: 0.5em; margin-bottom: 0em">

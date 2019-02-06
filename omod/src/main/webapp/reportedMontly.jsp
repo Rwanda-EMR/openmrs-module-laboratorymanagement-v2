@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <openmrs:htmlInclude file="/moduleResources/quarterlyreporting/style.css" />
-<openmrs:htmlInclude file="/moduleResources/laboratorymodule/jquery.PrintArea.js" />
+<openmrs:htmlInclude file="/moduleResources/laboratorymanagement/jquery.PrintArea.js" />
 	
 <script type="text/javascript" language="JavaScript">
 	$(document).ready(function() {
@@ -17,11 +17,11 @@
 <form action="" method="post">
 <table>
 	<tr>
-		<td><spring:message code="laboratorymodule.from" /></td>
+		<td><spring:message code="laboratorymanagement.from" /></td>
 		<td><openmrs_tag:dateField formFieldName="startDate"
 			startValue="${startdate}" /></td>
 
-		<td><spring:message code="laboratorymodule.to" /></td>
+		<td><spring:message code="laboratorymanagement.to" /></td>
 		<td><openmrs_tag:dateField formFieldName="endDate"
 			startValue="${enddate}" /></td>
 	</tr>
@@ -32,7 +32,7 @@
 	</tr>
 	<tr>
 		<td><input type="submit" name="submitButton "
-			value="<spring:message code="laboratorymodule.search"/>"></td>
+			value="<spring:message code="laboratorymanagement.search"/>"></td>
 
 	</tr>
 </table>
@@ -67,13 +67,13 @@
 				<tr>
 					<td><c:out value="${labTest[0].name}" /></td>
 					<td><a
-						href="${pageContext.request.contextPath}/module/laboratorymodule/displayLabExams.form?poslabConceptId=${labTest[4]}&startDate=${startDate}&endDate=${endDate}"><c:out
+						href="${pageContext.request.contextPath}/module/laboratorymanagement/displayLabExams.form?poslabConceptId=${labTest[4]}&startDate=${startDate}&endDate=${endDate}"><c:out
 						value="${labTest[1]}" /></a></td>
 					<td><a
-						href="${pageContext.request.contextPath}/module/laboratorymodule/displayLabExams.form?neglabConceptId=${labTest[4]}&startDate=${startDate}&endDate=${endDate}"><c:out
+						href="${pageContext.request.contextPath}/module/laboratorymanagement/displayLabExams.form?neglabConceptId=${labTest[4]}&startDate=${startDate}&endDate=${endDate}"><c:out
 						value="${labTest[2]}" /></a></td>
 					<td><a
-						href="${pageContext.request.contextPath}/module/laboratorymodule/displayLabExams.form?totlabConceptId=${labTest[4]}&startDate=${startDate}&endDate=${endDate}"><c:out
+						href="${pageContext.request.contextPath}/module/laboratorymanagement/displayLabExams.form?totlabConceptId=${labTest[4]}&startDate=${startDate}&endDate=${endDate}"><c:out
 						value="${labTest[3]}" /></a></td>
 
 				</tr>

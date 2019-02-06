@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="localHeader.jsp"%>
 
-<openmrs:portlet url="globalProperties" parameters="title=${title}|propertyPrefix=laboratorymodule.|excludePrefix=laboratorymodule.started|hidePrefix=true"/>
+<openmrs:portlet url="globalProperties" parameters="title=${title}|propertyPrefix=laboratorymanagement.|excludePrefix=laboratorymanagement.started|hidePrefix=true"/>
 
 
 

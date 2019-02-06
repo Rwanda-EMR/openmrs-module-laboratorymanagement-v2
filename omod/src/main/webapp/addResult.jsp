@@ -3,29 +3,28 @@
 <%@ include file="localHeader.jsp"%>
 
 <openmrs:htmlInclude
-	file="/moduleResources/laboratorymodule/menuStyle.css" />
-<openmrs:htmlInclude file="/moduleResources/laboratorymodule/jquery.js" />
-<openmrs:htmlInclude file="/moduleResources/laboratorymodule/chosen.jquery.min.js" />
-<openmrs:htmlInclude file="/moduleResources/laboratorymodule/chosen.css" />
+	file="/moduleResources/laboratorymanagement/menuStyle.css" />
+<openmrs:htmlInclude file="/moduleResources/laboratorymanagement/chosen.css" />
 <openmrs:htmlInclude
-	file="/moduleResources/laboratorymodule/jsControl.js" />
+	file="/moduleResources/laboratorymanagement/chosen.jquery.min.js" />
 <openmrs:htmlInclude
-	file="/moduleResources/laboratorymodule/jsCreateFields.js" />
+	file="/moduleResources/laboratorymanagement/jsControl.js" />
+<openmrs:htmlInclude
+	file="/moduleResources/laboratorymanagement/jsCreateFields.js" />
 
 <script>
-	var $t = jQuery.noConflict();
-	$t(document).ready( function() {
-		$t(".cmt").hide(); //hide the field on the loading
-			$t(".bouton").click( function() {
+	jQuery(document).ready( function() {
+		jQuery(".cmt").hide(); //hide the field on the loading
+			jQuery(".bouton").click( function() {
 				var buttonId = this.id;
 				var conceptId = buttonId.split("_")[1];
-				$t("#cmt_" + conceptId).show(); //show the field when the user clicks on button.
+				jQuery("#cmt_" + conceptId).show(); //show the field when the user clicks on button.
 
 				});
-			$t(".my_select_box").chosen({max_selected_options: 5});
+			jQuery(".my_select_box").chosen({max_selected_options: 5});
 
 			var nonEmptyVal = '';
-			var forParams = $t('form').serialize();
+			var forParams = jQuery('form').serialize();
 
 			var forParamsArr = forParams.split("&");
 			var fieldNameValArr = '';
@@ -37,7 +36,7 @@
 				if(fieldNameValArr[0].split('-').length > 0) {
 					val = fieldNameValArr[1].toString();
 					if(val.length > 0) {
-						$t('input[name='+fieldNameValArr[0]+']').attr('disabled','disabled');
+						jQuery('input[name='+fieldNameValArr[0]+']').attr('disabled','disabled');
 					}
 				}
 			}
@@ -50,14 +49,14 @@
 <form name="laboForm" id="labotryform" method="get">
 <table>
 	<tr>
-		<td><spring:message code="laboratorymodule.labCode" /></td>
+		<td><spring:message code="laboratorymanagement.labCode" /></td>
 		<td><input type="text" name="labCode" value="${labCode}"></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td><input type="submit"
-			value="<spring:message code="laboratorymodule.Search"/>" /><input
-			type="reset" value="<spring:message code="laboratorymodule.cancel"/>" /></td>
+			value="<spring:message code="laboratorymanagement.Search"/>" /><input
+			type="reset" value="<spring:message code="laboratorymanagement.cancel"/>" /></td>
 	</tr>
 </table>
 </form>
