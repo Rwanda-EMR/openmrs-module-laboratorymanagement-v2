@@ -32,6 +32,9 @@ public class LabOrderPortletController extends PortletController {
 	@SuppressWarnings("unchecked")
 	protected void populateModel(HttpServletRequest request,
 			Map<String, Object> model) {
+
+		/*long t1= System.currentTimeMillis();
+		System.out.println("Starttttttttttttttttttttttttttttttt");*/
 		//categories of lab tests on lab request form
 		int hematologyId =LabTestConstants.hematologyId;
 		int parasitologyId =LabTestConstants.PARASITOLOGYID;
@@ -58,6 +61,7 @@ public class LabOrderPortletController extends PortletController {
 
 		String patientIdstr = request.getParameter("patientId");
 		Patient patient = Context.getPatientService().getPatient(Integer.parseInt(patientIdstr));
+
 
 		/**
 		 * <<<<<<< Appointment Consultation waiting list management >>>>>>>
@@ -89,7 +93,7 @@ public class LabOrderPortletController extends PortletController {
 			LabUtils.createWaitingLabAppointment(patient, null);
 		}
 
-		
+
 		// request.getSession().setAttribute(WebConstants.OPENMRS_MSG_ATTR,
 		// "Orders created");
 
@@ -100,21 +104,40 @@ public class LabOrderPortletController extends PortletController {
 		String patientName = patient.getFamilyName() + " "
 				+ patient.getMiddleName() + " " + patient.getGivenName();
 
+
+
+
 		// String orderTypeIdStr =
 		// Context.getAdministrationService().getGlobalProperty("orderType.labOrderTypeId");
+
 		Map<ConceptName, Collection<Concept>> mappedLabOrder = new HashMap<ConceptName, Collection<Concept>>();
+
+
 		mappedLabOrder = LabUtils.getLabExamsToOrder(Integer
 				.parseInt(patientIdstr));
+
+
+
+
 		OrderService orderService = Context.getOrderService();
+
+
+
 		// get observations by Person
 
 		List<Order> orders = orderService.getOrdersByPatient(patient);
 		Map<Date, List<OrderObs>> orderObsMap = LabUtils.getMappedOrderToObs(orders, patient);
-		
-		
+
 		//Map<String, Object> orderObsMapOrdered = new TreeMap<String, Object>((Comparator<? super String>) orderObsMap);
 		
 		//int spermConceptId = LabTestConstants.SPERMCONCEPTID;
+/*
+		long t2= System.currentTimeMillis();
+		long t= t2-t1;
+		System.out.println("Enddddddddddddddddddddddddddddddddddddd1: "+t);
+
+		System.out.println("Starttttttttttttttttttttttttttttttt");*/
+
 
 		model.put("dftLoc", dftLoc);
 		// model.put("locations", locations);
@@ -136,6 +159,11 @@ public class LabOrderPortletController extends PortletController {
 		model.put("tumourMarker",Context.getConceptService().getConcept(tumourMarkerId).getName());
 		model.put("thyroidFunction",Context.getConceptService().getConcept(thyroidFunctionId).getName());
 		model.put("fertilityHormone",Context.getConceptService().getConcept(fertilityHormoneId).getName());
+
+
+		/*long t3= System.currentTimeMillis();
+		long t4= t3-t1;
+		System.out.println("Enddddddddddddddddddddddddddddddddddddd2: "+t4);*/
 
 
 

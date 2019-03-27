@@ -257,15 +257,35 @@ public class LabUtils {
 		// 7005, second element is 7006 and so on.
 
 
+/*
+
+		long t1= System.currentTimeMillis();
+		System.out.println("Starttttttttttttttttttttttttttttttt");
+*/
 
 		//int intLabSetIds[] = { 7836, 7217, 7192, 7243, 7244, 7265, 7222, 7193, 8046, 7991, 7193 };
-		List<Concept> conceptLabSetToOrder= GlobalPropertiesMgt.getConceptList(GlobalPropertiesMgt.LABEXAMSToORDER);
+		//List<Concept> conceptLabSetToOrder= GlobalPropertiesMgt.getConceptList(GlobalPropertiesMgt.LABEXAMSToORDER);
+		List<Integer> intLabSetIds=new ArrayList<Integer>();
+		String stringLabSetIds[]=Context.getAdministrationService().getGlobalProperty("laboratorymanagement.LabExamsToOrder").split(",");
+
+		for (String sid:stringLabSetIds){
+			intLabSetIds.add(Integer.parseInt(sid));
+		}
+/*
+
+		long t2= System.currentTimeMillis();
+		long t= t2-t1;
+		System.out.println("Enddddddddddddddddddddddddddddddddddddd1: "+t);
+
+		System.out.println("Starttttttttttttttttttttttttttttttt");
+*/
+
 
 		//int intLabSetIds[] = { 1019 };
 
-		//for (int labSetid : intLabSetIds) {
-		for (Concept cpt:conceptLabSetToOrder){
-			//Concept cpt = cptService.getConcept(labSetid);
+		for (int labSetid : intLabSetIds) {
+		//for (Concept cpt:conceptLabSetToOrder){
+			Concept cpt = cptService.getConcept(labSetid);
 			Collection<ConceptSet> setMembers = cpt.getConceptSets();
 			Collection<Concept> cptsLst = new ArrayList<Concept>();
 			for (ConceptSet setMember : setMembers) {
@@ -274,6 +294,10 @@ public class LabUtils {
 			mappedLabOrder.put(cpt.getName(), cptsLst);
 
 		}
+		/*long t3= System.currentTimeMillis();
+		long t4= t3-t2;
+		System.out.println("Enddddddddddddddddddddddddddddddddddddd2: "+t4);*/
+
 		return mappedLabOrder;
 
 	}
@@ -661,6 +685,7 @@ public class LabUtils {
 			lopList.add(labOrderParent);
 
 		}
+
 		return lopList;
 	}
 
@@ -1105,16 +1130,21 @@ public static Object[] getIncompleteLabOrder(Concept cpt){
 	//	int labConceptIds[] = {8004,7836, 7265, 7243, 7244, 7835, 7192, 7222, 7217, 7193, 7918, 8046, 7991, 7202,105411,105417,105406 };
 
 
-		List<Concept> labConceptIds= GlobalPropertiesMgt.getConceptList(GlobalPropertiesMgt.LABEXAMSToORDER);
+		//List<Concept> labConceptIds= GlobalPropertiesMgt.getConceptList(GlobalPropertiesMgt.LABEXAMSToORDER);
+		String stinglabConceptIds[]=Context.getAdministrationService().getGlobalProperty("laboratorymanagement.LabExamsToOrder").split(",");
+		List<Integer> labConceptIds=new ArrayList<Integer>();
+		for (String cid:stinglabConceptIds){
+			labConceptIds.add(Integer.parseInt(cid));
+		}
 
-		for (Concept labConcept : labConceptIds) {
+		for (int labConcept : labConceptIds) {
 			//Concept groupConcept = cptService.getConcept(labConceptId);
 			List<Object[]> labExamHistory = new ArrayList<Object[]>();
 
 			List<Object[]> labExamHistory1 = new ArrayList<Object[]>();
 
 			ArrayList<Integer> cptList = new ArrayList<Integer>();
-			Collection<Integer> childrenConceptIds = getConceptIdChilren(labConcept.getConceptId());
+			Collection<Integer> childrenConceptIds = getConceptIdChilren(labConcept);
 
 			// run through Lab tests conceptIds list and check whether it is
 			// contained in children Concepts
@@ -1150,7 +1180,7 @@ public static Object[] getIncompleteLabOrder(Concept cpt){
 			}
 			if (labExamHistory.size() > 0) {
 				// map the group concept name to Lab exam history
-				mappedLabExam.put(labConcept.getName(), labExamHistory);
+				mappedLabExam.put(cptService.getConcept(labConcept).getName(), labExamHistory);
 			}
 
 		}
