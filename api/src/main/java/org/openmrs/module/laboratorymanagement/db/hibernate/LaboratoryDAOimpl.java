@@ -848,8 +848,8 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		}
 		strbuf.append(" ) and  o.patient_id=" + patientId);
 		strbuf.append("  and  o.voided= 0 ");
-		strbuf.append("  " + " and  cast(o.start_date as date) =  '"
-				+ df.format(startDate) + "'");
+		strbuf.append("  " + " and  cast(o.start_date as date) between  '"
+				+ df.format(startDate) + "' and '" + df.format(endDate) + "'");
 		query = sessionFactory.getCurrentSession().createSQLQuery(
 				strbuf.toString());
 		System.out.println("ZZZZlaborder query" + query.toString());
