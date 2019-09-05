@@ -23,6 +23,7 @@ import org.openmrs.module.laboratorymanagement.utils.LabUtils;
 import org.openmrs.module.mohappointment.model.Appointment;
 import org.openmrs.module.mohappointment.model.Services;
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
+import org.openmrs.web.WebConstants;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
@@ -41,8 +42,10 @@ public class ViewLabOrderController extends ParameterizableViewController {
 		
 		Date endDate = LaboratoryMgt.getDateParameter(request, "endDate",zeroDay);
 		// String locationIdStr=request.getParameter("locationId");	
-		
-		
+
+
+
+
 		LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
 		Map<Concept, Collection<Order>> mappedLabOrders = null;
 
@@ -61,7 +64,9 @@ public class ViewLabOrderController extends ParameterizableViewController {
 					 *  ___________ >> Lab Appointment ends here:
 					 *  Found using: Patient, Lab Service, Appointment Date ,and AppointmentState
 					 */
-					Services clinicalService = AppointmentUtil.getServiceByConcept(GlobalPropertiesMgt.getConcept(GlobalPropertiesMgt.LABORATORYSERVICES));
+					//Services clinicalService = AppointmentUtil.getServiceByConcept(GlobalPropertiesMgt.getConcept(GlobalPropertiesMgt.LABORATORYSERVICES));
+
+					Services clinicalService = AppointmentUtil.getServiceByConcept(Context.getConceptService().getConcept(Context.getAdministrationService().getGlobalProperty(GlobalPropertiesMgt.LABORATORYSERVICES)));
 					List<Appointment> appointments = AppointmentUtil.getAppointmentsByPatientAndDate(
 							Context.getPatientService().getPatient(patientId), clinicalService, new Date());
 					
@@ -74,7 +79,9 @@ public class ViewLabOrderController extends ParameterizableViewController {
 					 */
 					
 				} else
-					model.put("msg", "The Lab code " + labCodeStr+ "  already exists");
+					request.getSession().setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
+							"The Lab code " + labCodeStr+ "  already exists");
+					//model.put("msg", "The Lab code " + labCodeStr+ "  already exists");
 				model.put("labCode", labCodeStr);
 			}
 			if(request.getParameter("edit") != null){
@@ -93,17 +100,29 @@ public class ViewLabOrderController extends ParameterizableViewController {
 
 			}
 
-			mappedLabOrders = LabUtils.findPatientLabOrders(patientId,	startDate, endDate, null);		
+
+			long startTime = System.currentTimeMillis();
+			long endTime = 0;
+
+			mappedLabOrders = LabUtils.findPatientLabOrders(patientId,	startDate, endDate, null);
+
+
+			endTime = System.currentTimeMillis();
+			long timeneeded =  ((endTime-startTime) /1000);
+
+			System.out.println("Cotroller Timeeeeeeeeeeee: "+timeneeded);
+
 			model.put("patient", Context.getPatientService().getPatient(
 					patientId));
-			
-			
+
+
 			
 			
 			
 			
 		}
-		
+
+
 
 		model.put("mappedLabOrders", mappedLabOrders);
 		model.put("startDate", startDate);

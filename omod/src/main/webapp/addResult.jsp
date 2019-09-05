@@ -62,6 +62,35 @@
 </form>
 </div><br><br>
 
+
+<c:if test="${fn:length(multipleAnswerConcepts)>0}">
+<div id="Identification"
+		style="border: 2px #000000 double; width: 100 %;" align="center">
+	<table style="">
+		<tr>
+			<td><spring:message code="laboratorymanagement.patientId" />:</td>
+			<td>${patient.patientIdentifier}</td>
+		</tr>
+		<tr>
+			<td><spring:message code="laboratorymanagement.givenName" /> :</td>
+			<td>${patient.givenName}</td>
+		</tr>
+		<tr>
+			<td><spring:message code="laboratorymanagement.familyName" />:</td>
+			<td>${patient.familyName}</td>
+		</tr>
+		<tr>
+			<td><spring:message code="laboratorymanagement.gender" />:</td>
+			<td><img
+				src="${pageContext.request.contextPath}/images/${patient.gender == 'M' ? 'male' : 'female'}.gif" /></td>
+		</tr>
+	</table>
+	</div>
+<br><br>
+</c:if>
+
+
+
 <c:if test="${fn:length(mapLabeTest)!=0}">
 	<form
 		action="addResult.form?patientId=${param.patientId}&locationId=${param.locationId}&save=true"

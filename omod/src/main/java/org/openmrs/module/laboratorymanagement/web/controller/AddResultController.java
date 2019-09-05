@@ -59,7 +59,14 @@ public class AddResultController extends ParameterizableViewController {
 
 //				int intLabSetIds[] = {7836,7217, 7192, 7202, 7243, 7244, 7265,7222, 7193, 7918, 7835, 8046,105411,105417,105406 };
 
-				List<Concept> conceptLabSetToOrder= GlobalPropertiesMgt.getConceptList(GlobalPropertiesMgt.LABEXAMSToORDER);
+				//List<Concept> conceptLabSetToOrder= GlobalPropertiesMgt.getConceptList(GlobalPropertiesMgt.LABEXAMSToORDER);
+
+				List<Concept> conceptLabSetToOrder=new ArrayList<Concept>();
+				String conceptLabSetToOrderString=Context.getAdministrationService().getGlobalProperty(GlobalPropertiesMgt.LABEXAMSToORDER);
+				for (String s:conceptLabSetToOrderString.split(",")){
+					conceptLabSetToOrder.add(Context.getConceptService().getConcept(Integer.parseInt(s)));
+				}
+
 
 
 //				for (int labConceptId : intLabSetIds) {
