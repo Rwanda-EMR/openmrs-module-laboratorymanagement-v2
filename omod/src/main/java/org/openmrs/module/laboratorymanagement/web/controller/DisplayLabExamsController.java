@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.openmrs.Obs;
+import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.laboratorymanagement.advice.LaboratoryMgt;
 import org.openmrs.module.laboratorymanagement.service.LaboratoryService;
@@ -39,7 +40,16 @@ public class DisplayLabExamsController extends ParameterizableViewController {
 
 			List<Obs> positiveLabExams = laboratoryService
 					.getAllPositiveLabExams(startDate, endDate, labConceptId);
-			model.put("positiveLabExams", positiveLabExams);
+
+			Map<String,Obs> positiveLabExamsMap=new HashMap<String, Obs>();
+			for (Obs o:positiveLabExams) {
+				if(o.getVoided()==false)
+				positiveLabExamsMap.put(""+o.getObsId()+"_"+o.getEncounter().getPatient().getPatientIdentifier(3),o);
+			}
+
+
+			//model.put("positiveLabExams", positiveLabExams);
+			model.put("positiveLabExams", positiveLabExamsMap);
 
 		}
 		if (neglabConceptIdStr != null) {
@@ -56,6 +66,7 @@ public class DisplayLabExamsController extends ParameterizableViewController {
 					.getAllTestWithResult(laboratoryService
 							.getLabExamsByExamTypeBetweenTwoDates(startDate,
 									endDate, totlabConceptId));
+
 			model.put("labExamsByName", allLabExamsByName);
 
 		}

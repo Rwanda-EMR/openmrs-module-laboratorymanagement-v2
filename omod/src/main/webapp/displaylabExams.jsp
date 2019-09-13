@@ -42,6 +42,7 @@
 					code="laboratorymanagement.number" /></th>
 				<th><spring:message code="laboratorymanagement.patientName" /></th>
 				<th><spring:message code="laboratorymanagement.testName" /></th>
+				<th>Obs_Patient_identifier</th>
 				<th><spring:message code="laboratorymanagement.observedOn" /></th>
 				<th><spring:message code="laboratorymanagement.Results" /></th>
 
@@ -55,10 +56,11 @@
 				<tr>
 					<td>${num.count}</td>
 
-					<td><c:out value="${positiveLabExam.person.familyName}" /></td>
-					<td><c:out value="${positiveLabExam.concept.name}" /></td>
-					<td><openmrs:formatDate date="${positiveLabExam.obsDatetime}" /></td>
-					<td><c:out value="${positiveLabExam.valueCoded.name}" /></td>
+					<td><c:out value="${positiveLabExam.value.person.familyName} ${positiveLabExam.value.person.givenName}" /></td>
+					<td><c:out value="${positiveLabExam.value.concept.name}" /></td>
+					<td><c:out value="${positiveLabExam.key}" /></td>
+					<td><openmrs:formatDate date="${positiveLabExam.value.obsDatetime}" /></td>
+					<td><c:out value="${positiveLabExam.value.valueCoded.name}" /></td>
 
 				</tr>
 
@@ -97,7 +99,7 @@
 				<tr>
 					<td>${num.count}</td>
 
-					<td><c:out value="${negativeLabExam.person.familyName}" /></td>
+					<td><c:out value="${negativeLabExam.person.familyName} ${labExamByName.person.givenName}" /></td>
 					<td><c:out value="${negativeLabExam.concept.name}" /></td>
 					<td><openmrs:formatDate date="${negativeLabExam.obsDatetime}" /></td>
 					<td><c:out value="${negativeLabExam.valueCoded.name}" /></td>
@@ -141,7 +143,7 @@
 						<c:when test="${labExamByName.valueCoded != null}">
 							<td>${num.count}</td>
 
-							<td><c:out value="${labExamByName.person.familyName}" /></td>
+							<td><c:out value="${labExamByName.person.familyName} ${labExamByName.person.givenName}" /></td>
 							<td><c:out value="${labExamByName.concept.name}" /></td>
 							<td><openmrs:formatDate date="${labExamByName.obsDatetime}" /></td>
 							<td><c:out value="${labExamByName.valueCoded.name}" /></td>
@@ -150,7 +152,7 @@
 						<c:when test="${labExamByName.valueNumeric != null}">
 							<td>${num.count}</td>
 
-							<td><c:out value="${labExamByName.person.familyName}" /></td>
+							<td><c:out value="${labExamByName.person.familyName} ${labExamByName.person.givenName}" /></td>
 							<td><c:out value="${labExamByName.concept.name}" /></td>
 							<td><openmrs:formatDate date="${labExamByName.obsDatetime}" /></td>
 							<td><c:out value="${labExamByName.valueNumeric}" /></td>
