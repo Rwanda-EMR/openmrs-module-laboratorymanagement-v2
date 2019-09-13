@@ -65,7 +65,7 @@
 	
 	<globalProperty>
 		<property>@MODULE_ID@.orderType.labOrderTypeId</property>
-		<defaultValue>2</defaultValue>
+		<defaultValue>1</defaultValue>
 		<description>The order type used to order lab exams</description>
 	</globalProperty>
 	
