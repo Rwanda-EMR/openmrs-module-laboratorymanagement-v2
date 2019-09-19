@@ -86,6 +86,7 @@
 					code="laboratorymanagement.number" /></th>
 				<th><spring:message code="laboratorymanagement.patientName" /></th>
 				<th><spring:message code="laboratorymanagement.testName" /></th>
+				<th>Obs_Patient_identifier</th>
 				<th><spring:message code="laboratorymanagement.observedOn" /></th>
 				<th><spring:message code="laboratorymanagement.Results" /></th>
 
@@ -99,10 +100,11 @@
 				<tr>
 					<td>${num.count}</td>
 
-					<td><c:out value="${negativeLabExam.person.familyName} ${labExamByName.person.givenName}" /></td>
-					<td><c:out value="${negativeLabExam.concept.name}" /></td>
-					<td><openmrs:formatDate date="${negativeLabExam.obsDatetime}" /></td>
-					<td><c:out value="${negativeLabExam.valueCoded.name}" /></td>
+					<td><c:out value="${negativeLabExam.value.person.familyName} ${labExamByName.value.person.givenName}" /></td>
+					<td><c:out value="${negativeLabExam.value.concept.name}" /></td>
+					<td><c:out value="${negativeLabExam.key}" /></td>
+					<td><openmrs:formatDate date="${negativeLabExam.value.obsDatetime}" /></td>
+					<td><c:out value="${negativeLabExam.value.valueCoded.name}" /></td>
 
 				</tr>
 
@@ -128,6 +130,7 @@
 					code="laboratorymanagement.number" /></th>
 				<th><spring:message code="laboratorymanagement.patientName" /></th>
 				<th><spring:message code="laboratorymanagement.testName" /></th>
+				<th>Obs_Patient_identifier</th>
 				<th><spring:message code="laboratorymanagement.observedOn" /></th>
 				<th><spring:message code="laboratorymanagement.Results" /></th>
 
@@ -140,22 +143,24 @@
 
 				<tr>
 					<c:choose>
-						<c:when test="${labExamByName.valueCoded != null}">
+						<c:when test="${labExamByName.value.valueCoded != null}">
 							<td>${num.count}</td>
 
-							<td><c:out value="${labExamByName.person.familyName} ${labExamByName.person.givenName}" /></td>
-							<td><c:out value="${labExamByName.concept.name}" /></td>
-							<td><openmrs:formatDate date="${labExamByName.obsDatetime}" /></td>
-							<td><c:out value="${labExamByName.valueCoded.name}" /></td>
+							<td><c:out value="${labExamByName.value.person.familyName} ${labExamByName.value.person.givenName}" /></td>
+							<td><c:out value="${labExamByName.value.concept.name}" /></td>
+							<td><c:out value="${labExamByName.key}" /></td>
+							<td><openmrs:formatDate date="${labExamByName.value.obsDatetime}" /></td>
+							<td><c:out value="${labExamByName.value.valueCoded.name}" /></td>
 						</c:when>
 
-						<c:when test="${labExamByName.valueNumeric != null}">
+						<c:when test="${labExamByName.value.valueNumeric != null}">
 							<td>${num.count}</td>
 
-							<td><c:out value="${labExamByName.person.familyName} ${labExamByName.person.givenName}" /></td>
-							<td><c:out value="${labExamByName.concept.name}" /></td>
-							<td><openmrs:formatDate date="${labExamByName.obsDatetime}" /></td>
-							<td><c:out value="${labExamByName.valueNumeric}" /></td>
+							<td><c:out value="${labExamByName.value.person.familyName} ${labExamByName.value.person.givenName}" /></td>
+							<td><c:out value="${labExamByName.value.concept.name}" /></td>
+							<td><c:out value="${labExamByName.key}" /></td>
+							<td><openmrs:formatDate date="${labExamByName.value.obsDatetime}" /></td>
+							<td><c:out value="${labExamByName.value.valueNumeric}" /></td>
 
 
 

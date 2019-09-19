@@ -44,7 +44,7 @@ public class DisplayLabExamsController extends ParameterizableViewController {
 			Map<String,Obs> positiveLabExamsMap=new HashMap<String, Obs>();
 			for (Obs o:positiveLabExams) {
 				if(o.getVoided()==false)
-				positiveLabExamsMap.put(""+o.getObsId()+"_"+o.getEncounter().getPatient().getPatientIdentifier(3),o);
+				positiveLabExamsMap.put(""+o.getObsId()+"_"+o.getEncounter().getPatient().getPatientIdentifier(Context.getAdministrationService().getGlobalProperty("registration.primaryIdentifierType")),o);
 			}
 
 
@@ -57,7 +57,18 @@ public class DisplayLabExamsController extends ParameterizableViewController {
 
 			List<Obs> negativeLabExams = laboratoryService
 					.getAllNegtiveLabExams(startDate, endDate, labConceptId);
-			model.put("negativeLabExams", negativeLabExams);
+
+			Map<String,Obs> negativeLabExamsMap=new HashMap<String, Obs>();
+			for (Obs o:negativeLabExams) {
+				if(o.getVoided()==false)
+					negativeLabExamsMap.put(""+o.getObsId()+"_"+o.getEncounter().getPatient().getPatientIdentifier(Context.getAdministrationService().getGlobalProperty("registration.primaryIdentifierType")),o);
+			}
+
+
+
+			//model.put("negativeLabExams", negativeLabExams);
+			model.put("negativeLabExams", negativeLabExamsMap);
+
 
 		}
 		if (totlabConceptIdStr != null) {
@@ -67,7 +78,13 @@ public class DisplayLabExamsController extends ParameterizableViewController {
 							.getLabExamsByExamTypeBetweenTwoDates(startDate,
 									endDate, totlabConceptId));
 
-			model.put("labExamsByName", allLabExamsByName);
+			Map<String,Obs> allLabExamsByNameMap=new HashMap<String, Obs>();
+			for (Obs o:allLabExamsByName) {
+				if(o.getVoided()==false)
+					allLabExamsByNameMap.put(""+o.getObsId()+"_"+o.getEncounter().getPatient().getPatientIdentifier(Context.getAdministrationService().getGlobalProperty("registration.primaryIdentifierType")),o);
+			}
+
+			model.put("labExamsByName", allLabExamsByNameMap);
 
 		}
          model.put("startDate", startDateStr);

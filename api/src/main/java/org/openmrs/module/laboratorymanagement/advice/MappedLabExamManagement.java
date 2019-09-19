@@ -18,6 +18,7 @@ import org.openmrs.Order;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.laboratorymanagement.service.LaboratoryService;
+import org.openmrs.module.laboratorymanagement.utils.GlobalPropertiesMgt;
 
 public class MappedLabExamManagement {
 	/**
@@ -37,11 +38,22 @@ public class MappedLabExamManagement {
 		LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
 		// Initilializes an integer array where by each element is a group
 		// concepts of Lab tests
-		int intLabSetIds[]={7836, 7217, 7192, 7243, 7244, 7265, 7222,7193,7918, 7835,8046};
+		//int intLabSetIds[]={7836, 7217, 7192, 7243, 7244, 7265, 7222,7193,7918, 7835,8046};
 		List<Obs> obsWithValues = null;
 		@SuppressWarnings("unused")
 		Object testStatus[] = null;
 		// Run through each group and get members that are Lab tests
+
+
+		List<Integer> intLabSetIds=new ArrayList<Integer>();
+		String conceptLabSetToOrderString=Context.getAdministrationService().getGlobalProperty(GlobalPropertiesMgt.LABEXAMSToORDER);
+		for (String s:conceptLabSetToOrderString.split(",")){
+			//conceptLabSetToOrder.add(Context.getConceptService().getConcept(Integer.parseInt(s)));
+			intLabSetIds.add(Integer.parseInt(s));
+		}
+
+
+
 
 		for (int labSetid : intLabSetIds){
 			//
@@ -106,10 +118,20 @@ public class MappedLabExamManagement {
 
 		// Initilializes an integer array of length 2 where the first element is
 		// 7005, second element is 7006 and so on.
-		int intLabSetIds[] = { 7836, 7217, 7192, 7243, 7244, 7265, 7835, 7222 };
+		//int intLabSetIds[] = { 7836, 7217, 7192, 7243, 7244, 7265, 7835, 7222 };
 		List<Obs> testWithResult = null;
 		@SuppressWarnings("unused")
 		Object testStatus[] = null;
+
+
+		List<Integer> intLabSetIds=new ArrayList<Integer>();
+		String conceptLabSetToOrderString=Context.getAdministrationService().getGlobalProperty(GlobalPropertiesMgt.LABEXAMSToORDER);
+		for (String s:conceptLabSetToOrderString.split(",")){
+			//conceptLabSetToOrder.add(Context.getConceptService().getConcept(Integer.parseInt(s)));
+			intLabSetIds.add(Integer.parseInt(s));
+		}
+
+
 
 		for (int labSetid : intLabSetIds) {
 			//
@@ -180,10 +202,18 @@ public class MappedLabExamManagement {
 
 		// Initilializes an integer array of length 2 where the first element is
 		// 7005, second element is 7006 and so on.
-		int intLabSetIds[] = { 7836, 7217, 7192, 7243, 7244, 7265, 7222, 7193,
-				8046, 7991, 7193 };
+	//	int intLabSetIds[] = { 7836, 7217, 7192, 7243, 7244, 7265, 7222, 7193,8046, 7991, 7193 };
 		@SuppressWarnings("unused")
 		Object testStatus[] = null;
+
+
+		List<Integer> intLabSetIds=new ArrayList<Integer>();
+		String conceptLabSetToOrderString=Context.getAdministrationService().getGlobalProperty(GlobalPropertiesMgt.LABEXAMSToORDER);
+		for (String s:conceptLabSetToOrderString.split(",")){
+			//conceptLabSetToOrder.add(Context.getConceptService().getConcept(Integer.parseInt(s)));
+			intLabSetIds.add(Integer.parseInt(s));
+		}
+
 		for (int labSetid : intLabSetIds) { //
 			Concept cpt = cptService.getConcept(labSetid);
 			Collection<ConceptSet> setMembers = cpt.getConceptSets();
@@ -216,7 +246,17 @@ public class MappedLabExamManagement {
 		Collection<Order>labOrders=laboratoryService.getPatientLabordersBetweendates(patientId, startDate, enddate);
        // Collection<Order>labOrderslist=laboratoryService.getPatientLabordersBetweendates(patientId, startDate, enddate);
         List<Order>labOrderslist=null;
-		int intLabSetIds[] = {7836,7217, 7192, 7243, 7244, 7265, 7222, 7193 };
+		//int intLabSetIds[] = {7836,7217, 7192, 7243, 7244, 7265, 7222, 7193 };
+
+
+		List<Integer> intLabSetIds=new ArrayList<Integer>();
+		String conceptLabSetToOrderString=Context.getAdministrationService().getGlobalProperty(GlobalPropertiesMgt.LABEXAMSToORDER);
+		for (String s:conceptLabSetToOrderString.split(",")){
+			//conceptLabSetToOrder.add(Context.getConceptService().getConcept(Integer.parseInt(s)));
+			intLabSetIds.add(Integer.parseInt(s));
+		}
+
+
 		for (int labSetid : intLabSetIds) { 
 			labOrderslist=new ArrayList<Order>();
 			Concept parentConcept = cptService.getConcept(labSetid);

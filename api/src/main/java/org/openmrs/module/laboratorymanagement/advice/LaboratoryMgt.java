@@ -101,10 +101,10 @@ public class LaboratoryMgt {
 		//run through  all patient Lab observations and take only the Lab obs whose 
 		//values either coded,numeric or text is not null
 		for (Obs onePatientObs : patientObservations) {
-			if ((onePatientObs.getValueCoded() != null)
+			if (((onePatientObs.getValueCoded() != null)
 					|| (onePatientObs.getValueNumeric() != null)
 					|| (onePatientObs.getValueText() != null)
-					|| (onePatientObs.getValueDatetime() != null)
+					|| (onePatientObs.getValueDatetime() != null)) && onePatientObs.getVoided()==false
 
 			) {			
 
