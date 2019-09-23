@@ -132,12 +132,22 @@
 								<td colspan="3" style="width: 250px; font-weight: italic"><c:out
 									value="${concept.name}" /></td>
 								<td><textarea name="${fieldName}" rows="1" cols="30"  >${obsResult != null ? obsResult.valueText : ''}</textarea></td>
+								<td><input name="${resultComment}" type="text" value=""
+                                    class="cmt" id="cmt_${concept.conceptId}"><span
+                                    id="addComments_${concept.conceptId}" class="bouton }"><img
+                                     src="${pageContext.request.contextPath}/images/add.gif"
+                                     style="cursor: pointer;" /></span></td>
 							</c:if>
 							<c:if test="${concept.name.name != 'WIDAL TEST'}">
 								<td colspan="3" style="width: 250px; font-weight: italic"><c:out
 									value="${concept.name}" /></td>
 								<td><input type="text" name="${fieldName}"
 									value="${obsResult != null ? obsResult.valueText : ''}" /></td>
+									<td><input name="${resultComment}" type="text" value=""
+                                         class="cmt" id="cmt_${concept.conceptId}"><span
+                                         id="addComments_${concept.conceptId}" class="bouton }"><img
+                                         src="${pageContext.request.contextPath}/images/add.gif"
+                                         style="cursor: pointer;" /></span></td>
 							</c:if>
 
 						</tr>
@@ -199,6 +209,8 @@
 
 								<c:set var="fieldName"
 									value="labTest-${childConcept.conceptId}-${order.orderId}-${concept.conceptId}" />
+								<c:set var="resultComment"
+								value="comment-${childConcept.conceptId}-${order.orderId}" />
 
 								<c:if test="${childConcept.set}">
 									<c:set var="gdChildrenConcepts"
@@ -238,8 +250,8 @@
 													value="${childResult != null ? childResult.valueNumeric : ''}"  /><c:out
 													value="${unit}" /></td>
 												<td><input name="${resultComment}" type="text" value=""
-													class="cmt" id="cmt_${concept.conceptId}"><span
-													id="addComments_${concept.conceptId}" class="bouton }"><img
+													class="cmt" id="cmt_${childConcept.conceptId}"><span
+													id="addComments_${childConcept.conceptId}" class="bouton }"><img
 													src="${pageContext.request.contextPath}/images/add.gif"
 													style="cursor: pointer;" /></span></td>
 
@@ -257,6 +269,11 @@
 														value="${childConcept.name}" /></td>
 
 													<td><textarea name="${fieldName}" rows="1" cols="30" >${childResult != null ? childResult.valueText : ''}" </textarea></td>
+													<td><input name="${resultComment}" type="text"
+                                                    	value="" class="cmt" id="cmt_${childConcept.conceptId}"><span
+                                                    	id="addComments_${childConcept.conceptId}" class="bouton }"><img
+                                                    	src="${pageContext.request.contextPath}/images/add.gif"
+                                                    	style="cursor: pointer;" /></span></td>
 
 												</c:if>
 												<c:if
@@ -266,8 +283,8 @@
 													<td><input type="text" name="${fieldName}"
 														value="${childResult != null ? childResult.valueText : ''}" /></td>
 													<td><input name="${resultComment}" type="text"
-														value="" class="cmt" id="cmt_${concept.conceptId}"><span
-														id="addComments_${concept.conceptId}" class="bouton }"><img
+														value="" class="cmt" id="cmt_${childConcept.conceptId}"><span
+														id="addComments_${childConcept.conceptId}" class="bouton }"><img
 														src="${pageContext.request.contextPath}/images/add.gif"
 														style="cursor: pointer;" /></span></td>
 												</c:if>

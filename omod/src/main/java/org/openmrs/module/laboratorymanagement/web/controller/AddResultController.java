@@ -117,7 +117,7 @@ public class AddResultController extends ParameterizableViewController {
 						mapLabtests.put(labConcept, incompleteLabExams);
 					}
 				}
-				((Patient)Context.getObsService().getObs(3).getPerson()).getPatientIdentifier();
+				//((Patient)Context.getObsService().getObs(3).getPerson()).getPatientIdentifier();
 				model.put("multipleAnswerConcepts", GlobalPropertiesMgt.getConceptHasMultipleAnswers());
 				model.put("resultsMap", resultMap);
 				// model.put("incompleteLabOrders", incompleteLabExams);
