@@ -537,6 +537,8 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 			String title, int patientId ) throws DocumentException, IOException {
 
 		Document document = new Document();
+		document.setPageSize(PageSize.A4_LANDSCAPE.rotate());
+
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		// List<PatientBill> patientBills =
 		// (List<PatientBill>)request.getAttribute("reportedPatientBillsPrint");
@@ -559,13 +561,12 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		PdfWriter writer = PdfWriter.getInstance(document, response
 				.getOutputStream());
 		writer.setBoxSize("art", new Rectangle(0, 0, 2382, 3369));
-		writer.setBoxSize("art", PageSize.A4);
+		writer.setBoxSize("art", PageSize.A4_LANDSCAPE.rotate());
 
 		HeaderFooterMgt event = new HeaderFooterMgt();
 		writer.setPageEvent(event);
 
 		document.open();
-		document.setPageSize(PageSize.A4);
 		// document.setPageSize(new Rectangle(0, 0, 2382, 3369));
 
 		document.addAuthor(Context.getAuthenticatedUser().getPersonName()
@@ -616,7 +617,10 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 
 		// title row
 		FontSelector fontTitleSelector = new FontSelector();
-		fontTitleSelector.addFont(new Font(FontFamily.COURIER, 9, Font.ITALIC));
+		fontTitleSelector.addFont(new Font(FontFamily.UNDEFINED, 9, Font.BOLD));
+
+		FontSelector fontContentSelector = new FontSelector();
+		fontContentSelector.addFont(new Font(FontFamily.UNDEFINED, 8, Font.NORMAL));
 		// Table of identification;
 		PdfPTable table = null;
 		table = new PdfPTable(2);
@@ -629,7 +633,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		document.add(new Paragraph("\n"));
 
 		// Table of lab report items;
-		float[] colsWidth = { 6f, 3f, 6f };
+		float[] colsWidth = { 15f, 6f, 10f, 10f ,6f, 8f, 6f, 8f, 6f, 8f, 9f};
 		table = new PdfPTable(colsWidth);
 		table.setWidthPercentage(100f);
 		BaseColor bckGroundTitle = new BaseColor(170, 170, 170);
@@ -647,7 +651,40 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 
 		table.addCell(cell);
 
+		cell = new PdfPCell(fontTitleSelector.process("Comment"));
+		cell.setBackgroundColor(bckGroundTitle);
+
+		table.addCell(cell);
+
 		cell = new PdfPCell(fontTitleSelector.process("Normal Range"));
+		cell.setBackgroundColor(bckGroundTitle);
+		table.addCell(cell);
+
+		cell = new PdfPCell(fontTitleSelector.process("Lab Code"));
+		cell.setBackgroundColor(bckGroundTitle);
+		table.addCell(cell);
+
+		cell = new PdfPCell(fontTitleSelector.process("Orderer"));
+		cell.setBackgroundColor(bckGroundTitle);
+		table.addCell(cell);
+
+		cell = new PdfPCell(fontTitleSelector.process("Ordered On"));
+		cell.setBackgroundColor(bckGroundTitle);
+		table.addCell(cell);
+
+		cell = new PdfPCell(fontTitleSelector.process("Code Enterer"));
+		cell.setBackgroundColor(bckGroundTitle);
+		table.addCell(cell);
+
+		cell = new PdfPCell(fontTitleSelector.process("Coded On"));
+		cell.setBackgroundColor(bckGroundTitle);
+		table.addCell(cell);
+
+		cell = new PdfPCell(fontTitleSelector.process("Result Enterer"));
+		cell.setBackgroundColor(bckGroundTitle);
+		table.addCell(cell);
+
+		cell = new PdfPCell(fontTitleSelector.process("Result Entererd On"));
 		cell.setBackgroundColor(bckGroundTitle);
 		table.addCell(cell);
 		/*
@@ -673,39 +710,80 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 			table.addCell(cell);
 			cell = new PdfPCell(fontTitleSelector.process(""));
 			table.addCell(cell);
+			cell = new PdfPCell(fontTitleSelector.process(""));
+			table.addCell(cell);
+			cell = new PdfPCell(fontTitleSelector.process(""));
+			table.addCell(cell);
+			cell = new PdfPCell(fontTitleSelector.process(""));
+			table.addCell(cell);
+			cell = new PdfPCell(fontTitleSelector.process(""));
+			table.addCell(cell);
+			cell = new PdfPCell(fontTitleSelector.process(""));
+			table.addCell(cell);
+			cell = new PdfPCell(fontTitleSelector.process(""));
+			table.addCell(cell);
+			cell = new PdfPCell(fontTitleSelector.process(""));
+			table.addCell(cell);
+			cell = new PdfPCell(fontTitleSelector.process(""));
+			table.addCell(cell);
 
 			List<Object[]> labExamHistory = mappedLabExam.get(cptName);
 			for (Object[] labExam : labExamHistory) {
 				// table Header
 				// Object[] labe = listOflabtest.get(i);
 				Obs ob = (Obs) labExam[0];
-				cell = new PdfPCell(fontTitleSelector.process(""
+				cell = new PdfPCell(fontContentSelector.process(""
 						+ ob.getConcept().getName()));
 
 				table.addCell(cell);
 				if (ob.getConcept().getDatatype().isNumeric()) {
-					cell = new PdfPCell(fontTitleSelector.process(""
+					cell = new PdfPCell(fontContentSelector.process(""
 							+ ob.getValueNumeric()));
 					table.addCell(cell);
 
 				}
 
 				if (ob.getConcept().getDatatype().isCoded()) {
-					cell = new PdfPCell(fontTitleSelector.process(""
+					cell = new PdfPCell(fontContentSelector.process(""
 							+ ob.getValueCoded().getName()));
 					table.addCell(cell);
 
 				}
 
 				if (ob.getConcept().getDatatype().isText()) {
-					cell = new PdfPCell(fontTitleSelector.process(""
+					cell = new PdfPCell(fontContentSelector.process(""
 							+ ob.getValueText()));
 					table.addCell(cell);
 
 				}
 
-				cell = new PdfPCell(fontTitleSelector.process(""
+				cell = new PdfPCell(fontContentSelector.process(""+ob.getComment()));
+				table.addCell(cell);
+
+				cell = new PdfPCell(fontContentSelector.process(""
 						+ (labExam[1] != null ? labExam[1] : "-")));
+				table.addCell(cell);
+
+
+				cell = new PdfPCell(fontContentSelector.process(""+ob.getAccessionNumber()));
+				table.addCell(cell);
+
+				cell = new PdfPCell(fontContentSelector.process(""+ob.getOrder().getOrderer().getFamilyName()+" "+ob.getOrder().getOrderer().getGivenName()));
+				table.addCell(cell);
+
+				cell = new PdfPCell(fontContentSelector.process(""+ob.getOrder().getDateCreated()));
+				table.addCell(cell);
+
+				cell = new PdfPCell(fontContentSelector.process(""+ob.getOrder().getCreator().getFamilyName()+" "+ob.getOrder().getCreator().getGivenName()));
+				table.addCell(cell);
+
+				cell = new PdfPCell(fontContentSelector.process(""+ob.getOrder().getStartDate()));
+				table.addCell(cell);
+
+				cell = new PdfPCell(fontContentSelector.process(""+ob.getCreator().getFamilyName()+" "+ob.getCreator().getGivenName()));
+				table.addCell(cell);
+
+				cell = new PdfPCell(fontContentSelector.process(""+ob.getDateCreated()));
 				table.addCell(cell);
 
 				fontselector.addFont(new Font(FontFamily.COURIER, 8,

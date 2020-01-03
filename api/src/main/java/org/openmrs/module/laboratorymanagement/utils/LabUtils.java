@@ -473,7 +473,9 @@ public class LabUtils {
 		for (Order laborder : labOrders) {
 			laborder.setAccessionNumber(labCode);
 			laborder.setPatient(laborder.getPatient());
-			laborder.setStartDate(laborder.getStartDate());
+			//laborder.setStartDate(laborder.getStartDate());
+			laborder.setStartDate(new Date());
+			laborder.setCreator(Context.getAuthenticatedUser());
 			laborder.setEncounter(labEncounter);
 			Context.getOrderService().saveOrder(laborder);
 			log.info(">>>>>>>Rulindo >lab order start date>>>"
