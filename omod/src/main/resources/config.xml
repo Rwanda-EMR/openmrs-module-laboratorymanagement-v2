@@ -23,6 +23,8 @@
 	  
 	<require_modules>
        <require_module version="0.0.8">org.openmrs.module.mohappointment</require_module>
+		<require_module version="0.0.4.7-SNAPSHOT">org.openmrs.module.mohbilling</require_module>
+
 	</require_modules>
 	
 	<!-- Extensions -->
@@ -194,6 +196,14 @@
 		<description>fertilityHormone concept id </description>
 	</globalProperty>
 
+	<globalProperty>
+		<property>laboratorymanagement.currentLabRequestFormConceptIDs</property>
+		<defaultValue></defaultValue>
+		<description>Will contain all concept IDs of lab exams available in Laboratory</description>
+	</globalProperty>
+
+
+
 
 	<!-- Required Privileges -->
 	
@@ -213,6 +223,8 @@
 		<name>Patient Dashboard - View Laboratory Order</name>
 		<description>The user can view the Laboratory tab on the Patient dashboard</description>
 	</privilege>
+
+
 	
 	
 	<!--

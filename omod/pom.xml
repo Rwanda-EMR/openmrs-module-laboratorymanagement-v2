@@ -35,6 +35,12 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>mohbilling-omod</artifactId>
+			<version>0.0.4.7-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>

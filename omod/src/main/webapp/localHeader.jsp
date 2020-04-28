@@ -31,6 +31,11 @@
 		class="<c:if test='<%= request.getRequestURI().contains("monthlyReport") %>'>active</c:if>"><a
 		href="${pageContext.request.contextPath}/module/laboratorymanagement/monthlyReport.form"><spring:message
 		code="laboratorymanagement.ViewMonthlyReport" /></a></li>
+
+	<li
+		class="<c:if test='<%= request.getRequestURI().contains("labTechSetup") %>'>active</c:if>"><a
+		href="${pageContext.request.contextPath}/module/laboratorymanagement/labTechSetup.form">
+		Change request form</a></li>
 	<openmrs:hasPrivilege privilege="View Lab configuration">
 		<li
 			class="<c:if test='<%= request.getRequestURI().contains("labConfiguration") %>'>active</c:if>"><a

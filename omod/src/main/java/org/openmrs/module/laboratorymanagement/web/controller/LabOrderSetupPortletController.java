@@ -1,29 +1,24 @@
 package org.openmrs.module.laboratorymanagement.web.controller;
 
-import java.util.*;
-
-
-import javax.servlet.http.HttpServletRequest;
-import org.openmrs.Concept;
-import org.openmrs.ConceptName;
-import org.openmrs.Location;
-import org.openmrs.Order;
-import org.openmrs.Patient;
-import org.openmrs.User;
+import org.openmrs.*;
 import org.openmrs.api.OrderService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.laboratorymanagement.LabOrder;
 import org.openmrs.module.laboratorymanagement.LabOrderParent;
 import org.openmrs.module.laboratorymanagement.OrderObs;
 import org.openmrs.module.laboratorymanagement.advice.LabTestConstants;
 import org.openmrs.module.laboratorymanagement.utils.GlobalPropertiesMgt;
 import org.openmrs.module.laboratorymanagement.utils.LabUtils;
 import org.openmrs.module.mohappointment.model.Appointment;
-
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
 import org.openmrs.web.controller.PortletController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-public class LabOrderPortletController extends PortletController {
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+@Controller
+@RequestMapping("**/labOrderSetupPortlet.portlet")
+public class LabOrderSetupPortletController extends PortletController {
 
 	@SuppressWarnings("unchecked")
 	protected void populateModel(HttpServletRequest request,
@@ -55,14 +50,14 @@ public class LabOrderPortletController extends PortletController {
 		// get all selected Lab tests and save them as Order
 		Map<String, String[]> parameterMap = request.getParameterMap();
 
-		String patientIdstr = request.getParameter("patientId");
+	/*	String patientIdstr = request.getParameter("patientId");
 		Patient patient = Context.getPatientService().getPatient(Integer.parseInt(patientIdstr));
-
+*/
 
 		/**
 		 * <<<<<<< Appointment Consultation waiting list management >>>>>>>
 		 */
-		Appointment appointment = null;
+		/*Appointment appointment = null;
 		// This is from the Provider's Appointment dashboard
 		if (request.getParameter("appointmentId") != null) {
 			appointment = AppointmentUtil.getWaitingAppointmentById(Integer.parseInt(request
@@ -74,7 +69,7 @@ public class LabOrderPortletController extends PortletController {
 			
 			LabUtils.cancelLabOrder(request.getParameter("orderId"));
 		}
-		
+		*/
 		/**
 		 * <<<<<<<<< APPOINTMENTS STUFF ENDS HERE >>>>>>>>
 		 */
@@ -82,11 +77,11 @@ public class LabOrderPortletController extends PortletController {
 		if(request.getParameter("saveLabOrders")!=null){
 			// Saving selected lab orders:	
 
-			LabUtils.saveSelectedLabOrders(parameterMap, patient);
-			model.put("msg", "The Lab order is successfully created");
+			//LabUtils.saveSelectedLabOrders(parameterMap, patient);
+			model.put("msg", "The Lab request form is successfully created");
 
 
-			LabUtils.createWaitingLabAppointment(patient, null);
+			//LabUtils.createWaitingLabAppointment(patient, null);
 		}
 
 
@@ -97,9 +92,9 @@ public class LabOrderPortletController extends PortletController {
 
 		User user = Context.getAuthenticatedUser();
 		String providerName = user.getFamilyName() + " " + user.getGivenName();
-		String patientName = patient.getFamilyName() + " "
+		/*String patientName = patient.getFamilyName() + " "
 				+ patient.getMiddleName() + " " + patient.getGivenName();
-
+*/
 
 
 
@@ -108,9 +103,11 @@ public class LabOrderPortletController extends PortletController {
 
 		Map<ConceptName, Collection<Concept>> mappedLabOrder = new HashMap<ConceptName, Collection<Concept>>();
 
+/*
 
 		mappedLabOrder = LabUtils.getLabExamsToOrder(Integer
 				.parseInt(patientIdstr));
+*/
 
 
 
@@ -121,10 +118,9 @@ public class LabOrderPortletController extends PortletController {
 
 		// get observations by Person
 
+		/*Map<Date, List<OrderObs>> orderObsMap = LabUtils.getMappedOrderToObs(orders, patient);
 		List<Order> orders = orderService.getOrdersByPatient(patient);
-		Map<Date, List<OrderObs>> orderObsMap = LabUtils.getMappedOrderToObs(orders, patient);
-
-		//Map<String, Object> orderObsMapOrdered = new TreeMap<String, Object>((Comparator<? super String>) orderObsMap);
+		*///Map<String, Object> orderObsMapOrdered = new TreeMap<String, Object>((Comparator<? super String>) orderObsMap);
 		
 		//int spermConceptId = LabTestConstants.SPERMCONCEPTID;
 /*
@@ -149,13 +145,13 @@ public class LabOrderPortletController extends PortletController {
 
 		model.put("dftLoc", dftLoc);
 		// model.put("locations", locations);
-		model.put("patientId", patientIdstr);
+		//model.put("patientId", patientIdstr);
 		model.put("mappedLabOrder", mappedLabOrder);
-		model.put("obsMap", orderObsMap);
+		//model.put("obsMap", orderObsMap);
 		model.put("providerName", providerName);
-		model.put("patienName", patientName);     
+		//model.put("patienName", patientName);
 		model.put("labOrderparList", lopList);
-		model.put("labOrderToDisplay", labOrderToDisplay);
+		model.put("labOrderCurrentlyDisplayed", labOrderToDisplay);
 		model.put("hematology",Context.getConceptService().getConcept(hematologyId).getName().getName() );
 		model.put("parasitology",Context.getConceptService().getConcept(parasitologyId).getName());
 		model.put("hemostasis",Context.getConceptService().getConcept(hemostasisId).getName());

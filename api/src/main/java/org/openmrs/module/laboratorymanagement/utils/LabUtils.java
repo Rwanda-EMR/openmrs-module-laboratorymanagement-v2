@@ -1,5 +1,6 @@
 package org.openmrs.module.laboratorymanagement.utils;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,6 +42,13 @@ import org.openmrs.module.laboratorymanagement.PatientLabOrder;
 import org.openmrs.module.mohappointment.model.Appointment;
 import org.openmrs.module.mohappointment.model.Services;
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
+import org.openmrs.module.mohbilling.automation.CreateBillOnSaveLabAndPharmacyOrders;
+import org.openmrs.module.mohbilling.businesslogic.ConsommationUtil;
+import org.openmrs.module.mohbilling.businesslogic.GlobalBillUtil;
+import org.openmrs.module.mohbilling.businesslogic.InsuranceBillUtil;
+import org.openmrs.module.mohbilling.businesslogic.PatientBillUtil;
+import org.openmrs.module.mohbilling.model.*;
+import org.openmrs.module.mohbilling.service.BillingService;
 import org.openmrs.util.OpenmrsConstants;
 
 public class LabUtils {
@@ -320,7 +328,7 @@ public class LabUtils {
 			Map<String, String[]> parameterMap, Patient patient) {
 		String labOrderTypeIdStr = GlobalPropertiesMgt.getLabOrderTypeId();
 		int labOrderTypeId = Integer.parseInt(labOrderTypeIdStr);
-
+		List<Concept> billingConceptItems=new ArrayList<Concept>();
 		for (String parameterName : parameterMap.keySet()) {
 
 			if (!parameterName.startsWith("lab-")) {
@@ -342,12 +350,13 @@ public class LabUtils {
 			labOrder.setConcept(Context.getConceptService().getConcept(
 					Integer.parseInt(SingleLabConceptIdstr)));
 			labOrder.setStartDate(new Date());
+			billingConceptItems.add(Context.getConceptService().getConcept(Integer.parseInt(SingleLabConceptIdstr)));
+
 			// labOrder.setAccessionNumber(accessionNumber);
 			labOrder.setOrderType(Context.getOrderService().getOrderType(labOrderTypeId));
 			Context.getOrderService().saveOrder(labOrder);
-
 		}
-
+		CreateBillOnSaveLabAndPharmacyOrders.createBillOnSaveLabOrders(billingConceptItems,patient);
 	}
 
 	/**
@@ -658,7 +667,6 @@ public class LabUtils {
 	public static List<LabOrderParent> getsLabOrdersByCategories(
 			List<Concept> conceptCategories) {
 		List<LabOrderParent> lopList = new ArrayList<LabOrderParent>();
-
 		for (Concept concept : conceptCategories) {
 			LabOrderParent labOrderParent = new LabOrderParent();
 			LabOrder labOrder = null;
@@ -680,6 +688,7 @@ public class LabUtils {
 										cs.getConcept());
 						List<Concept> childrenConcept = new ArrayList<Concept>();
 						for (ConceptSet pc : parentConcept) {
+							//if(pc.getConcept().getConceptId()!=678)
 							childrenConcept.add(pc.getConcept());
 						}
 						labOrder.setChildrenConcept(childrenConcept);
@@ -1325,5 +1334,4 @@ public  static Object[] getPatientIdentificationFromLab(int patientId,Date start
 		return patientIdentifElement ;
 		
 	}
-
 }

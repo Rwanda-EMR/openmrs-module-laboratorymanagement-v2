@@ -31,7 +31,7 @@
 	jQuery(document)
 			.ready(
 					function() {
-						jQuery("#labOrderForm").hide();
+						jQuery("#labOrderForm").show();
 						jQuery("#toggleForm").click( function() {
 							jQuery("#labOrderForm").toggle();
 						});
@@ -181,18 +181,12 @@
 
 <b><Oderable Exams></b>
 <div align="center"><b>${model.msg}</b></div>
-<fieldset><legend id="toggleForm" style="cursor: pointer;">Lab
+<fieldset><legend style="cursor: pointer;">Edit Lab
 Request Form</legend>
 <div id="labOrderForm">
-<form action="" method="post">
+<form action="labTechSetup.form" method="post">
 <div>
 <table>
-<!--
-	<tr>
-		<td><input type="hidden" name="patientId"
-			value="${model.patientId}"></td>
-	</tr>
- -->
 	<tr>
 		<!-- first column -->
 		<td valign="top" width="20%"><c:forEach var="labOrderParent"
@@ -228,29 +222,61 @@ Request Form</legend>
 						<c:set var="fieldNameP"
 							value="lab-${gdParentConcept}-${labOrder.parentConcept.conceptId}" />
 						<tr>
-						<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                        	<c:if test="${toDis == parentConcept.conceptId}">
+
+							<c:set var="checkDisp" value="0" />
+                            						<c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                                    	<c:if test="${currDis == parentConcept.conceptId}">
+                                                    		<c:set var="checkDisp" value="1" />
+                                                    	</c:if>
+                                                    </c:forEach>
+
+                   <c:choose>
+                       	<c:when test="${checkDisp == 1}">
+							<td><input name="${parentConcept.conceptId}"
+								value="${parentConcept.conceptId}" type="checkbox"
+								id="parent_${labOrder.parentConcept.conceptId}" class="parent" checked="true"><c:out
+								value="${labOrder.parentConcept.name}" /></td>
+                        </c:when>
+                        <c:otherwise>
 							<td><input name="${parentConcept.conceptId}"
 								value="${parentConcept.conceptId}" type="checkbox"
 								id="parent_${labOrder.parentConcept.conceptId}" class="parent"><c:out
 								value="${labOrder.parentConcept.name}" /></td>
-							</c:if>
-                         </c:forEach>
+                        </c:otherwise>
+
+                   </c:choose>
+
+
 						</tr>
 						<c:forEach var="childConcept" items="${childrenConcepts}"
 							varStatus="status">
 							<c:set var="fieldNameC"
 								value="${fieldNameP}-${childConcept.conceptId}" />
 							<tr>
-							<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-								<c:if test="${toDis == childConcept.conceptId}">
+
+							<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == childConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+                   <c:choose>
+                       	<c:when test="${checkDisp == 1}">
+								<td style="text-indent: 20px"><input name="${fieldNameC}"
+									value="${childConcept.conceptId}"
+									class="child_${labOrder.parentConcept.conceptId}"
+									id="child_${childConcept.conceptId}" type="checkbox" checked="true"> <c:out
+									value="${childConcept.name}" /></td>
+                        </c:when>
+                        <c:otherwise>
 								<td style="text-indent: 20px"><input name="${fieldNameC}"
 									value="${childConcept.conceptId}"
 									class="child_${labOrder.parentConcept.conceptId}"
 									id="child_${childConcept.conceptId}" type="checkbox"> <c:out
 									value="${childConcept.name}" /></td>
-								</c:if>
-							</c:forEach>
+                        </c:otherwise>
+
+                   </c:choose>
 
 							</tr>
 						</c:forEach>
@@ -270,28 +296,37 @@ Request Form</legend>
 						<c:set var="fieldNameP"
 							value="lab-${gdParentConcept}-${labOrder.parentConcept.conceptId}" />
 						<tr>
-						<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                	<c:if test="${toDis == parentConcept.conceptId}">
 
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == parentConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+							<td><input name="${fieldNameP}"
+								value="${parentConcept.conceptId}" type="checkbox"
+								id="parent_${labOrder.parentConcept.conceptId}" class="parent" checked="true"><c:out
+								value="${labOrder.parentConcept.name}" /></td>
+							</c:when>
+							<c:otherwise>
 							<td><input name="${fieldNameP}"
 								value="${parentConcept.conceptId}" type="checkbox"
 								id="parent_${labOrder.parentConcept.conceptId}" class="parent"><c:out
 								value="${labOrder.parentConcept.name}" /></td>
-															</c:if>
-                                                         </c:forEach>
+                            </c:otherwise>
+                         </c:choose>
+
 
 						</tr>
 						<!--
 						<c:forEach var="childConcept" items="${childrenConcepts}" varStatus="status">
 							<c:set var="fieldNameC" value="${fieldNameP}-${childConcept.conceptId}" />
 							<tr>
-							<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                 <c:if test="${toDis == childConcept.conceptId}">
-
 								<td style="text-indent: 20px"><input name="${fieldNameC}" value="${childConcept.conceptId}" class="child_${labOrder.parentConcept.conceptId}" id="child_${childConcept.conceptId}" type="checkbox">
 									<c:out value="${childConcept.name}" /></td>
-																</c:if>
-                                                             </c:forEach>
 							</tr>
 						</c:forEach> -->
 					</c:forEach>
@@ -312,31 +347,59 @@ Request Form</legend>
             							value="lab-${gdParentConcept}-${labOrder.parentConcept.conceptId}" />
 
             						<tr>
-            						<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                            	<c:if test="${toDis == labOrder.parentConcept.conceptId}">
-
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == labOrder.parentConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+            							<td><input name="${fieldNameP}"
+            								value="${labOrder.parentConcept.conceptId}" type="checkbox"
+            								id="parent_${labOrder.parentConcept.conceptId}" class="parent" checked="true"><c:out
+            								value="${labOrder.parentConcept.name}" /></td>
+                            </c:when>
+                            <c:otherwise>
             							<td><input name="${fieldNameP}"
             								value="${labOrder.parentConcept.conceptId}" type="checkbox"
             								id="parent_${labOrder.parentConcept.conceptId}" class="parent"><c:out
             								value="${labOrder.parentConcept.name}" /></td>
-            															</c:if>
-                                                                     </c:forEach>
+                            </c:otherwise>
+						</c:choose>
+
+
             						</tr>
             						<c:forEach var="childConcept" items="${childrenConcepts}"
             							varStatus="status">
             							<c:set var="fieldNameC"
             								value="${fieldNameP}-${childConcept.conceptId}" />
             							<tr>
-            							<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                                	<c:if test="${toDis == childConcept.conceptId}">
+
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == childConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+
+            								<td style="text-indent: 20px"><input name="${fieldNameC}"
+            									value="${childConcept.conceptId}"
+            									class="child_${labOrder.parentConcept.conceptId}"
+            									id="child_${childConcept.conceptId}" type="checkbox" checked="true"> <c:out
+            									value="${childConcept.name}" /></td>
+                            </c:when>
+                            <c:otherwise>
 
             								<td style="text-indent: 20px"><input name="${fieldNameC}"
             									value="${childConcept.conceptId}"
             									class="child_${labOrder.parentConcept.conceptId}"
             									id="child_${childConcept.conceptId}" type="checkbox"> <c:out
             									value="${childConcept.name}" /></td>
-            																</c:if>
-                                                                         </c:forEach>
+                            </c:otherwise>
+						</c:choose>
             							</tr>
             						</c:forEach>
             					</c:forEach>
@@ -370,45 +433,88 @@ Request Form</legend>
 
 						<c:if test="${parentConcept.name.name eq 'Spermogram'}">
 							<tr>
-							<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                    	<c:if test="${toDis == childConcept.conceptId}">
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == labOrder.parentConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+
+								<td><input name="${fieldNameP}"
+									value="${labOrder.parentConcept.conceptId}" type="checkbox"
+									id="parent_${labOrder.parentConcept.conceptId}" class="parent" checked="true"><c:out
+									value="${labOrder.parentConcept.name}" /></td>
+                            </c:when>
+                            <c:otherwise>
 
 								<td><input name="${fieldNameP}"
 									value="${labOrder.parentConcept.conceptId}" type="checkbox"
 									id="parent_${labOrder.parentConcept.conceptId}" class="parent"><c:out
 									value="${labOrder.parentConcept.name}" /></td>
-																</c:if>
-                                                             </c:forEach>
+                            </c:otherwise>
+						</c:choose>
 							</tr>
 
 						</c:if>
 						<c:if test="${parentConcept.name.name != 'Spermogram'}">
 							<tr>
-							<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                    	<c:if test="${toDis == labOrder.parentConcept.conceptId}">
+
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == labOrder.parentConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+
+								<td><input name="${parentConcept.conceptId}"
+									value="${labOrder.parentConcept.conceptId}" type="checkbox"
+									id="parent_${labOrder.parentConcept.conceptId}" class="parent" checked="true"><c:out
+									value="${labOrder.parentConcept.name}" /></td>
+                            </c:when>
+                            <c:otherwise>
 
 								<td><input name="${parentConcept.conceptId}"
 									value="${labOrder.parentConcept.conceptId}" type="checkbox"
 									id="parent_${labOrder.parentConcept.conceptId}" class="parent"><c:out
 									value="${labOrder.parentConcept.name}" /></td>
-																</c:if>
-                                                             </c:forEach>
+                            </c:otherwise>
+						</c:choose>
+
 							</tr>
 							<c:forEach var="childConcept" items="${childrenConcepts}"
 								varStatus="status">
 								<c:set var="fieldNameC"
 									value="${fieldNameP}-${childConcept.conceptId}" />
 								<tr>
-								<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                        	<c:if test="${toDis == childConcept.conceptId}">
+
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == childConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+
+									<td style="text-indent: 20px"><input name="${fieldNameC}"
+										value="${childConcept.conceptId}"
+										class="child_${labOrder.parentConcept.conceptId}"
+										id="child_${childConcept.conceptId}" type="checkbox" checked="true">
+									<c:out value="${childConcept.name}" /></td>
+                            </c:when>
+                            <c:otherwise>
 
 									<td style="text-indent: 20px"><input name="${fieldNameC}"
 										value="${childConcept.conceptId}"
 										class="child_${labOrder.parentConcept.conceptId}"
 										id="child_${childConcept.conceptId}" type="checkbox">
 									<c:out value="${childConcept.name}" /></td>
-																</c:if>
-                                                             </c:forEach>
+                            </c:otherwise>
+						</c:choose>
 								</tr>
 							</c:forEach>
 						</c:if>
@@ -431,15 +537,31 @@ Request Form</legend>
 						<c:set var="fieldNameP"
 							value="lab-${gdParentConcept}-${labOrder.parentConcept.conceptId}" />
 						<tr>
-						<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                	<c:if test="${toDis == parentConcept.conceptId}">
+
+
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == parentConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+
+							<td><input name="${fieldNameP}"
+								value="${parentConcept.conceptId}" type="checkbox"
+								id="parent_${labOrder.parentConcept.conceptId}" class="parent" checked="true"><c:out
+								value="${labOrder.parentConcept.name}" /></td>
+                            </c:when>
+                            <c:otherwise>
 
 							<td><input name="${fieldNameP}"
 								value="${parentConcept.conceptId}" type="checkbox"
 								id="parent_${labOrder.parentConcept.conceptId}" class="parent"><c:out
 								value="${labOrder.parentConcept.name}" /></td>
-															</c:if>
-                                                         </c:forEach>
+                            </c:otherwise>
+						</c:choose>
+
 
 						</tr>
 
@@ -476,31 +598,62 @@ Request Form</legend>
 						<c:set var="fieldNameP"
 							value="lab-${gdParentConcept}-${labOrder.parentConcept.conceptId}" />
 						<tr>
-						<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                	<c:if test="${toDis == parentConcept.conceptId}">
+
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == parentConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+
+							<td><input name="${fieldNameP}"
+								value="${parentConcept.conceptId}" type="checkbox"
+								id="parent_${labOrder.parentConcept.conceptId}" class="parent" checked="true">
+							<c:out value="${labOrder.parentConcept.name}" /></td>
+                            </c:when>
+                            <c:otherwise>
 
 							<td><input name="${fieldNameP}"
 								value="${parentConcept.conceptId}" type="checkbox"
 								id="parent_${labOrder.parentConcept.conceptId}" class="parent">
 							<c:out value="${labOrder.parentConcept.name}" /></td>
-														</c:if>
-                                                     </c:forEach>
+                            </c:otherwise>
+						</c:choose>
+
+
 						</tr>
 						<c:forEach var="childConcept" items="${childrenConcepts}"
 							varStatus="status">
 							<c:set var="fieldNameC"
 								value="${fieldNameP}-${childConcept.conceptId}" />
 							<tr>
-							<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                    	<c:if test="${toDis == childConcept.conceptId}">
 
+
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == childConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+								<td style="text-indent: 20px"><input name="${fieldNameC}"
+									value="${childConcept.conceptId}"
+									class="child_${labOrder.parentConcept.conceptId}"
+									id="child_${childConcept.name}" type="checkbox" checked="true"> <c:out
+									value="${childConcept.name}" /></td>
+                            </c:when>
+                            <c:otherwise>
 								<td style="text-indent: 20px"><input name="${fieldNameC}"
 									value="${childConcept.conceptId}"
 									class="child_${labOrder.parentConcept.conceptId}"
 									id="child_${childConcept.name}" type="checkbox"> <c:out
 									value="${childConcept.name}" /></td>
-																</c:if>
-                                                             </c:forEach>
+                            </c:otherwise>
+						</c:choose>
+
 							</tr>
 						</c:forEach>
 					</c:forEach>
@@ -522,31 +675,57 @@ Request Form</legend>
              							value="lab-${gdParentConcept}-${labOrder.parentConcept.conceptId}" />
 
              						<tr>
-             						<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                            	<c:if test="${toDis == labOrder.parentConcept.conceptId}">
 
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == labOrder.parentConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+             							<td><input name="${fieldNameP}"
+             								value="${labOrder.parentConcept.conceptId}" type="checkbox"
+             								id="parent_${labOrder.parentConcept.conceptId}" class="parent" checked="true"><c:out
+             								value="${labOrder.parentConcept.name}" /></td>
+                            </c:when>
+                            <c:otherwise>
              							<td><input name="${fieldNameP}"
              								value="${labOrder.parentConcept.conceptId}" type="checkbox"
              								id="parent_${labOrder.parentConcept.conceptId}" class="parent"><c:out
              								value="${labOrder.parentConcept.name}" /></td>
-             															</c:if>
-                                                                     </c:forEach>
+                            </c:otherwise>
+						</c:choose>
              						</tr>
              						<c:forEach var="childConcept" items="${childrenConcepts}"
              							varStatus="status">
              							<c:set var="fieldNameC"
              								value="${fieldNameP}-${childConcept.conceptId}" />
              							<tr>
-             							<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                                	<c:if test="${toDis == childConcept.conceptId}">
 
+
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == childConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+             								<td style="text-indent: 20px"><input name="${fieldNameC}"
+             									value="${childConcept.conceptId}"
+             									class="child_${labOrder.parentConcept.conceptId}"
+             									id="child_${childConcept.conceptId}" type="checkbox" checked="true"> <c:out
+             									value="${childConcept.name}" /></td>
+                            </c:when>
+                            <c:otherwise>
              								<td style="text-indent: 20px"><input name="${fieldNameC}"
              									value="${childConcept.conceptId}"
              									class="child_${labOrder.parentConcept.conceptId}"
              									id="child_${childConcept.conceptId}" type="checkbox"> <c:out
              									value="${childConcept.name}" /></td>
-             																</c:if>
-                                                                         </c:forEach>
+                            </c:otherwise>
+						</c:choose>
              							</tr>
              						</c:forEach>
              					</c:forEach>
@@ -582,32 +761,61 @@ Request Form</legend>
 						<c:set var="fieldNameP"
 							value="lab-${gdParentConcept}-${labOrder.parentConcept.conceptId}" />
 						<tr>
-						<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                	<c:if test="${toDis == parentConcept.conceptId}">
 
+
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == parentConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+							<td><input name="${fieldNameP}"
+								value="${parentConcept.conceptId}" type="checkbox"
+								id="${labOrder.parentConcept.name}_${labOrder.parentConcept.conceptId}"
+								class="parent" checked="true"><c:out
+								value="${labOrder.parentConcept.name}" /></td>
+                            </c:when>
+                            <c:otherwise>
 							<td><input name="${fieldNameP}"
 								value="${parentConcept.conceptId}" type="checkbox"
 								id="${labOrder.parentConcept.name}_${labOrder.parentConcept.conceptId}"
 								class="parent"><c:out
 								value="${labOrder.parentConcept.name}" /></td>
-															</c:if>
-                                                         </c:forEach>
+                            </c:otherwise>
+						</c:choose>
+
 						</tr>
 						<c:forEach var="childConcept" items="${childrenConcepts}"
 							varStatus="status">
 							<c:set var="fieldNameC"
 								value="${fieldNameP}-${childConcept.conceptId}" />
 							<tr>
-							<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                    	<c:if test="${toDis == childConcept.conceptId}">
 
+
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == childConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+								<td style="text-indent: 20px"><input name="${fieldNameC}"
+									value="${childConcept.conceptId}"
+									class="parent_${labOrder.parentConcept.conceptId}"
+									id="${childConcept.name}_${status.count}" type="checkbox" checked="true">
+								<c:out value="${childConcept.name}" /></td>
+                            </c:when>
+                            <c:otherwise>
 								<td style="text-indent: 20px"><input name="${fieldNameC}"
 									value="${childConcept.conceptId}"
 									class="parent_${labOrder.parentConcept.conceptId}"
 									id="${childConcept.name}_${status.count}" type="checkbox">
 								<c:out value="${childConcept.name}" /></td>
-															</c:if>
-                                                         </c:forEach>
+                            </c:otherwise>
+						</c:choose>
 							</tr>
 						</c:forEach>
 					</c:forEach>
@@ -637,32 +845,60 @@ Request Form</legend>
 							value="lab-${gdParentConcept}-${labOrder.parentConcept.conceptId}" />
 						<tr>
 
-						<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                	<c:if test="${toDis == parentConcept.conceptId}">
 
+
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == parentConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+							<td><input name="${fieldNameP}"
+								value="${parentConcept.conceptId}" type="checkbox"
+								id="${labOrder.parentConcept.name}_${labOrder.parentConcept.conceptId}"
+								class="parent" checked="true"><c:out
+								value="${labOrder.parentConcept.name}" /></td>
+                            </c:when>
+                            <c:otherwise>
 							<td><input name="${fieldNameP}"
 								value="${parentConcept.conceptId}" type="checkbox"
 								id="${labOrder.parentConcept.name}_${labOrder.parentConcept.conceptId}"
 								class="parent"><c:out
 								value="${labOrder.parentConcept.name}" /></td>
-															</c:if>
-                                                         </c:forEach>
+                            </c:otherwise>
+						</c:choose>
 						</tr>
 						<c:forEach var="childConcept" items="${childrenConcepts}"
 							varStatus="status">
 							<c:set var="fieldNameC"
 								value="${fieldNameP}-${childConcept.conceptId}" />
 							<tr>
-							<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                    	<c:if test="${toDis == childConcept.conceptId}">
 
+
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == childConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+								<td style="text-indent: 20px"><input name="${fieldNameC}"
+									value="${childConcept.conceptId}"
+									class="parent_${labOrder.parentConcept.conceptId}"
+									id="${childConcept.name}_${status.count}" type="checkbox" checked="true">
+								<c:out value="${childConcept.name}" /></td>
+                            </c:when>
+                            <c:otherwise>
 								<td style="text-indent: 20px"><input name="${fieldNameC}"
 									value="${childConcept.conceptId}"
 									class="parent_${labOrder.parentConcept.conceptId}"
 									id="${childConcept.name}_${status.count}" type="checkbox">
 								<c:out value="${childConcept.name}" /></td>
-															</c:if>
-                                                         </c:forEach>
+                            </c:otherwise>
+						</c:choose>
 							</tr>
 						</c:forEach>
 					</c:forEach>
@@ -681,32 +917,59 @@ Request Form</legend>
             						<c:set var="fieldNameP"
             							value="lab-${gdParentConcept}-${labOrder.parentConcept.conceptId}" />
             						<tr>
-            						<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                            	<c:if test="${toDis == parentConcept.conceptId}">
 
+
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == parentConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+            							<td><input name="${fieldNameP}"
+            								value="${parentConcept.conceptId}" type="checkbox"
+            								id="${labOrder.parentConcept.name}_${labOrder.parentConcept.conceptId}"
+            								class="parent" checked="true"><c:out
+            								value="${labOrder.parentConcept.name}" /></td>
+                            </c:when>
+                            <c:otherwise>
             							<td><input name="${fieldNameP}"
             								value="${parentConcept.conceptId}" type="checkbox"
             								id="${labOrder.parentConcept.name}_${labOrder.parentConcept.conceptId}"
             								class="parent"><c:out
             								value="${labOrder.parentConcept.name}" /></td>
-            															</c:if>
-                                                                     </c:forEach>
+                            </c:otherwise>
+						</c:choose>
             						</tr>
             						<c:forEach var="childConcept" items="${childrenConcepts}"
             							varStatus="status">
             							<c:set var="fieldNameC"
             								value="${fieldNameP}-${childConcept.conceptId}" />
             							<tr>
-            							<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                                	<c:if test="${toDis == childConcept.conceptId}">
 
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == childConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+            								<td style="text-indent: 20px"><input name="${fieldNameC}"
+            									value="${childConcept.conceptId}"
+            									class="parent_${labOrder.parentConcept.conceptId}"
+            									id="${childConcept.name}_${status.count}" type="checkbox" checked="true">
+            								<c:out value="${childConcept.name}" /></td>
+                            </c:when>
+                            <c:otherwise>
             								<td style="text-indent: 20px"><input name="${fieldNameC}"
             									value="${childConcept.conceptId}"
             									class="parent_${labOrder.parentConcept.conceptId}"
             									id="${childConcept.name}_${status.count}" type="checkbox">
             								<c:out value="${childConcept.name}" /></td>
-            															</c:if>
-                                                                     </c:forEach>
+                            </c:otherwise>
+						</c:choose>
             							</tr>
             						</c:forEach>
             					</c:forEach>
@@ -727,32 +990,58 @@ Request Form</legend>
             						<c:set var="fieldNameP"
             							value="lab-${gdParentConcept}-${labOrder.parentConcept.conceptId}" />
             						<tr>
-            						<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                            	<c:if test="${toDis == parentConcept.conceptId}">
 
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == parentConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+            							<td><input name="${fieldNameP}"
+            								value="${parentConcept.conceptId}" type="checkbox"
+            								id="${labOrder.parentConcept.name}_${labOrder.parentConcept.conceptId}"
+            								class="parent" checked="true"><c:out
+            								value="${labOrder.parentConcept.name}" /></td>
+                            </c:when>
+                            <c:otherwise>
             							<td><input name="${fieldNameP}"
             								value="${parentConcept.conceptId}" type="checkbox"
             								id="${labOrder.parentConcept.name}_${labOrder.parentConcept.conceptId}"
             								class="parent"><c:out
             								value="${labOrder.parentConcept.name}" /></td>
-            															</c:if>
-                                                                     </c:forEach>
+                            </c:otherwise>
+						</c:choose>
             						</tr>
             						<c:forEach var="childConcept" items="${childrenConcepts}"
             							varStatus="status">
             							<c:set var="fieldNameC"
             								value="${fieldNameP}-${childConcept.conceptId}" />
             							<tr>
-            							<c:forEach var="toDis" items="${model.labOrderToDisplay}" varStatus="status">
-                                                                	<c:if test="${toDis == childConcept.conceptId}">
 
+<c:set var="checkDisp" value="0" />
+                            <c:forEach var="currDis" items="${model.labOrderCurrentlyDisplayed}" varStatus="status">
+                                <c:if test="${currDis == childConcept.conceptId}">
+                                    <c:set var="checkDisp" value="1" />
+                                </c:if>
+                            </c:forEach>
+						<c:choose>
+                           	<c:when test="${checkDisp == 1}">
+            								<td style="text-indent: 20px"><input name="${fieldNameC}"
+            									value="${childConcept.conceptId}"
+            									class="parent_${labOrder.parentConcept.conceptId}"
+            									id="${childConcept.name}_${status.count}" type="checkbox" checked="tue">
+            								<c:out value="${childConcept.name}" /></td>
+                            </c:when>
+                            <c:otherwise>
             								<td style="text-indent: 20px"><input name="${fieldNameC}"
             									value="${childConcept.conceptId}"
             									class="parent_${labOrder.parentConcept.conceptId}"
             									id="${childConcept.name}_${status.count}" type="checkbox">
             								<c:out value="${childConcept.name}" /></td>
-            															</c:if>
-                                                                     </c:forEach>
+                            </c:otherwise>
+						</c:choose>
             							</tr>
             						</c:forEach>
             					</c:forEach>
@@ -764,173 +1053,10 @@ Request Form</legend>
 	</tr>
 
 </table>
-<input type="submit" name="saveLabOrders" value="Save Lab orders"></div>
+<input type="submit" name="saveLabOrders" value="Change Lab Request Form"></div>
 
 </form>
 </div>
 </fieldset>
 
 
-
-<div id="dt_example">
-<div id="container">
-
-<div style="float: right"><img id="print_lab_ordonance"
-	src="moduleResources/laboratorymanagement/print_preview.gif"
-	style="cursor: pointer;" title="Print Preview" /></div>
-<table cellpadding="0" cellspacing="0" border="0" class="display"
-	id="example_table" style="width: 100%">
-	<thead>
-		<tr>
-			<th>Rendering engine</th>
-			<th>&nbsp;</th>
-			<th><spring:message code="Test" /></th>
-			<th><spring:message code="Result" /></th>
-			<th><spring:message code="Normal range" /></th>
-			<th><spring:message code="comments" /></th>
-			<th><spring:message code="Order date" /></th>
-
-			<th><spring:message code="cancel" /></th>
-		</tr>
-	</thead>
-	<tbody>
-		<c:forEach items="${model.obsMap}" var="key" varStatus="num">
-			<c:set var="LabTestcount" value="1" scope="page" />
-			<c:forEach items="${key.value}" var="orderObs">
-				<c:if test="${empty orderObs.obss}">
-					<tr>
-						<td><openmrs:formatDate date="${orderObs.order.startDate}"
-							type="textbox" /></td>
-						<td>&nbsp;</td>
-						<td>${orderObs.order.concept.name.name}</td>
-						<td>???</td>
-						<td>${orderObs.orderStatus[0]}</td>
-						<td>No comment</td>
-						<td><openmrs:formatDate date="${orderObs.order.startDate}"
-							type="textbox" /></td>
-
-						<td><a
-							href="${pageContext.request.contextPath}/patientDashboard.form?patientId=${model.patientId}&orderId=${orderObs.order.orderId}">Cancel</a></td>
-					</tr>
-					<c:set var="LabTestcount" value="${LabTestcount + 1}" scope="page" />
-				</c:if>
-				<c:if test="${not empty orderObs.obss}">
-					<c:forEach items="${orderObs.obss}" var="obs">
-						<tr>
-							<td><openmrs:formatDate date="${orderObs.order.startDate}"
-								type="textbox" /></td>
-							<td>&nbsp;</td>
-							<td>${obs[0].concept.name.name}</td>
-							<c:choose>
-								<c:when test="${obs[0].valueCoded != null}">
-									<td>${obs[0].valueCoded.name}</td>
-									<td>-</td>
-									<td>${obs[0].comment}</td>
-
-								</c:when>
-								<c:when test="${obs[0].valueNumeric != null}">
-									<td>${obs[0].valueNumeric}</td>
-									<td>${obs[1]}</td>
-									<td>${obs[0].comment}</td>
-
-								</c:when>
-								<c:when test="${obs[0].valueText != null}">
-									<td>${obs[0].valueText}</td>
-                                     <td>-</td>
-                                     <td>${obs[0].comment}</td>
-								</c:when>
-								<c:otherwise>
-									<td>???</td>
-									<td>-</td>
-                                    <td>${obs[0].comment}</td>
-								</c:otherwise>
-							</c:choose>
-
-							<td><openmrs:formatDate date="${orderObs.order.startDate}"
-								type="textbox" /></td>
-
-							<td><a
-								href="${pageContext.request.contextPath}/patientDashboard.form?patientId=${model.patientId}&orderId=${orderObs.order.orderId}">Cancel</a></td>
-						</tr>
-						<c:set var="LabTestcount" value="${LabTestcount + 1}" scope="page" />
-					</c:forEach>
-				</c:if>
-			</c:forEach>
-		</c:forEach>
-	</tbody>
-</table>
-</div>
-</div>
-
-
-<div id="laborder-modal-content" style="display: none"><img
-	id="print_btn"
-	src="${pageContext.request.contextPath}/images/printer.gif"
-	style="cursor: pointer;" title="Print" />
-<div class="printable">
-<div id="ordonnanceModal" style="font-size: 10px;">
-<center><u>
-<h3>MEDICAL PRESCRIPTION</h3>
-</u>
-<table width="100%" height="151" border="1" cellpadding="0"
-	cellspacing="0">
-	<tr align="left" valign="top">
-		<td width="40%" height="149">
-		<openmrs:globalProperty key="laboratorymanagement.healthfacility.name" var="healthfacility"/>
-		<openmrs:globalProperty key="laboratorymanagement.healthfacility.POBOX" var="POBOX"/>
-		<openmrs:globalProperty key="laboratorymanagement.healthfacility.email" var="email"/>
-		<openmrs:globalProperty key="laboratorymanagement.healthfacility.telephone" var="telephone"/>
-         <img src="moduleResources/laboratorymanagement/images/logo.jpg"
-			width="111" height="109" alt="REPUBLIC OF RWANDA" />
-		<p>REPUBLIC OF RWANDA</p>
-		<p>${healthfacility}</p>
-		<p>MEDICAL LABORATORY DEPARTMENT</p>
-		<p>${POBOX}</p>
-		<p>${email}</p>
-		<p>${telephone}</p>
-		</td>
-
-	</tr>
-</table>
-<table width="100%" border="1" cellspacing="0" cellpadding="0">
-	<tr>
-		<td height="40%" align="left" valign="top">
-		<p><u>Information du Medecin</u></p>
-		Noms: ${model.providerName}<br />
-		Tel:<br />
-		Service<br />
-		Date de demande:<span id="dateId"></span></td>
-		<td height="40%" align="left" valign="top">
-		<p><u>Information du patient</u></p>
-		Noms: ${model.patient.familyName} ${model.patient.middleName}
-		${model.patient.givenName}<br />
-		Date de Naissance: ${model.patient.birthdate}<br />
-		Sexe: ${model.patient.gender}<br />
-		No de Labo:</td>
-		<td height="20%" align="left" valign="top">
-		<p><u>Status</u></p>
-		Diagnostic</td>
-	</tr>
-	<tr>
-		<td colspan="3" align="left" valign="top">
-		<p><strong>Renseignments clinique: <br />
-		<br /></p>
-		</strong></td>
-	</tr>
-</table>
-<p>&nbsp;</p>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-	<tr>
-		<td colspan="2">
-		<center>Lab Test<br/></center>
-		</td>
-	</tr>
-	<tr>
-		<td width="50%" id="firstTd"></td>
-		<td width="50%" align="left" id="secondTd"></td>
-	</tr>
-</table>
-</center>
-</div>
-</div>
-</div>

@@ -60,7 +60,8 @@
 			    <prop key="module/@MODULE_ID@/patientReport.form">patientReportController</prop>
 			     <prop key="module/@MODULE_ID@/monthlyReport.form">viewMonthlyReportController</prop>
 			    <prop key="module/@MODULE_ID@/labConfiguration.form">labConfigurationController</prop>
-			    <prop key="module/@MODULE_ID@/displayLabExams.form">displayLabExamsController</prop>
+				<prop key="module/@MODULE_ID@/labTechSetup.form">labTechSetupController</prop>
+				<prop key="module/@MODULE_ID@/displayLabExams.form">displayLabExamsController</prop>
 			    <prop key="**/labOrderPortlet.portlet">labOrderPortletController</prop>
 			</props>
 		</property>
@@ -69,7 +70,13 @@
 	<!-- Controllers -->
 	<bean id="labOrderPortletController"
 		class="@MODULE_PACKAGE@.web.controller.LabOrderPortletController" />
-	
+	<bean id="labTechSetupController"
+		  class="@MODULE_PACKAGE@.web.controller.LabTechSetupController">
+	<property name="viewName">
+		<value>/module/@MODULE_ID@/labTechSetupForm</value>
+	</property>
+	</bean>
+
 	<bean id="labTestChartView" class="@MODULE_PACKAGE@.web.chart.EvolutionOfClientRegisteredPerDay"/>
 
 	<bean id="labChartController" class="@MODULE_PACKAGE@.web.controller.ChartStatsQueryController">
@@ -155,5 +162,6 @@
 	
 
 	<!-- /Controllers -->
+
 
 </beans>

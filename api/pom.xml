@@ -36,6 +36,12 @@
 			<version>0.3-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>mohbilling-api</artifactId>
+			<version>0.0.4.7-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 </project>
