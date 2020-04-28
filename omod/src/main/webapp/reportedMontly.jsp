@@ -1,5 +1,7 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
+<%@ include file="localHeader.jsp"%>
+
 <openmrs:htmlInclude file="/moduleResources/quarterlyreporting/style.css" />
 <openmrs:htmlInclude file="/moduleResources/laboratorymanagement/jquery.PrintArea.js" />
 	

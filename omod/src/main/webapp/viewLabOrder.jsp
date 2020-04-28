@@ -94,7 +94,9 @@
 				<th><spring:message code="laboratorymanagement.OrderedOn" /></th>
 				<th>Oderer</th>
 				<th><spring:message code="laboratorymanagement.labCode" /></th>
-				<th><spring:message code="laboratorymanagement.editOrder" /></th>
+				<th>Code Giver</th>
+				<th>Coded On</th>
+			    <th><spring:message code="laboratorymanagement.editOrder" /></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -110,9 +112,12 @@
 					varStatus="status">
 					<tr>
 						<td><c:out value="${labOrder.concept.name}" /></td>
-						<td><openmrs:formatDate date="${labOrder.startDate}" /></td>
-						<td><c:out value="${labOrder.orderer.familyName}" /></td>						
+						<td><c:out value="${labOrder.dateCreated}" /></td>
+						<!-- <td><openmrs:formatDate date="${labOrder.startDate}" /></td> -->
+						<td><c:out value="${labOrder.orderer.names}" /></td>
 						<td><c:out value="${labOrder.accessionNumber}" /></td>
+						<td><c:out value="${labOrder.creator.names}" /></td>
+						<td><c:out value="${labOrder.startDate}" /></td>
 						<td valign="top"><a href="editLabOrder.form?orderId=${labOrder.orderId}&&startDate=${startDat}&&labcode=${labOrder.accessionNumber}&&patientId=${labOrder.patient.patientId}"><spring:message code="laboratorymanagement.edit" />
 						</a>
 					</td>
@@ -141,8 +146,9 @@
 				<td>${num.count}</td>
 				<td><c:out value="${labOrder.patient.patientId}" /></td>
 				<td><c:out value="${labOrder.concept.name}" /></td>
-				<td><openmrs:formatDate date="${labOrder.startDate}" /></td>
-				<td><c:out value="${labOrder.orderer.familyName}" /></td>
+				<td><c:out value="${labOrder.startDate}" /></td>
+				<!-- <td><openmrs:formatDate date="${labOrder.startDate}" /></td> -->
+				<td><c:out value="${labOrder.orderer.names}" /></td>
 
 			</tr>
 		</c:forEach>
