@@ -1,2 +1,6 @@
 # Default ignored files
 /workspace.xml
+api/target/
+omod/target/
+.idea/.gitignore
+
