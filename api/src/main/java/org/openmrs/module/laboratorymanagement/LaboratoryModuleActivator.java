@@ -16,6 +16,7 @@ package org.openmrs.module.laboratorymanagement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.Activator;
+import org.openmrs.module.BaseModuleActivator;
 
 /**
  * The contents of this file are subject to the OpenMRS Public License
@@ -34,22 +35,22 @@ import org.openmrs.module.Activator;
 /**
  * This class contains the logic that is run every time this module is either started or shutdown
  */
-		public class LaboratoryModuleActivator implements Activator {
+		public class LaboratoryModuleActivator extends BaseModuleActivator {
 
 		private Log log = LogFactory.getLog(this.getClass());
 
 		/**
-		 * @see org.openmrs.module.Activator#startup()
+		 * @see BaseModuleActivator#started()
 		 */
-		public void startup() {
-		log.info("Starting Basic Module");
+		public void started() {
+		log.info("Laboratory Managment Module started");
 		}
 
 		/**
-		 * @see org.openmrs.module.Activator#shutdown()
+		 * @see BaseModuleActivator#stopped()
 		 */
-		public void shutdown() {
-		log.info("Shutting down Basic Module");
+		public void stopped() {
+		log.info("Laboratory Managment stopped");
 		}
 
 		}

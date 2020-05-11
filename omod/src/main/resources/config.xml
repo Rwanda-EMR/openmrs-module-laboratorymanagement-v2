@@ -24,9 +24,13 @@
 	<require_modules>
        <require_module version="0.0.8">org.openmrs.module.mohappointment</require_module>
 		<require_module version="0.0.4.7-SNAPSHOT">org.openmrs.module.mohbilling</require_module>
-
 	</require_modules>
-	
+
+	<aware_of_modules>
+		<aware_of_module>org.openmrs.module.legacyui</aware_of_module>
+	</aware_of_modules>
+
+
 	<!-- Extensions -->
 	<extension>
 		<point>org.openmrs.tracmodule.list</point>
