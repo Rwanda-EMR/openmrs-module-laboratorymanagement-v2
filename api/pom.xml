@@ -42,6 +42,12 @@
 			<version>0.0.4.7-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+            <groupId>org.openmrs.module</groupId>
+            <artifactId>legacyui-omod</artifactId>
+            <version>1.6.0</version>
+            <scope>provided</scope>
+        </dependency>
 	</dependencies>
 
 </project>

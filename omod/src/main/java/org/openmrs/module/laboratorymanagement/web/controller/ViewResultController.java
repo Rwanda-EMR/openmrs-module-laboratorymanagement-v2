@@ -28,7 +28,7 @@ public class ViewResultController extends ParameterizableViewController {
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		List<Obs> testsWithResult = new ArrayList<Obs>();
-		SimpleDateFormat df = OpenmrsUtil.getDateFormat();
+		SimpleDateFormat df = OpenmrsUtil.getDateFormat(Context.getLocale());
 		ObsService oService = Context.getObsService();
 		LaboratoryService laboratoryService = Context
 				.getService(LaboratoryService.class);

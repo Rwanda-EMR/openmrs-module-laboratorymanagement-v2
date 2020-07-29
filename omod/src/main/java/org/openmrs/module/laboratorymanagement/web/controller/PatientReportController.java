@@ -29,7 +29,7 @@ public class PatientReportController extends ParameterizableViewController {
 			HttpServletResponse response) throws Exception {
 		// Map the Laboratory type exams and its children
 		Map<ConceptName, List<Object[]>> mappedLabExam = null;
-		SimpleDateFormat df = OpenmrsUtil.getDateFormat();
+		SimpleDateFormat df = OpenmrsUtil.getDateFormat(Context.getLocale());
 		// List to store all exams with results
 
 		Map<String, Object> model = new HashMap<String, Object>();

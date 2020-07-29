@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.openmrs.ConceptName;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.laboratorymanagement.advice.MappedLabExamManagement;
 import org.openmrs.util.OpenmrsUtil;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,7 +20,7 @@ public class ViewMonthlyReportController extends ParameterizableViewController {
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		Map<ConceptName, List<Object[]>> mappedLabExam = null;
-		SimpleDateFormat df = OpenmrsUtil.getDateFormat();
+		SimpleDateFormat df = OpenmrsUtil.getDateFormat(Context.getLocale());
 		Map<String, Object> model = new HashMap<String, Object>();
 
 		String startDat = request.getParameter("startDate");

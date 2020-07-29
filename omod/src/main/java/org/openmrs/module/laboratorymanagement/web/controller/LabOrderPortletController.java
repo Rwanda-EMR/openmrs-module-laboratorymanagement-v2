@@ -121,7 +121,7 @@ public class LabOrderPortletController extends PortletController {
 
 		// get observations by Person
 
-		List<Order> orders = orderService.getOrdersByPatient(patient);
+		List<Order> orders = orderService.getAllOrdersByPatient(patient);
 		Map<Date, List<OrderObs>> orderObsMap = LabUtils.getMappedOrderToObs(orders, patient);
 
 		//Map<String, Object> orderObsMapOrdered = new TreeMap<String, Object>((Comparator<? super String>) orderObsMap);

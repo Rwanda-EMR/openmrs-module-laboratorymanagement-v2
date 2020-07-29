@@ -1,6 +1,5 @@
 package org.openmrs.module.laboratorymanagement.utils;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,33 +21,27 @@ import org.openmrs.ConceptName;
 import org.openmrs.ConceptNumeric;
 import org.openmrs.ConceptSet;
 import org.openmrs.Encounter;
+import org.openmrs.EncounterRole;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
-import org.openmrs.Patient;
-
 import org.openmrs.Obs;
 import org.openmrs.Order;
+import org.openmrs.Patient;
+import org.openmrs.Provider;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.laboratorymanagement.EveryOrder;
 import org.openmrs.module.laboratorymanagement.LabOrder;
+import org.openmrs.module.laboratorymanagement.LabOrderParent;
 import org.openmrs.module.laboratorymanagement.OrderObs;
+import org.openmrs.module.laboratorymanagement.PatientLabOrder;
 import org.openmrs.module.laboratorymanagement.advice.LaboratoryMgt;
 import org.openmrs.module.laboratorymanagement.service.LaboratoryService;
-import org.openmrs.module.laboratorymanagement.EveryOrder;
-import org.openmrs.module.laboratorymanagement.LabOrderParent;
-
-import org.openmrs.module.laboratorymanagement.PatientLabOrder;
 import org.openmrs.module.mohappointment.model.Appointment;
 import org.openmrs.module.mohappointment.model.Services;
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
 import org.openmrs.module.mohbilling.automation.CreateBillOnSaveLabAndPharmacyOrders;
-import org.openmrs.module.mohbilling.businesslogic.ConsommationUtil;
-import org.openmrs.module.mohbilling.businesslogic.GlobalBillUtil;
-import org.openmrs.module.mohbilling.businesslogic.InsuranceBillUtil;
-import org.openmrs.module.mohbilling.businesslogic.PatientBillUtil;
-import org.openmrs.module.mohbilling.model.*;
-import org.openmrs.module.mohbilling.service.BillingService;
 import org.openmrs.util.OpenmrsConstants;
 
 public class LabUtils {
@@ -345,16 +338,16 @@ public class LabUtils {
 			String accessionNumber = "access-" + gpCptIdStr + "-" + pcptIdstr+ "-" + chldCptIdStr;
 
 			Order labOrder = new Order();
-			labOrder.setOrderer(Context.getAuthenticatedUser());
+			labOrder.setOrderer(Context.getProviderService().getUnknownProvider());
 			labOrder.setPatient(patient);
 			labOrder.setConcept(Context.getConceptService().getConcept(
 					Integer.parseInt(SingleLabConceptIdstr)));
-			labOrder.setStartDate(new Date());
+			labOrder.setDateActivated(new Date());
 			billingConceptItems.add(Context.getConceptService().getConcept(Integer.parseInt(SingleLabConceptIdstr)));
 
 			// labOrder.setAccessionNumber(accessionNumber);
 			labOrder.setOrderType(Context.getOrderService().getOrderType(labOrderTypeId));
-			Context.getOrderService().saveOrder(labOrder);
+			Context.getOrderService().saveOrder(labOrder, null);
 		}
 		CreateBillOnSaveLabAndPharmacyOrders.createBillOnSaveLabOrders(billingConceptItems,patient);
 	}
@@ -447,7 +440,12 @@ public class LabUtils {
 					+ Context.getLocationService().getDefaultLocation());
 
 			labEncounter.setLocation(dftLoc);
-			labEncounter.setProvider(Context.getAuthenticatedUser());
+			
+			EncounterRole encounterRole = Context.getEncounterService()
+					.getEncounterRoleByUuid(EncounterRole.UNKNOWN_ENCOUNTER_ROLE_UUID);
+			Provider provider = Context.getProviderService().getUnknownProvider();
+			
+			labEncounter.setProvider(encounterRole, provider);
 		}
 		if (encountersList.size() > 0) {
 			for (Encounter encounter : encountersList) {
@@ -483,12 +481,12 @@ public class LabUtils {
 			laborder.setAccessionNumber(labCode);
 			laborder.setPatient(laborder.getPatient());
 			//laborder.setStartDate(laborder.getStartDate());
-			laborder.setStartDate(new Date());
+			laborder.setDateActivated(new Date());
 			laborder.setCreator(Context.getAuthenticatedUser());
 			laborder.setEncounter(labEncounter);
-			Context.getOrderService().saveOrder(laborder);
+			Context.getOrderService().saveOrder(laborder, null);
 			log.info(">>>>>>>Rulindo >lab order start date>>>"
-					+ laborder.getStartDate() + " and lab code" + labCode);
+					+ laborder.getDateActivated() + " and lab code" + labCode);
 			// get conceptSet
 			Collection<ConceptSet> childCptSet = laborder.getConcept()
 					.getConceptSets();
@@ -686,7 +684,7 @@ public class LabUtils {
 					if (cs.getConcept().isSet()) {
 						// get gd children
 						List<ConceptSet> parentConcept = Context
-								.getConceptService().getConceptSets(
+								.getConceptService().getConceptSetsByConcept(
 										cs.getConcept());
 						List<Concept> childrenConcept = new ArrayList<Concept>();
 						for (ConceptSet pc : parentConcept) {
@@ -739,7 +737,7 @@ public class LabUtils {
 					if (cs.getConcept().isSet()) {
 						// get gd children
 						List<ConceptSet> parentConcepts = Context
-								.getConceptService().getConceptSets(
+								.getConceptService().getConceptSetsByConcept(
 										cs.getConcept());
 						List<Concept> childrenConcept = new ArrayList<Concept>();
 
@@ -788,7 +786,7 @@ public class LabUtils {
 
 		for (Order order : orders) {
 			if (order.getOrderType().getOrderTypeId() == labOrderTypeId) {
-				dates.add(order.getStartDate());
+				dates.add(order.getDateActivated());
 			}
 		}
 		Set<Date> dateSet = new HashSet<Date>(dates);
@@ -798,7 +796,7 @@ public class LabUtils {
 
 				for (Order order : orders) {
 					if (order.getOrderType().getOrderTypeId() == labOrderTypeId
-							&& order.getStartDate().equals(date)) {
+							&& order.getDateActivated().equals(date)) {
 						obsList = new ArrayList<Object[]>();
 						OrderObs orderObs = new OrderObs();
 						for (Obs obs : observations) {
@@ -1020,8 +1018,8 @@ public static Object[] getIncompleteLabOrder(Concept cpt){
 		// This is where the sorting happens.
 		public int compare(OrderObs ord1, OrderObs ord2) {
 			int compareInt = 0;
-			compareInt = ord1.getOrder().getStartDate().compareTo(
-					ord2.getOrder().getStartDate());
+			compareInt = ord1.getOrder().getDateActivated().compareTo(
+					ord2.getOrder().getDateActivated());
 
 			return compareInt;
 		}
@@ -1045,7 +1043,7 @@ public static Object[] getIncompleteLabOrder(Concept cpt){
 		labOrder.setVoided(true);
 		labOrder.setVoidedBy(Context.getAuthenticatedUser());
 		labOrder.setDateVoided(new Date());
-		Context.getOrderService().saveOrder(labOrder);
+		Context.getOrderService().saveOrder(labOrder, null);
 
 	}
 
@@ -1085,7 +1083,7 @@ public static Object[] getIncompleteLabOrder(Concept cpt){
 	 * @return List<Integer>
 	 */
 	public static List<Concept> getListOfConceptSetByConcept(Concept labConcept) {
-		List<ConceptSet> cptSets = Context.getConceptService().getConceptSets(
+		List<ConceptSet> cptSets = Context.getConceptService().getConceptSetsByConcept(
 				labConcept);
 
 		List<Concept> cptList = new ArrayList<Concept>();

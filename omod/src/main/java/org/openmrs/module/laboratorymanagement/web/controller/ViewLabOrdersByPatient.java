@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,23 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Order;
 import org.openmrs.Patient;
+import org.openmrs.Person;
+import org.openmrs.Provider;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.OrderService;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
-
-
-
-
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
@@ -67,11 +62,10 @@ public class ViewLabOrdersByPatient extends ParameterizableViewController {
 			
 			String labEncounterDateStr=df.format(labEncounterDate);
 			Collection<Order> labOrders = ordService
-					.getOrdersByPatient(Context.getPatientService().getPatient(
-							labEncounter.getPatientId()));
+					.getAllOrdersByPatient(labEncounter.getPatient());
 		
 			for (Order order : labOrders){
-				String orderStrDate=df.format(order.getStartDate());
+				String orderStrDate=df.format(order.getDateActivated());
 				
 				if (orderStrDate.equals(labEncounterDateStr)) {
 					if (order.getAutoExpireDate()==null) {
@@ -105,13 +99,16 @@ public class ViewLabOrdersByPatient extends ParameterizableViewController {
 
 		String orderIdStr = request.getParameter("orderId");
 		String labEncounterId = request.getParameter("encounterId");
-		Patient ptent = Context.getEncounterService().getEncounter(
-				Integer.parseInt(labEncounterId)).getPatient();
+		Encounter encounter = Context.getEncounterService().getEncounter(Integer.parseInt(labEncounterId));
+		Patient ptent = encounter.getPatient();
 		int orderId = Integer.parseInt(orderIdStr);
 		Order labOrder = ordService.getOrder(orderId);
 		Obs labExamWithResult = null;
-		
 
+		//Assuming that the logged in user is associated with a provider account.
+		Person person = Context.getAuthenticatedUser().getPerson();
+		Provider orderer = Context.getProviderService().getProvidersByPerson(person).iterator().next();
+		
 		if (request.getParameter("numericValue") != null) {
 			labExamWithResult = new Obs();
 			// update lab order
@@ -125,10 +122,12 @@ public class ViewLabOrdersByPatient extends ParameterizableViewController {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 			labOrder.setAutoExpireDate(new Date());
-			labOrder.setDiscontinued(true);
+			/*labOrder.setDiscontinued(true);
 			labOrder.setDiscontinuedDate(new Date());
 			labOrder.setDiscontinuedBy(Context.getAuthenticatedUser());
-			ordService.updateOrder(labOrder);
+			ordService.updateOrder(labOrder);*/
+			
+			ordService.discontinueOrder(labOrder, "Lab Exam Result", new Date(), orderer, encounter);
 
 			Date observedOn = sdf.parse(strDate);
 			// labExamWithResult.setOrder(labOrder);
@@ -158,14 +157,13 @@ public class ViewLabOrdersByPatient extends ParameterizableViewController {
 				labExamWithResult = new Obs();
 				
 				labOrder.setAutoExpireDate(new Date());
-				labOrder.setDiscontinued(true);
+				/*labOrder.setDiscontinued(true);
 				labOrder.setDiscontinuedDate(new Date());
 				labOrder.setDiscontinuedBy(Context.getAuthenticatedUser());
-				ordService.updateOrder(labOrder);
+				ordService.updateOrder(labOrder);*/
 				
+				ordService.discontinueOrder(labOrder, "Lab Exam Result", new Date(), orderer, encounter);
 				
-				
-
 				
 				Date observedOn = sdf.parse(strDate);
 				labExamWithResult.setEncounter(Context.getEncounterService()

@@ -28,7 +28,7 @@ public class ExportToPDFController extends AbstractController {
 
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		SimpleDateFormat df = OpenmrsUtil.getDateFormat();
+		SimpleDateFormat df = OpenmrsUtil.getDateFormat(Context.getLocale());
 
 		LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
 		String conceptIdStr = request.getParameter("testType");

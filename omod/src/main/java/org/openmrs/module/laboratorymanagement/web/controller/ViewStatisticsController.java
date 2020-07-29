@@ -41,7 +41,7 @@ public class ViewStatisticsController extends ParameterizableViewController {
 		// mapped test with number of tests ny year
 		Map<Concept, Map<Integer, Integer>> testWithNumberOfTestByYear = new TreeMap<Concept, Map<Integer, Integer>>();
 		String conceptIdStr = "";
-		SimpleDateFormat df = OpenmrsUtil.getDateFormat();
+		SimpleDateFormat df = OpenmrsUtil.getDateFormat(Context.getLocale());
 		Map<String, Object> model1 = new HashMap<String, Object>();
 		List<Obs> allTestWithResult = null;
 		List<Obs> testTakenbetweenTwoDates = null;
