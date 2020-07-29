@@ -122,10 +122,6 @@ public class ViewLabOrdersByPatient extends ParameterizableViewController {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 			labOrder.setAutoExpireDate(new Date());
-			/*labOrder.setDiscontinued(true);
-			labOrder.setDiscontinuedDate(new Date());
-			labOrder.setDiscontinuedBy(Context.getAuthenticatedUser());
-			ordService.updateOrder(labOrder);*/
 			
 			ordService.discontinueOrder(labOrder, "Lab Exam Result", new Date(), orderer, encounter);
 
@@ -157,10 +153,6 @@ public class ViewLabOrdersByPatient extends ParameterizableViewController {
 				labExamWithResult = new Obs();
 				
 				labOrder.setAutoExpireDate(new Date());
-				/*labOrder.setDiscontinued(true);
-				labOrder.setDiscontinuedDate(new Date());
-				labOrder.setDiscontinuedBy(Context.getAuthenticatedUser());
-				ordService.updateOrder(labOrder);*/
 				
 				ordService.discontinueOrder(labOrder, "Lab Exam Result", new Date(), orderer, encounter);
 				
