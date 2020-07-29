@@ -27,6 +27,7 @@ import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Order;
 import org.openmrs.Patient;
+import org.openmrs.Person;
 import org.openmrs.Provider;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
@@ -338,7 +339,7 @@ public class LabUtils {
 			String accessionNumber = "access-" + gpCptIdStr + "-" + pcptIdstr+ "-" + chldCptIdStr;
 
 			Order labOrder = new Order();
-			labOrder.setOrderer(Context.getProviderService().getUnknownProvider());
+			labOrder.setOrderer(getProvider());
 			labOrder.setPatient(patient);
 			labOrder.setConcept(Context.getConceptService().getConcept(
 					Integer.parseInt(SingleLabConceptIdstr)));
@@ -443,9 +444,8 @@ public class LabUtils {
 			
 			EncounterRole encounterRole = Context.getEncounterService()
 					.getEncounterRoleByUuid(EncounterRole.UNKNOWN_ENCOUNTER_ROLE_UUID);
-			Provider provider = Context.getProviderService().getUnknownProvider();
 			
-			labEncounter.setProvider(encounterRole, provider);
+			labEncounter.setProvider(encounterRole, getProvider());
 		}
 		if (encountersList.size() > 0) {
 			for (Encounter encounter : encountersList) {
@@ -457,6 +457,12 @@ public class LabUtils {
 			}
 		}
 		return labEncounter;
+	}
+	
+	private static Provider getProvider() {
+		//Assuming that the logged in user is associated with a provider account.
+		Person person = Context.getAuthenticatedUser().getPerson();
+		return Context.getProviderService().getProvidersByPerson(person).iterator().next();
 	}
 
 	/**
