@@ -72,7 +72,7 @@ public class AddResultController extends ParameterizableViewController {
 //				for (int labConceptId : intLabSetIds) {
 				for (Concept labConcept : conceptLabSetToOrder) {
 					//Concept labConcept = Context.getConceptService().getConcept(labConceptId);
-					List<ConceptSet> cptSets = Context.getConceptService().getConceptSets(labConcept);
+					List<ConceptSet> cptSets = Context.getConceptService().getConceptSetsByConcept(labConcept);
 
 					List<Concept> cptList = new ArrayList<Concept>();
 					for (ConceptSet conceptSet : cptSets) {

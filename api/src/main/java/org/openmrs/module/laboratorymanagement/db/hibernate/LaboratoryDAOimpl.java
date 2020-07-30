@@ -768,7 +768,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 				cell = new PdfPCell(fontContentSelector.process(""+ob.getAccessionNumber()));
 				table.addCell(cell);
 
-				cell = new PdfPCell(fontContentSelector.process(""+ob.getOrder().getOrderer().getFamilyName()+" "+ob.getOrder().getOrderer().getGivenName()));
+				cell = new PdfPCell(fontContentSelector.process(""+ob.getOrder().getOrderer().getPerson().getFamilyName()+" "+ob.getOrder().getOrderer().getPerson().getGivenName()));
 				table.addCell(cell);
 
 				cell = new PdfPCell(fontContentSelector.process(""+ob.getOrder().getDateCreated()));
@@ -777,7 +777,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 				cell = new PdfPCell(fontContentSelector.process(""+ob.getOrder().getCreator().getFamilyName()+" "+ob.getOrder().getCreator().getGivenName()));
 				table.addCell(cell);
 
-				cell = new PdfPCell(fontContentSelector.process(""+ob.getOrder().getStartDate()));
+				cell = new PdfPCell(fontContentSelector.process(""+ob.getOrder().getDateActivated()));
 				table.addCell(cell);
 
 				cell = new PdfPCell(fontContentSelector.process(""+ob.getCreator().getFamilyName()+" "+ob.getCreator().getGivenName()));

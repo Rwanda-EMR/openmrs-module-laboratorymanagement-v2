@@ -23,7 +23,7 @@ public class DisplayLabExamsController extends ParameterizableViewController {
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		Map<String, Object> model = new HashMap<String, Object>();
-		SimpleDateFormat df = OpenmrsUtil.getDateFormat();
+		SimpleDateFormat df = OpenmrsUtil.getDateFormat(Context.getLocale());
 		LaboratoryService laboratoryService = Context
 				.getService(LaboratoryService.class);
 

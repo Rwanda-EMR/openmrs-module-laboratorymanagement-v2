@@ -94,9 +94,9 @@ public class ViewLabOrderController extends ParameterizableViewController {
 
 	            labOrder.setAccessionNumber(labCode);
 	            labOrder.setPatient(labOrder.getPatient());
-	            labOrder.setStartDate(labOrder.getStartDate());
+	            labOrder.setDateActivated(labOrder.getDateActivated());
 	            labOrder.setEncounter(labEncounter);
-				Context.getOrderService().saveOrder(labOrder);
+				Context.getOrderService().saveOrder(labOrder, null);
 
 			}
 
