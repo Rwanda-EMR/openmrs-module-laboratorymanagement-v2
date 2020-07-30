@@ -23,16 +23,7 @@ this job runs a “mvn verify”, which compiles, tests, and verifies that the t
 For every commit pushed to the configured branches (currently master), this job runs a “mvn deploy”, which compiles, 
 executes tests, and verifies that this builds without errors, and if so, deploys to the OpenMRS Maven Snapshots repository 
 that is configured in the distributionManagement section of 
-the [pom.xml](https://github.com/PIH/openmrs-distro-rwandaemr/pom.xml)
- 
-For certain modules, we have started adding in capabilities to also detect when Maven dependencies have been updated 
-in the Maven repository, and triggering new builds under these circumstances.  
-Currently, this is being piloted as an approach in 
-the [rwandareports module](https://github.com/PIH/openmrs-module-rwandareports). 
-
-Specifically:
-* https://github.com/PIH/openmrs-module-rwandareports/blob/master/pom.xml#L222
-* https://github.com/PIH/openmrs-module-rwandareports/blob/master/.github/workflows/deploy-snapshots.yml
+the [pom.xml](https://github.com/Rwanda-EMR/openmrs-module-laboratorymanagement-v2/pom.xml)
 
 ### perform-release:
 
@@ -58,12 +49,12 @@ To initiate the release workflow one would take the following steps:
 * [Create a personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) to authenticate into Github with minimal permissions (public_repo and write:repo_hook)
 * In a terminal, set the GITHUB_TOKEN environment variable to this token value:
 ```export GITHUB_TOKEN=areallylongtokenthatisgeneratedingithub```
-* Issue a request to hit the deployment endpoint, replacing <org>/<repo> as appropriate (eg. PIH/openmrs-distro-rwandaemr)
+* Issue a request to hit the deployment endpoint:
 ```
 curl  -H "Authorization: token $GITHUB_TOKEN" \
       -H "Accept: application/vnd.github.everest-preview+json"  \
       -H "Content-Type: application/json" \
       --request POST \
       --data '{"event_type": "perform-release"}' \
-      https://api.github.com/repos/<org>/<repo>/dispatches
+      https://api.github.com/repos/Rwanda-EMR/openmrs-module-laboratorymanagement-v2/dispatches
 ```
