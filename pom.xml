@@ -12,9 +12,9 @@
 	<url>http://openmrs.org</url>
 
 	<scm>
-		<connection>scm:svn:http://svn.openmrs.org/openmrs-modules/laboratorymanagement/trunk/</connection>
-		<developerConnection>scm:svn:http://svn.openmrs.org/openmrs-modules/laboratorymanagement/trunk/</developerConnection>
-		<url>http://svn.openmrs.org/openmrs-modules/laboratorymanagement/trunk/</url>
+		<developerConnection>scm:git:https://github.com/Rwanda-EMR/openmrs-module-laboratorymanagement-v2</developerConnection>
+		<url>https://github.com/Rwanda-EMR/openmrs-module-laboratorymanagement-v2</url>
+		<tag>HEAD</tag>
 	</scm>
 
 	<modules>
@@ -24,14 +24,14 @@
 
 	<distributionManagement>
 		<repository>
-			<id>openmrs-repo-modules</id>
-			<name>Modules</name>
-			<url>http://mavenrepo.openmrs.org/nexus/content/repositories/modules/</url>
+			<id>openmrs-repo-modules-pih</id>
+			<name>OpenMRS PIH Modules</name>
+			<url>https://openmrs.jfrog.io/artifactory/modules-pih/</url>
 		</repository>
 		<snapshotRepository>
-			<id>openmrs-repo-snapshots</id>
-			<name>OpenMRS Snapshots</name>
-			<url>http://mavenrepo.openmrs.org/nexus/content/repositories/snapshots</url>
+			<id>openmrs-repo-modules-pih-snapshots</id>
+			<name>OpenMRS PIH Module Snapshots</name>
+			<url>https://openmrs.jfrog.io/artifactory/modules-pih-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
