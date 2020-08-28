@@ -24,14 +24,14 @@
 
 	<distributionManagement>
 		<repository>
-			<id>openmrs-repo-modules-pih</id>
-			<name>OpenMRS PIH Modules</name>
-			<url>https://openmrs.jfrog.io/artifactory/modules-pih/</url>
+			<id>openmrs-repo-modules-rwandaemr</id>
+			<name>rwandaemr-artifactory-primary-0-releases</name>
+			<url>https://rwandaemr.jfrog.io/artifactory/libs-release</url>
 		</repository>
 		<snapshotRepository>
-			<id>openmrs-repo-modules-pih-snapshots</id>
-			<name>OpenMRS PIH Module Snapshots</name>
-			<url>https://openmrs.jfrog.io/artifactory/modules-pih-snapshots/</url>
+			<id>openmrs-repo-modules-rwandaemr-snapshots</id>
+			<name>rwandaemr-artifactory-primary-0-snapshots</name>
+			<url>https://rwandaemr.jfrog.io/artifactory/libs-snapshot</url>
 		</snapshotRepository>
 	</distributionManagement>
 
