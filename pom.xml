@@ -4,7 +4,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>laboratorymanagement</artifactId>
-	<version>0.1.0.14-SNAPSHOT</version>
+	<version>0.1.0.15-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Laboratory Managment</name>
 	<description>Parent project for Laboratory Managment</description>

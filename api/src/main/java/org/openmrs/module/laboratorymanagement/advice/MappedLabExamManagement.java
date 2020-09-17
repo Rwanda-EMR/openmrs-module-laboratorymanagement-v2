@@ -118,6 +118,8 @@ public class MappedLabExamManagement {
 
 		// Initilializes an integer array of length 2 where the first element is
 		// 7005, second element is 7006 and so on.
+		// labExamCategory: 8004,7222,7192,7244,7265,7243,7835,105411,105417,105406
+		//LabExamsToOrder:8004,7836,7265,7243,7244,7835,7192,7222,7217,7193,7918,8046,7991,7202,105411,105417,105406,7202,9579,10023,10088,10027,10962,10611
 		//int intLabSetIds[] = { 7836, 7217, 7192, 7243, 7244, 7265, 7835, 7222 };
 		List<Obs> testWithResult = null;
 		@SuppressWarnings("unused")
@@ -172,7 +174,7 @@ public class MappedLabExamManagement {
 					labExamHistory.add(testStatus);
 				}
 				if (Context.getConceptService().getConcept(oneConceptId)
-						.getDatatype().isNumeric()) {
+						.getDatatype().isNumeric() || Context.getConceptService().getConcept(oneConceptId).getDatatype().isText()) {
 					testStatus = new Object[] {
 							cptService.getConcept(oneConceptId).getName(),
 							" - ", " - ", testWithResult.size(), oneConceptId };

@@ -161,10 +161,15 @@
 							<td><c:out value="${labExamByName.key}" /></td>
 							<td><openmrs:formatDate date="${labExamByName.value.obsDatetime}" /></td>
 							<td><c:out value="${labExamByName.value.valueNumeric}" /></td>
-
-
-
 						</c:when>
+						<c:when test="${labExamByName.value.valueText != null}">
+                        	 <td>${num.count}</td>
+                        	 <td><c:out value="${labExamByName.value.person.familyName} ${labExamByName.value.person.givenName}" /></td>
+                        	 <td><c:out value="${labExamByName.value.concept.name}" /></td>
+                        	 <td><c:out value="${labExamByName.key}" /></td>
+                        	 <td><openmrs:formatDate date="${labExamByName.value.obsDatetime}" /></td>
+                        	 <td><c:out value="${labExamByName.value.valueText}" /></td>
+                        </c:when>
 					</c:choose>
 				</tr>
 
