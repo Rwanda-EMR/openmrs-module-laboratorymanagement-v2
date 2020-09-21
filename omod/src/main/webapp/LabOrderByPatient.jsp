@@ -81,7 +81,7 @@
 
 					<td><c:out value="${labOrder.orderId}" /></td>
 					<td><c:out value="${labOrder.concept.name}" /></td>
-					<td><openmrs:formatDate date="${labOrder.startDate}" /></td>
+					<td><openmrs:formatDate date="${labOrder.dateActivated}" /></td>
 
 					<td><a
 						href="${pageContext.request.contextPath}/module/laboratorymanagement/addResultToExam.form?orderId=${labOrder.orderId}&encounterId=${encounterId}">${labOrder.autoExpireDate

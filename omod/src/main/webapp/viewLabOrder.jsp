@@ -113,11 +113,11 @@
 					<tr>
 						<td><c:out value="${labOrder.concept.name}" /></td>
 						<td><c:out value="${labOrder.dateCreated}" /></td>
-						<!-- <td><openmrs:formatDate date="${labOrder.startDate}" /></td> -->
-						<td><c:out value="${labOrder.orderer.names}" /></td>
+						<!-- <td><openmrs:formatDate date="${labOrder.dateActivated}" /></td> -->
+						<td><c:out value="${labOrder.orderer.person.names}" /></td>
 						<td><c:out value="${labOrder.accessionNumber}" /></td>
-						<td><c:out value="${labOrder.creator.names}" /></td>
-						<td><c:out value="${labOrder.startDate}" /></td>
+						<td><c:out value="${labOrder.creator.person.names}" /></td>
+						<td><c:out value="${labOrder.dateActivated}" /></td>
 						<td valign="top"><a href="editLabOrder.form?orderId=${labOrder.orderId}&&startDate=${startDat}&&labcode=${labOrder.accessionNumber}&&patientId=${labOrder.patient.patientId}"><spring:message code="laboratorymanagement.edit" />
 						</a>
 					</td>
@@ -146,9 +146,9 @@
 				<td>${num.count}</td>
 				<td><c:out value="${labOrder.patient.patientId}" /></td>
 				<td><c:out value="${labOrder.concept.name}" /></td>
-				<td><c:out value="${labOrder.startDate}" /></td>
-				<!-- <td><openmrs:formatDate date="${labOrder.startDate}" /></td> -->
-				<td><c:out value="${labOrder.orderer.names}" /></td>
+				<td><c:out value="${labOrder.dateActivated}" /></td>
+				<!-- <td><openmrs:formatDate date="${labOrder.dateActivated}" /></td> -->
+				<td><c:out value="${labOrder.orderer.person.names}" /></td>
 
 			</tr>
 		</c:forEach>

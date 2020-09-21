@@ -799,14 +799,14 @@ Request Form</legend>
 			<c:forEach items="${key.value}" var="orderObs">
 				<c:if test="${empty orderObs.obss}">
 					<tr>
-						<td><openmrs:formatDate date="${orderObs.order.startDate}"
+						<td><openmrs:formatDate date="${orderObs.order.dateActivated}"
 							type="textbox" /></td>
 						<td>&nbsp;</td>
 						<td>${orderObs.order.concept.name.name}</td>
 						<td>???</td>
 						<td>${orderObs.orderStatus[0]}</td>
 						<td>No comment</td>
-						<td><openmrs:formatDate date="${orderObs.order.startDate}"
+						<td><openmrs:formatDate date="${orderObs.order.dateActivated}"
 							type="textbox" /></td>
 
 						<td><a
@@ -817,7 +817,7 @@ Request Form</legend>
 				<c:if test="${not empty orderObs.obss}">
 					<c:forEach items="${orderObs.obss}" var="obs">
 						<tr>
-							<td><openmrs:formatDate date="${orderObs.order.startDate}"
+							<td><openmrs:formatDate date="${orderObs.order.dateActivated}"
 								type="textbox" /></td>
 							<td>&nbsp;</td>
 							<td>${obs[0].concept.name.name}</td>
@@ -846,7 +846,7 @@ Request Form</legend>
 								</c:otherwise>
 							</c:choose>
 
-							<td><openmrs:formatDate date="${orderObs.order.startDate}"
+							<td><openmrs:formatDate date="${orderObs.order.dateActivated}"
 								type="textbox" /></td>
 
 							<td><a

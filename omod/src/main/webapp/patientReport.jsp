@@ -105,10 +105,10 @@
 							<td><i><c:out value="${labTest[0].comment}" /></i></td>
 							<td>---</td>
 							<td><i><c:out value="${labTest[0].accessionNumber}" /></i></td>
-							<td><i><c:out value="${labTest[0].order.startDate}" /></i></td>
+							<td><i><c:out value="${labTest[0].order.dateActivated}" /></i></td>
 							<td><i><c:out value="${labTest[0].obsDatetime}" /></i></td>
-							<td><i><c:out value="${labTest[0].order.orderer.names}" /></i></td>
-							<td><i><c:out value="${labTest[0].creator.names}" /></i></td>
+							<td><i><c:out value="${labTest[0].order.orderer.person.names}" /></i></td>
+							<td><i><c:out value="${labTest[0].creator.person.names}" /></i></td>
 						</c:when>
 						<c:when test="${labTest[0].valueNumeric != null}">
 							<td style="text-indent: 10px"><i><c:out value="${labTest[0].concept.name}" /></i></td>
@@ -116,10 +116,10 @@
 							<td><i><c:out value="${labTest[0].comment}" /></i></td>
 							<td><i><c:out value="${labTest[1]}" /></i></td>
 							<td><i><c:out value="${labTest[0].accessionNumber}" /></i></td>
-							<td><i><c:out value="${labTest[0].order.startDate}" /></i></td>
+							<td><i><c:out value="${labTest[0].order.dateActivated}" /></i></td>
                             <td><i><c:out value="${labTest[0].obsDatetime}" /></i></td>
-                            <td><i><c:out value="${labTest[0].order.orderer.names}" /></i></td>
-                            <td><i><c:out value="${labTest[0].creator.names}" /></i></td>
+                            <td><i><c:out value="${labTest[0].order.orderer.person.names}" /></i></td>
+                            <td><i><c:out value="${labTest[0].creator.person.names}" /></i></td>
 						</c:when>
 						<c:when test="${labTest[0].valueText != null}">
 							<td style="text-indent: 10px"><i><c:out value="${labTest[0].concept.name}" /></i></td>
@@ -127,10 +127,10 @@
 							<td><i><c:out value="${labTest[0].comment}" /></i></td>
 							<td>---</td>
 							<td><i><c:out value="${labTest[0].accessionNumber}" /></i></td>
-							<td><i><c:out value="${labTest[0].order.startDate}" /></i></td>
+							<td><i><c:out value="${labTest[0].order.dateActivated}" /></i></td>
                             <td><i><c:out value="${labTest[0].obsDatetime}" /></i></td>
-                            <td><i><c:out value="${labTest[0].order.orderer.names}" /></i></td>
-                            <td><i><c:out value="${labTest[0].creator.names}" /></i></td>
+                            <td><i><c:out value="${labTest[0].order.orderer.person.names}" /></i></td>
+                            <td><i><c:out value="${labTest[0].creator.person.names}" /></i></td>
 						</c:when>
 						<c:when test="${labTest[0].valueDatetime != null}">
 							<td style="text-indent: 10px"><i><c:out value="${labTest[0].concept.name}" /></i></td>
@@ -138,10 +138,10 @@
 							<td><i><c:out value="${labTest[0].comment}" /></i></td>
 							<td>---</td>
 							<td><i><c:out value="${labTest[0].accessionNumber}" /></i></td>
-							<td><i><c:out value="${labTest[0].order.startDate}" /></i></td>
+							<td><i><c:out value="${labTest[0].order.dateActivated}" /></i></td>
                             <td><i><c:out value="${labTest[0].obsDatetime}" /></i></td>
-                            <td><i><c:out value="${labTest[0].order.orderer.names}" /></i></td>
-                            <td><i><c:out value="${labTest[0].creator.names}" /></i></td>
+                            <td><i><c:out value="${labTest[0].order.orderer.person.names}" /></i></td>
+                            <td><i><c:out value="${labTest[0].creator.person.names}" /></i></td>
 						</c:when>
 					</c:choose>
 

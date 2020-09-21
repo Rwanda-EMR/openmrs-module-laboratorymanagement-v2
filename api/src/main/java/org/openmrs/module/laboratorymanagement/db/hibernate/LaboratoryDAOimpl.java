@@ -926,7 +926,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		}
 		strbuf.append(" ) and  o.patient_id=" + patientId);
 		strbuf.append("  and  o.voided= 0 ");
-		strbuf.append("  " + " and  cast(o.start_date as date) between  '"
+		strbuf.append("  " + " and  cast(o.date_activated as date) between  '"
 				+ df.format(startDate) + "' and '" + df.format(endDate) + "'");
 		query = sessionFactory.getCurrentSession().createSQLQuery(
 				strbuf.toString());
@@ -960,7 +960,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		StringBuffer strbuf = new StringBuffer();
 		strbuf.append("SELECT  o.order_id  FROM orders o where o.voided=0 and o.patient_Id ="
 				+ patientId + "");
-		strbuf.append("  " + " and  cast(o.start_date as date) between  '"
+		strbuf.append("  " + " and  cast(o.date_activated as date) between  '"
 				+ df.format(startDate) + "' and '" + df.format(enddate) + "'");
 
 		query = sessionFactory.getCurrentSession().createSQLQuery(
@@ -988,7 +988,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		OrderService orderServic = Context.getOrderService();
 		StringBuffer strbuf = new StringBuffer();
 		strbuf.append("SELECT  o.order_id  FROM orders o where  o.voided=0 and " + "");
-		strbuf.append("  " + "  cast(o.start_date as date) between  '"
+		strbuf.append("  " + "  cast(o.date_activated as date) between  '"
 				+ df.format(startDate) + "' and '" + df.format(enddate) + "'");
 
 		query = sessionFactory.getCurrentSession().createSQLQuery(
@@ -1069,7 +1069,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		StringBuffer strbuf = new StringBuffer();
 		strbuf.append("SELECT  o.order_id  FROM orders o where o.patient_Id ="
 				+ patientId + "");
-		strbuf.append("  " + " and   cast(o.start_date as date) between  '"
+		strbuf.append("  " + " and   cast(o.date_activated as date) between  '"
 				+ df.format(startDate) + "' and '" + df.format(endDate) + "'");
 
 		query = sessionFactory.getCurrentSession().createSQLQuery(
