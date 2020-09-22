@@ -355,16 +355,13 @@ public class LabUtils {
 			labOrder.setAction(Action.NEW);
 			labOrder.setEncounter(labEncounter); 
 
-			OrderContext orderCtxt = new OrderContext();
-			final String expectedOrderNumber = "Testing";
-			orderCtxt.setAttribute(MoHTimestampOrderNumberGenerator.NEXT_ORDER_NUMBER, expectedOrderNumber);
 			//billingConceptItems.add(Context.getConceptService().getConcept(Integer.parseInt(SingleLabConceptIdstr)));
 
 			// labOrder.setAccessionNumber(accessionNumber);
 			labOrder.setOrderType(Context.getOrderService().getOrderType(Integer.parseInt(GlobalPropertiesMgt
 					.getLabOrderTypeId())));
 			try {
-				Context.getOrderService().saveOrder(labOrder, orderCtxt);
+				Context.getOrderService().saveOrder(labOrder, getOrderContext());
 			} catch (Exception e) {
 				log.error("There was an error saving the Order" +e);
 			}
@@ -373,6 +370,12 @@ public class LabUtils {
 		//CreateBillOnSaveLabAndPharmacyOrders.createBillOnSaveLabOrders(billingConceptItems,patient);
 	}
 
+	public static OrderContext getOrderContext () {
+		OrderContext orderCtxt = new OrderContext();
+		final String expectedOrderNumber = "Testing";
+		orderCtxt.setAttribute(MoHTimestampOrderNumberGenerator.NEXT_ORDER_NUMBER, expectedOrderNumber);
+		return orderCtxt;
+	}
 	/**
 	 * Finds Lab orders by patient to whom Lab orders are ordered*
 	 * 
@@ -500,27 +503,11 @@ public class LabUtils {
 				.getService(LaboratoryService.class);
 		Collection<Order> labOrders = laboratoryService
 				.getLabOrdersBetweentwoDate(patientId, startDate, endDate);
-		// Create the lab Encounter
-		Encounter labEncounter = getLabEncounter(patientId, startDate);
-		Context.getEncounterService().saveEncounter(labEncounter);
+		log.error("============="+labOrders.size());
 		for (Order laborder : labOrders) {
-			laborder.setAccessionNumber(labCode);
-			laborder.setPatient(laborder.getPatient());
-			//laborder.setStartDate(laborder.getStartDate());
-			laborder.setDateActivated(new Date());
-			laborder.setCreator(Context.getAuthenticatedUser());
-			laborder.setEncounter(labEncounter);
-			Context.getOrderService().saveOrder(laborder, null);
+			laboratoryService.addLabCodeToOrders(laborder, labCode);
 			log.info(">>>>>>>Rulindo >lab order start date>>>"
 					+ laborder.getDateActivated() + " and lab code" + labCode);
-			// get conceptSet
-			Collection<ConceptSet> childCptSet = laborder.getConcept()
-					.getConceptSets();
-
-			if (childCptSet != null) {
-
-			}
-
 		}
 
 	}

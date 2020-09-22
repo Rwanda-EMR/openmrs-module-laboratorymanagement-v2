@@ -42,24 +42,25 @@ import org.openmrs.EncounterType;
 import org.openmrs.Obs;
 import org.openmrs.Order;
 import org.openmrs.Patient;
-
 import org.openmrs.Person;
+import org.openmrs.api.APIException;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.ObsService;
 import org.openmrs.api.OrderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.laboratorymanagement.advice.HeaderFooterMgt;
 import org.openmrs.module.laboratorymanagement.db.LaboratoryDAO;
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.pdf.FontSelector;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -138,6 +139,18 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 			log.error(e);
 		}
 
+	}
+	
+	public void addLabCodeToOrders(Order order, String labCode) {
+		String sb = new String();
+		sb = "update orders  set  accession_number=" + labCode
+				+ " where order_id=" + order.getOrderId();
+		int updated = sessionFactory.getCurrentSession()
+				.createSQLQuery(sb)
+				.executeUpdate();
+		if (updated != 1) {
+			throw new APIException("Error setting accession numer on order");
+		}
 	}
 
 	public List<EncounterType> getAllEncounterType() {

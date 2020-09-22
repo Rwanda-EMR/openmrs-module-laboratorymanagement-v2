@@ -86,18 +86,9 @@ public class ViewLabOrderController extends ParameterizableViewController {
 			}
 			if(request.getParameter("edit") != null){
 				String labCode =request.getParameter("labCode");
-				Date startDat = LaboratoryMgt.getRightDate(request, "startDate");
-				Encounter labEncounter = LabUtils.getLabEncounter(patientId,startDat);
-				Context.getEncounterService().saveEncounter(labEncounter);
 				int orderId = ServletRequestUtils.getIntParameter(request, "orderId");
-	            Order labOrder =Context.getOrderService().getOrder(orderId);
-
-	            labOrder.setAccessionNumber(labCode);
-	            labOrder.setPatient(labOrder.getPatient());
-	            labOrder.setDateActivated(labOrder.getDateActivated());
-	            labOrder.setEncounter(labEncounter);
-				Context.getOrderService().saveOrder(labOrder, null);
-
+				Order labOrder =Context.getOrderService().getOrder(orderId);
+				laboratoryService.addLabCodeToOrders(labOrder, labCode);
 			}
 
 

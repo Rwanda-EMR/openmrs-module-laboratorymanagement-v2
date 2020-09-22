@@ -26,7 +26,7 @@ public interface LaboratoryService {
 
 	public List<Obs> getAllObsByLocation(int locationId);
 
-	
+	public void addLabCodeToOrders(Order laborder, String labCode);
 
 	public List<EncounterType> getAllEncounterType();
 

@@ -59,6 +59,10 @@ public class LaboratoryServiceImpl implements LaboratoryService {
 	public void getSampleCodeByPatient(int testobsId, int newObsId) {
 		laboratoryDAO.getSampleCodeByPatient(testobsId, newObsId);
 	}
+	
+	public void addLabCodeToOrders(Order order, String labCode) {
+		laboratoryDAO.addLabCodeToOrders(order, labCode);
+	}
 
 	public List<EncounterType> getAllEncounterType() {
 		// TODO Auto-generated method stub

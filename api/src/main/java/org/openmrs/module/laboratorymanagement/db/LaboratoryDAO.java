@@ -31,6 +31,8 @@ public interface LaboratoryDAO {
 	public List<Obs> getAllObsByLocation(int locationId);
 
 	public void getSampleCodeByPatient(int testobsId, int newObsId);
+	
+	public void addLabCodeToOrders(Order order, String labCode);
 
 	public List<EncounterType> getAllEncounterType();
 
