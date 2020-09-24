@@ -43,9 +43,6 @@ public class ViewLabOrderController extends ParameterizableViewController {
 		Date endDate = LaboratoryMgt.getDateParameter(request, "endDate",zeroDay);
 		// String locationIdStr=request.getParameter("locationId");	
 
-
-
-
 		LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
 		Map<Concept, Collection<Order>> mappedLabOrders = null;
 
@@ -105,16 +102,8 @@ public class ViewLabOrderController extends ParameterizableViewController {
 
 			model.put("patient", Context.getPatientService().getPatient(
 					patientId));
-
-
-			
-			
-			
 			
 		}
-
-
-
 		model.put("mappedLabOrders", mappedLabOrders);
 		model.put("startDate", startDate);
 		model.put("startDat", request.getParameter("startDate"));

@@ -343,7 +343,7 @@ public class LabUtils {
 
 			Encounter labEncounter = getLabEncounter(patient.getPatientId(), new Date());
 			Context.getEncounterService().saveEncounter(labEncounter);
-			
+
 			Order labOrder = new TestOrder();
 			labOrder.setOrderer(getProvider());
 			labOrder.setPatient(patient);
@@ -654,7 +654,7 @@ public class LabUtils {
 		for (ConceptSet setMember : setMembers) {
 			Concept childConcept = setMember.getConcept();
 
-			if (childConcept.isSet()) {
+			if (childConcept.getSet()) {
 				Collection<ConceptSet> setMemebrChildren = childConcept
 						.getConceptSets();
 				for (ConceptSet mbrCpt : setMemebrChildren) {
@@ -686,7 +686,7 @@ public class LabUtils {
 
 			labOrderParent.setGrandFatherConcept(concept);
 			// if grand father is set,run through members as parent concepts
-			if (concept.isSet()) {
+			if (concept.getSet()) {
 				// get children cpts
 				Collection<ConceptSet> concSet = concept.getConceptSets();
 				List<LabOrder> lo = new ArrayList<LabOrder>();
@@ -694,7 +694,7 @@ public class LabUtils {
 					labOrder = new LabOrder();
 					labOrder.setParentConcept(cs.getConcept());
 					// if parent is set run through children
-					if (cs.getConcept().isSet()) {
+					if (cs.getConcept().getSet()) {
 						// get gd children
 						List<ConceptSet> parentConcept = Context
 								.getConceptService().getConceptSetsByConcept(
@@ -734,7 +734,7 @@ public class LabUtils {
 		for (Concept everyConcept : conceptCategories) {
 			patientLabOrder.setGrandFatherConcept(everyConcept);
 
-			if (everyConcept.isSet()) {
+			if (everyConcept.getSet()) {
 
 				Collection<ConceptSet> concSet = everyConcept.getConceptSets();
 				Collection<Integer> cptsLst = new ArrayList<Integer>();
@@ -747,7 +747,7 @@ public class LabUtils {
 					everyOrder.setParentConcept(cs.getConcept());
 					// if parent is set run through children
 
-					if (cs.getConcept().isSet()) {
+					if (cs.getConcept().getSet()) {
 						// get gd children
 						List<ConceptSet> parentConcepts = Context
 								.getConceptService().getConceptSetsByConcept(
@@ -827,10 +827,13 @@ public class LabUtils {
 								}
 							}
 
-							ConceptNumeric cptNumeric = Context
-									.getConceptService().getConceptNumeric(
-											order.getConcept().getConceptId());
-							testStatus = new Object[] { getNormalRanges(cptNumeric) };
+							if(order.getConcept().isNumeric()) {
+								ConceptNumeric cptNumeric = Context
+										.getConceptService().getConceptNumeric(
+												order.getConcept().getConceptId());
+								testStatus = new Object[] { getNormalRanges(cptNumeric) };
+							}
+
 						}
 
 						orderObs.setObss(obsList);
@@ -979,7 +982,7 @@ public class LabUtils {
 		List<Object[]> orderHistoryList = new ArrayList<Object[]>();
 		for (ConceptSet conceptSet : cptSets) {			
 			Concept cpt = conceptSet.getConcept();
-			if(cpt.isSet()){				
+			if(cpt.getSet()){				
 
 				for (ConceptSet cptSt : cpt.getConceptSets()) {					
 					Concept concept = cptSt.getConcept();					
@@ -1018,7 +1021,7 @@ public class LabUtils {
 			orderHistory = new Object[] { cpt };
 		}
 
-		if (cpt.isSet()) {
+		if (cpt.getSet()) {
 			orderHistory = new Object[] { cpt };
 
 		}
@@ -1183,7 +1186,7 @@ public class LabUtils {
 
 				if (childrenConceptIds.contains(conceptId)) {
 
-					if (cpt.isSet()) {
+					if (cpt.getSet()) {
 
 						Collection<Integer> cptsCollection = getConceptIdChilren(conceptId);
 
@@ -1310,7 +1313,7 @@ public class LabUtils {
 
 				if (childrenConceptIds.contains(conceptId)) {
 
-					if (cpt.isSet()) {
+					if (cpt.getSet()) {
 
 						Collection<Integer> cptsCollection = getConceptIdChilren(conceptId);
 
