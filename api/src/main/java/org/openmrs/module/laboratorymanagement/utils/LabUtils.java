@@ -503,11 +503,11 @@ public class LabUtils {
 				.getService(LaboratoryService.class);
 		Collection<Order> labOrders = laboratoryService
 				.getLabOrdersBetweentwoDate(patientId, startDate, endDate);
-		log.error("============="+labOrders.size());
 		for (Order laborder : labOrders) {
 			laboratoryService.addLabCodeToOrders(laborder, labCode);
 			log.info(">>>>>>>Rulindo >lab order start date>>>"
 					+ laborder.getDateActivated() + " and lab code" + labCode);
+			laborder.setAccessionNumber(labCode); //Jut for the UI
 		}
 
 	}

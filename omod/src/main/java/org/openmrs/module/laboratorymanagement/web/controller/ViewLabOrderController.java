@@ -86,6 +86,7 @@ public class ViewLabOrderController extends ParameterizableViewController {
 				int orderId = ServletRequestUtils.getIntParameter(request, "orderId");
 				Order labOrder =Context.getOrderService().getOrder(orderId);
 				laboratoryService.addLabCodeToOrders(labOrder, labCode);
+				labOrder.setAccessionNumber(labCode); //Jut for the UI
 			}
 
 
