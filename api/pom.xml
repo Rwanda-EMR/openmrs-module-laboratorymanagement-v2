@@ -11,43 +11,4 @@
 	<name>Laboratory Managment API</name>
 	<description>API project for Laboratory Management</description>
 
-	<dependencies>
-		<!-- Add other dependencies from lib: <dependency> <groupId>org.other.library</groupId>
-			<artifactId>library-name</artifactId> </dependency> -->
-
-		<dependency>
-			<groupId>org.openmrs.api</groupId>
-			<artifactId>openmrs-api</artifactId>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.openmrs.web</groupId>
-			<artifactId>openmrs-web</artifactId>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>com.itextpdf</groupId>
-			<artifactId>itextpdf</artifactId>
-			<version>5.0.6</version>
-		</dependency>
-		<dependency>
-			<groupId>org.openmrs.module</groupId>
-			<artifactId>mohappointment-api</artifactId>
-			<version>0.3-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.openmrs.module</groupId>
-			<artifactId>mohbilling-api</artifactId>
-			<version>0.0.4.7-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-            <groupId>org.openmrs.module</groupId>
-            <artifactId>legacyui-omod</artifactId>
-            <version>1.6.0</version>
-            <scope>provided</scope>
-        </dependency>
-	</dependencies>
-
 </project>

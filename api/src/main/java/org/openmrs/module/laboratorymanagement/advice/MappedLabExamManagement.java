@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
 import org.openmrs.ConceptNumeric;
@@ -106,8 +104,7 @@ public class MappedLabExamManagement {
 
 	}
 
-	public static Map<ConceptName, List<Object[]>> getMappedExamsByLabTypeBetweenTwoDates(
-			HttpServletRequest request, Date startDate, Date endDate) {
+	public static Map<ConceptName, List<Object[]>> getMappedExamsByLabTypeBetweenTwoDates(Date startDate, Date endDate) {
 		ConceptService cptService = Context.getConceptService();
 		Map<ConceptName, List<Object[]>> mappedLabExam = new HashMap<ConceptName, List<Object[]>>();
 		List<Obs> positiveLabExams = null;

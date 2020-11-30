@@ -1,4 +1,4 @@
-package org.openmrs.module.laboratorymanagement.extension.html;
+package org.openmrs.module.laboratorymanagement.web.html;
 
 import org.openmrs.module.web.extension.PatientDashboardTabExt;
 

@@ -15,7 +15,7 @@ import org.openmrs.ConceptName;
 
 import org.openmrs.api.context.Context;
 
-import org.openmrs.module.laboratorymanagement.utils.LabUtils;
+import org.openmrs.module.laboratorymanagement.web.LabUtils;
 
 import org.openmrs.util.OpenmrsUtil;
 import org.springframework.web.servlet.ModelAndView;

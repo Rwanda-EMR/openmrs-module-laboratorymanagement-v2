@@ -1,29 +1,19 @@
 package org.openmrs.module.laboratorymanagement.impl;
 
-import java.io.IOException;
-
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
-import org.openmrs.ConceptName;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Obs;
 import org.openmrs.Order;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.laboratorymanagement.service.LaboratoryService;
 import org.openmrs.module.laboratorymanagement.db.LaboratoryDAO;
-
-import com.itextpdf.text.DocumentException;
+import org.openmrs.module.laboratorymanagement.service.LaboratoryService;
 
 
 public class LaboratoryServiceImpl implements LaboratoryService {
@@ -67,15 +57,11 @@ public class LaboratoryServiceImpl implements LaboratoryService {
 	public List<EncounterType> getAllEncounterType() {
 		// TODO Auto-generated method stub
 		return laboratoryDAO.getAllEncounterType();
-
 	}
 
 	public List<Obs> getPatientTestBeforeDate(Date startDate,Date endDate) {
 		return laboratoryDAO.getPatientTestBeforeDate(startDate,endDate);
 	}
-
-	
-	
 
 	public List<Obs> getTestOfPatientBetweenTwoDate(int patientId,
 			Date startDate, Date endDate) {
@@ -108,14 +94,6 @@ public class LaboratoryServiceImpl implements LaboratoryService {
 		return laboratoryDAO. getPatientLabtestByLocation(patientId,locationId,	conceptId);
 	}
 
-	public void exportToPDF(HttpServletRequest request,
-			HttpServletResponse response, List<Object[]>listOflabtest,
-			 String filename,String title,int conceptId ) throws DocumentException, IOException {
-		// TODO Auto-generated method stub
-		laboratoryDAO.exportToPDF(request,response, listOflabtest,
-				 title, title,conceptId );
-	}
-
 	public List<Obs> getAllLabTest(Integer labConceptId) {
 		// TODO Auto-generated method stub
 		return laboratoryDAO.getAllLabTest(labConceptId);
@@ -130,16 +108,6 @@ public class LaboratoryServiceImpl implements LaboratoryService {
 	public List<Obs> getLabExamsByExamTypeBetweenTwoDates(Date startDate,Date endDate,Integer conceptId) {
 		// TODO Auto-generated method stub
 		return  laboratoryDAO.getLabExamsByExamTypeBetweenTwoDates(startDate,endDate,conceptId);
-	}
-
-	public void exportPatientReportToPDF(HttpServletRequest request,
-	HttpServletResponse response, Map<ConceptName, List<Object[]>> mappedLabExam,
-	String filename, String title,int patientId ) throws DocumentException, IOException {
-		
-		// TODO Auto-generated method stub
-		 laboratoryDAO.exportPatientReportToPDF(request, response, mappedLabExam,
-					 filename, title,patientId);
-		
 	}
 
 	@Override

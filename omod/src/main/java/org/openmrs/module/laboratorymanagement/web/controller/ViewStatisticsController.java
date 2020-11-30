@@ -102,7 +102,7 @@ public class ViewStatisticsController extends ParameterizableViewController {
 
 				testTakenbetweenTwoDates = LaboratoryMgt
 						.getAllTestWithSpecificConcept(allTestWithResult,conceptId);
-				listOflabtest=LaboratoryMgt.getHistoryOfLabTests(testTakenbetweenTwoDates,request);
+				listOflabtest=LaboratoryMgt.getHistoryOfLabTests(testTakenbetweenTwoDates);
 				request.getSession().setAttribute("labTakentestconcept", listOflabtest);
 				labTestMap.put(cpt, listOflabtest.size());
 				if (startDate != null && endDate != null) {
@@ -151,16 +151,13 @@ public class ViewStatisticsController extends ParameterizableViewController {
 			int i=0;
 			for (Integer labConceptId : labconceptIds) {		
 				
-				mappedLabConcepts.put(cptService.getConcept(labConceptId),LaboratoryMgt. getHistoryOfLabTests(LaboratoryMgt.getAllTestWithResult(laboratoryService.getAllLabTest(labConceptId)), request).size());						
-				request.getSession().setAttribute("labTest_"+i,LaboratoryMgt.getHistoryOfLabTests(LaboratoryMgt.getAllTestWithResult(laboratoryService.getAllLabTest(labConceptId)), request));	
+				mappedLabConcepts.put(cptService.getConcept(labConceptId),LaboratoryMgt.getHistoryOfLabTests(LaboratoryMgt.getAllTestWithResult(laboratoryService.getAllLabTest(labConceptId))).size());
+				request.getSession().setAttribute("labTest_"+i,LaboratoryMgt.getHistoryOfLabTests(LaboratoryMgt.getAllTestWithResult(laboratoryService.getAllLabTest(labConceptId))));
 				//System.out.println("the history of lab test>>>>>>>>>>"+LaboratoryMgt.getHistoryOfLabTests(LaboratoryMgt.getAllTestWithResult(laboratoryService.getAllLabTest(labConceptId)), request));			
 				
 				i++;
 			
 			}
-			
-			
-			
 
 			//Map<Concept, Integer> mappedLabConcepts = LaboratoryMgt	.getMappedLabConcepts(request);
 			model1.put("mappedLabExams", mappedLabConcepts);

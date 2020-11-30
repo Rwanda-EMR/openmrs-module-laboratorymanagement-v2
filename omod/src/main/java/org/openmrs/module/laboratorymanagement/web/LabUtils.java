@@ -1,4 +1,4 @@
-package org.openmrs.module.laboratorymanagement.utils;
+package org.openmrs.module.laboratorymanagement.web;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,10 +42,11 @@ import org.openmrs.module.laboratorymanagement.OrderObs;
 import org.openmrs.module.laboratorymanagement.PatientLabOrder;
 import org.openmrs.module.laboratorymanagement.advice.LaboratoryMgt;
 import org.openmrs.module.laboratorymanagement.service.LaboratoryService;
+import org.openmrs.module.laboratorymanagement.utils.GlobalPropertiesMgt;
+import org.openmrs.module.laboratorymanagement.utils.MoHTimestampOrderNumberGenerator;
 import org.openmrs.module.mohappointment.model.Appointment;
 import org.openmrs.module.mohappointment.model.Services;
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
-import org.openmrs.module.mohbilling.automation.CreateBillOnSaveLabAndPharmacyOrders;
 import org.openmrs.util.OpenmrsConstants;
 
 public class LabUtils {
