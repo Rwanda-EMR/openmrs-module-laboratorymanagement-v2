@@ -40,9 +40,7 @@ public class ViewMonthlyReportController extends ParameterizableViewController {
 			endDate = df.parse(endDat);
 		}
 		if (startDate != null && endDate != null) {
-			mappedLabExam = MappedLabExamManagement
-					.getMappedExamsByLabTypeBetweenTwoDates(request, startDate,
-							endDate);
+			mappedLabExam = MappedLabExamManagement.getMappedExamsByLabTypeBetweenTwoDates(startDate, endDate);
 
 			model.put("mappedLabExams", mappedLabExam);
 			model.put("startDate", startDat);

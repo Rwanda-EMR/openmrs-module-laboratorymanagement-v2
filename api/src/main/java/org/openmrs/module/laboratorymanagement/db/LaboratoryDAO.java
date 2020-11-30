@@ -1,23 +1,15 @@
 package org.openmrs.module.laboratorymanagement.db;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.openmrs.Concept;
-import org.openmrs.ConceptName;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Obs;
 import org.openmrs.Order;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.itextpdf.text.DocumentException;
 
 @Transactional
 public interface LaboratoryDAO {
@@ -51,9 +43,6 @@ public interface LaboratoryDAO {
 
 	public List<Obs> getPatientLabtestByLocation(int patientId, int locationId,
 			int conceptId);
-	public void exportToPDF(HttpServletRequest request,
-			HttpServletResponse response, List<Object[]>listOflabtest,
-			 String filename,String title,int conceptId ) throws DocumentException, IOException;
 
 	public List<Obs> getAllLabTest(Integer labConceptId);
 
@@ -61,10 +50,6 @@ public interface LaboratoryDAO {
 			Collection<Integer> cptIds,Date startDate,Date endDate);
 
 	public List<Obs> getLabExamsByExamTypeBetweenTwoDates(Date startDate,Date endDate,Integer conceptId);
-
-	public void exportPatientReportToPDF(HttpServletRequest request,
-			HttpServletResponse response,Map<ConceptName, List<Object[]>> mappedLabExam,
-			String filename, String title,int patientId ) throws DocumentException, IOException;
 
 	public List<Obs> getAllNegtiveLabExams(Date startDate, Date endDate,
 			int conceptId);

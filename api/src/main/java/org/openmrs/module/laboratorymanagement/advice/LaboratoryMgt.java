@@ -8,25 +8,19 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
-
 import org.openmrs.ConceptSet;
 import org.openmrs.EncounterType;
 import org.openmrs.GlobalProperty;
 import org.openmrs.Obs;
 import org.openmrs.Order;
-
 import org.openmrs.api.context.Context;
-
 import org.openmrs.module.laboratorymanagement.service.LaboratoryService;
 
 
@@ -59,25 +53,6 @@ public class LaboratoryMgt {
 		return cal.getTime();
 	}
 
-	public static Date getDateParameter(HttpServletRequest request,
-			String name, Date def) throws java.text.ParseException {
-		String strDate = request.getParameter(name);
-		
-
-		if (strDate != null) {
-			try {
-				return Context.getDateFormat().parse(strDate);
-			} catch (Exception e) {
-				// TODO: handle exception
-
-			}
-
-		}
-
-		return def;
-	}
-
-
 	public static Collection<Concept> getAllRequiredLabConcepts(
 			Collection<ConceptSet> setMemebers) {
 		Collection<Concept> concepts = new ArrayList<Concept>();
@@ -85,14 +60,12 @@ public class LaboratoryMgt {
 			concepts.add(setMemeber.getConcept());
 
 		}
-
 		return concepts;
-
 	}
 
 	/**
 	 * get all tests with results
-	 * @param List<Obs> patientObservations 
+	 * @param patientObservations
 	 * @return List<Obs>
 	 */
 	public static List<Obs> getAllTestWithResult(List<Obs> patientObservations) {		
@@ -356,13 +329,12 @@ public class LaboratoryMgt {
 
 	// display the name of all lab tets(Patient name,exams,date
 	// d'observation,reslts)
-	public static List<Object[]> getHistoryOfLabTests(List<Obs> labTests,HttpServletRequest request) {
+	public static List<Object[]> getHistoryOfLabTests(List<Obs> labTests) {
 		List<Object[]> listOflabtest = new ArrayList<Object[]>();
 		Object labTest[] = null;
 		int i=0;
 		for (Obs labtst : labTests) {
 			int personId = labtst.getPersonId();
-
 			if (labtst.getConcept().getDatatype().isCoded()) {
 				labTest = new Object[] {
 						Context.getPersonService().getPerson(personId), labtst,
@@ -387,12 +359,10 @@ public class LaboratoryMgt {
 						labtst.getValueDatetime() };
 				listOflabtest.add(labTest);
 			}
-
 		}
-		
 		return listOflabtest;
-
 	}
+
 	public static EncounterType getEncounterTypeByService(){
 		List<EncounterType> typeOfEncounter=Context.getEncounterService().getAllEncounterTypes(true);
 		return null;
@@ -431,28 +401,6 @@ public class LaboratoryMgt {
 		}
 		
 		return ret;
-	}
-	
-	/**
-	 * Utility method to get a parsed date parameter
-	 * 
-	 * @param request the HTTP request object
-	 * @param name the name of the date parameter
-	 * @param def the default value if parameter doesn't exist or is invalid
-	 * @return the date
-	 */
-	public  static Date getRightDate(HttpServletRequest request,String name) {
-		
-		String strDate = request.getParameter(name);
-		if (strDate != null) {
-			try {
-				return Context.getDateFormat().parse(strDate);
-			}
-			catch (Exception ex) {
-				//log.warn("Invalid date format: " + strDate);
-			}
-		}
-		return null;
 	}
 	
 	public  static Obs getTheExistingObsByLabOrder(Order labOrder,	Concept cpt){

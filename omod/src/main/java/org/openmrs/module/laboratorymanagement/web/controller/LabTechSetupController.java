@@ -1,15 +1,12 @@
 package org.openmrs.module.laboratorymanagement.web.controller;
 
 import org.openmrs.GlobalProperty;
-import org.openmrs.Order;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.laboratorymanagement.utils.LabUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 

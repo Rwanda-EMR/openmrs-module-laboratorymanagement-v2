@@ -12,12 +12,11 @@ import org.openmrs.Patient;
 import org.openmrs.User;
 import org.openmrs.api.OrderService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.laboratorymanagement.LabOrder;
 import org.openmrs.module.laboratorymanagement.LabOrderParent;
 import org.openmrs.module.laboratorymanagement.OrderObs;
 import org.openmrs.module.laboratorymanagement.advice.LabTestConstants;
 import org.openmrs.module.laboratorymanagement.utils.GlobalPropertiesMgt;
-import org.openmrs.module.laboratorymanagement.utils.LabUtils;
+import org.openmrs.module.laboratorymanagement.web.LabUtils;
 import org.openmrs.module.mohappointment.model.Appointment;
 
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;

@@ -1,22 +1,14 @@
 package org.openmrs.module.laboratorymanagement.service;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.openmrs.Concept;
-import org.openmrs.ConceptName;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Obs;
 import org.openmrs.Order;
-
-import com.itextpdf.text.DocumentException;
 
 public interface LaboratoryService {
 
@@ -67,20 +59,12 @@ public interface LaboratoryService {
 	public List<Obs>getAllNegtiveLabExams(Date startDate,Date endDate,int conceptId);
 	public List<Obs>getAllPositiveLabExams(Date startDate,Date endDate,int conceptId);
 
-	public void exportToPDF(HttpServletRequest request,
-			HttpServletResponse response, List<Object[]> listOflabtest,
-			String filename, String title, int conceptId)
-			throws DocumentException, IOException;
-
-	public void exportPatientReportToPDF(HttpServletRequest request,
-			HttpServletResponse response, Map<ConceptName, List<Object[]>> mappedLabExam,
-			String filename, String title,int patientId) throws DocumentException, IOException;
 /**
  * 
  * Auto generated method comment
  * 
  * @param patientId
- * @param cptsLst
+ * @param cptIds
  * @param startDate
  * @param enddate
  * @return

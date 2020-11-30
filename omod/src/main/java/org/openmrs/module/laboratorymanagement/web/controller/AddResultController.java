@@ -21,7 +21,7 @@ import org.openmrs.api.context.Context;
 
 import org.openmrs.module.laboratorymanagement.service.LaboratoryService;
 import org.openmrs.module.laboratorymanagement.utils.GlobalPropertiesMgt;
-import org.openmrs.module.laboratorymanagement.utils.LabUtils;
+import org.openmrs.module.laboratorymanagement.web.LabUtils;
 
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;

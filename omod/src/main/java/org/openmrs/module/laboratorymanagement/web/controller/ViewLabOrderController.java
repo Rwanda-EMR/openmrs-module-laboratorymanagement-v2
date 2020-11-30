@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
-import org.openmrs.Encounter;
 import org.openmrs.Order;
 
 import org.openmrs.api.context.Context;
@@ -19,7 +18,7 @@ import org.openmrs.module.laboratorymanagement.advice.LaboratoryMgt;
 import org.openmrs.module.laboratorymanagement.service.LaboratoryService;
 
 import org.openmrs.module.laboratorymanagement.utils.GlobalPropertiesMgt;
-import org.openmrs.module.laboratorymanagement.utils.LabUtils;
+import org.openmrs.module.laboratorymanagement.web.LabUtils;
 import org.openmrs.module.mohappointment.model.Appointment;
 import org.openmrs.module.mohappointment.model.Services;
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
@@ -37,10 +36,8 @@ public class ViewLabOrderController extends ParameterizableViewController {
 		Date zeroDay = LaboratoryMgt.addDaysToDate(lastMidnight, 0);
 		
 		String patientIdStr = request.getParameter("patientId");
-		Date startDate = LaboratoryMgt.getDateParameter(request, "startDate", lastMidnight);
-		
-		
-		Date endDate = LaboratoryMgt.getDateParameter(request, "endDate",zeroDay);
+		Date startDate = getDateParameter(request, "startDate", lastMidnight);
+		Date endDate = getDateParameter(request, "endDate",zeroDay);
 		// String locationIdStr=request.getParameter("locationId");	
 
 		LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
@@ -110,5 +107,17 @@ public class ViewLabOrderController extends ParameterizableViewController {
 		model.put("startDat", request.getParameter("startDate"));
 		model.put("enddate", endDate);
 		return new ModelAndView(getViewName(), model);
+	}
+
+	private static Date getDateParameter(HttpServletRequest request, String name, Date def) {
+		String strDate = request.getParameter(name);
+		if (strDate != null) {
+			try {
+				return Context.getDateFormat().parse(strDate);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		return def;
 	}
 }
