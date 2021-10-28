@@ -355,7 +355,7 @@ public class LabUtils {
 			labOrder.setAction(Action.NEW);
 			labOrder.setEncounter(labEncounter); 
 
-			//billingConceptItems.add(Context.getConceptService().getConcept(Integer.parseInt(SingleLabConceptIdstr)));
+			billingConceptItems.add(Context.getConceptService().getConcept(Integer.parseInt(SingleLabConceptIdstr)));
 
 			// labOrder.setAccessionNumber(accessionNumber);
 			labOrder.setOrderType(Context.getOrderService().getOrderType(Integer.parseInt(GlobalPropertiesMgt
@@ -367,7 +367,7 @@ public class LabUtils {
 			}
 
 		}
-		//CreateBillOnSaveLabAndPharmacyOrders.createBillOnSaveLabOrders(billingConceptItems,patient);
+		CreateBillOnSaveLabAndPharmacyOrders.createBillOnSaveLabOrders(billingConceptItems,patient);
 	}
 
 	public static OrderContext getOrderContext () {
@@ -1288,7 +1288,7 @@ public class LabUtils {
 
 	}
 
-	public  static Object[] getPatientIdentificationFromLab(int patientId,Date startDate, Date endDate){
+	/*public  static Object[] getPatientIdentificationFromLab(int patientId,Date startDate, Date endDate){
 
 		ConceptService cptService = Context.getConceptService();
 		LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
@@ -1349,5 +1349,5 @@ public class LabUtils {
 
 		return patientIdentifElement ;
 
-	}
+	}*/
 }
