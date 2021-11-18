@@ -143,8 +143,8 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 	
 	public void addLabCodeToOrders(Order order, String labCode) {
 		String sb = new String();
-		sb = "update orders  set  accession_number=" + labCode
-				+ " where order_id=" + order.getOrderId();
+		sb = "update orders  set  accession_number='" + labCode
+				+ "' where order_id=" + order.getOrderId();
 		int updated = sessionFactory.getCurrentSession()
 				.createSQLQuery(sb)
 				.executeUpdate();
