@@ -22,8 +22,8 @@
 	<require_version>${openMRSVersion}</require_version>
 	  
 	<require_modules>
-       <require_module version="0.0.8">org.openmrs.module.mohappointment</require_module>
-		<require_module version="0.0.4.7-SNAPSHOT">org.openmrs.module.mohbilling</require_module>
+       <require_module version="0.3-SNAPSHOT">org.openmrs.module.mohappointment</require_module>
+		<require_module version="2.0.0-SNAPSHOT">org.openmrs.module.mohbilling</require_module>
 	</require_modules>
 
 	<aware_of_modules>
@@ -204,6 +204,11 @@
 		<property>laboratorymanagement.currentLabRequestFormConceptIDs</property>
 		<defaultValue></defaultValue>
 		<description>Will contain all concept IDs of lab exams available in Laboratory</description>
+	</globalProperty>
+	<globalProperty>
+		<property>laboratorymanagement.conceptSetsToBill</property>
+		<defaultValue>1019,1592,9720,9714,9699</defaultValue>
+		<description>Concept ids of concept set(s) to bill and match with </description>
 	</globalProperty>
 
 

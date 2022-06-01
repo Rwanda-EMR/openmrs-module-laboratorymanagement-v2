@@ -1,16 +1,7 @@
 package org.openmrs.module.laboratorymanagement.utils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -325,7 +316,7 @@ public class LabUtils {
 			Map<String, String[]> parameterMap, Patient patient) {
 		String labOrderTypeIdStr = GlobalPropertiesMgt.getLabOrderTypeId();
 		int labOrderTypeId = Integer.parseInt(labOrderTypeIdStr);
-		List<Concept> billingConceptItems=new ArrayList<Concept>();
+		Set<Concept> billingConceptItems=new HashSet<Concept>();
 		for (String parameterName : parameterMap.keySet()) {
 
 			if (!parameterName.startsWith("lab-")) {
@@ -355,7 +346,27 @@ public class LabUtils {
 			labOrder.setAction(Action.NEW);
 			labOrder.setEncounter(labEncounter); 
 
-			billingConceptItems.add(Context.getConceptService().getConcept(Integer.parseInt(SingleLabConceptIdstr)));
+			List<String> conceptSetsToBill= Arrays.asList(Context.getAdministrationService().getGlobalProperty("laboratorymanagement.conceptSetsToBill").split(","));
+			boolean labExamHasSet=false;
+			for (String s:conceptSetsToBill) {
+				System.out.println("Concept Set: "+s);
+				List<Concept> conceptSetToBill=Context.getConceptService().getConceptsByConceptSet(Context.getConceptService().getConcept(Integer.parseInt(s)));
+				System.out.println("Concept Set member size: "+conceptSetToBill.size());
+				if (conceptSetToBill.contains(Context.getConceptService().getConcept(Integer.parseInt(SingleLabConceptIdstr)))){
+					labExamHasSet=true;
+					System.out.println("The selected lab exam is found in Concept Set :"+SingleLabConceptIdstr);
+					billingConceptItems.add(Context.getConceptService().getConcept(Integer.parseInt(s)));
+					break;
+				}
+			}
+			if (labExamHasSet==false){
+				System.out.println("The selected lab exam is not found in Concept Set :"+SingleLabConceptIdstr);
+				billingConceptItems.add(Context.getConceptService().getConcept(Integer.parseInt(SingleLabConceptIdstr)));
+			}
+
+
+
+			//billingConceptItems.add(Context.getConceptService().getConcept(Integer.parseInt(SingleLabConceptIdstr)));
 
 			// labOrder.setAccessionNumber(accessionNumber);
 			labOrder.setOrderType(Context.getOrderService().getOrderType(Integer.parseInt(GlobalPropertiesMgt

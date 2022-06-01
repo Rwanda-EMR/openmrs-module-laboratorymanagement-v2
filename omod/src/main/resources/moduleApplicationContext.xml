@@ -81,6 +81,7 @@
 		class="@MODULE_PACKAGE@.web.controller.LabOrderPortletController" />
 	<bean id="labTechSetupController"
 		  class="@MODULE_PACKAGE@.web.controller.LabTechSetupController">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 	<property name="viewName">
 		<value>/module/@MODULE_ID@/labTechSetupForm</value>
 	</property>
