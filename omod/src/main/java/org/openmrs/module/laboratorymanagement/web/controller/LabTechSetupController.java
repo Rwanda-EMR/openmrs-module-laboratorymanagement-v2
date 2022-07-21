@@ -4,6 +4,8 @@ import org.openmrs.GlobalProperty;
 import org.openmrs.Order;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.laboratorymanagement.utils.LabUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
@@ -14,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LabTechSetupController extends ParameterizableViewController {
+
+	@RequestMapping(value = "module/laboratorymanagement/labTechSetup.form", method = RequestMethod.POST)
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		Map<String, Object> model = new HashMap<String, Object>();

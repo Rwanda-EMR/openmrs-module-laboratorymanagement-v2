@@ -80,7 +80,8 @@
 
 	<properties>
 		<openMRSVersion>2.5.4</openMRSVersion>
-		<mohappointmentVersion>0.3</mohappointmentVersion>
+		<mohappointmentVersion>2.0.1-SNAPSHOT</mohappointmentVersion>
+		<legacyuiVersion>1.6.0</legacyuiVersion>
 	</properties>
 
 	<build>

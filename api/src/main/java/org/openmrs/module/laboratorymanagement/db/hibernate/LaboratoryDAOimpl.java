@@ -924,7 +924,6 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		StringBuffer strbuf = new StringBuffer();
 		strbuf
 				.append("SELECT o.order_id FROM orders o where o.concept_id in ( ");
-
 		int i = 1;
 		for (Integer onecptId : cptIds) {
 			if (i < cptIds.size()) {
@@ -939,9 +938,12 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		}
 		strbuf.append(" ) and  o.patient_id=" + patientId);
 		strbuf.append("  and  o.voided= 0 ");
-		strbuf.append("  " + " and  cast(o.date_activated as date) between  '"
-				+ df.format(startDate) + "' and '" + df.format(endDate) + "'");
-		query = sessionFactory.getCurrentSession().createSQLQuery(
+		/*strbuf.append("  " + " and  cast(o.date_activated as date) between  '"
+				+ df.format(startDate) + "' and '" + df.format(endDate) + "'");*/
+
+		strbuf.append("  " + " and o.date_activated between '"
+				+ df.format(startDate) + "' and '" + df.format(endDate) + " 23:59:59'");
+	query = sessionFactory.getCurrentSession().createSQLQuery(
 				strbuf.toString());
 		System.out.println("ZZZZlaborder query" + query.toString());
 		List<Integer> oderIdsIdFromQuery = new ArrayList<Integer>();

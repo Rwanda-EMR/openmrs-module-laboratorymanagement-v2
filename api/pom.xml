@@ -34,13 +34,13 @@
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>mohappointment-api</artifactId>
-			<version>0.3-SNAPSHOT</version>
+			<version>2.0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>mohbilling-api</artifactId>
-			<version>2.0.0-SNAPSHOT</version>
+			<version>2.0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

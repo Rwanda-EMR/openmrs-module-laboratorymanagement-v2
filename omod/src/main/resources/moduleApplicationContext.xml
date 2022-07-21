@@ -72,6 +72,8 @@
 				<prop key="module/@MODULE_ID@/labTechSetup.form">labTechSetupController</prop>
 				<prop key="module/@MODULE_ID@/displayLabExams.form">displayLabExamsController</prop>
 			    <prop key="**/labOrderPortlet.portlet">labOrderPortletController</prop>
+				<prop key="**/labOrderSetupPortlet.portlet">labOrderSetupPortletController</prop>
+
 			</props>
 		</property>
 	</bean>
@@ -79,6 +81,10 @@
 	<!-- Controllers -->
 	<bean id="labOrderPortletController"
 		class="@MODULE_PACKAGE@.web.controller.LabOrderPortletController" />
+
+	<bean id="labOrderSetupPortletController"
+		  class="@MODULE_PACKAGE@.web.controller.LabOrderSetupPortletController" />
+
 	<bean id="labTechSetupController"
 		  class="@MODULE_PACKAGE@.web.controller.LabTechSetupController">
 		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
@@ -90,6 +96,7 @@
 	<bean id="labTestChartView" class="@MODULE_PACKAGE@.web.chart.EvolutionOfClientRegisteredPerDay"/>
 
 	<bean id="labChartController" class="@MODULE_PACKAGE@.web.controller.ChartStatsQueryController">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="chartViews">
 			<map>
 				<entry key="xyChartTest"><ref bean="labTestChartView" /></entry>
@@ -99,6 +106,7 @@
 	 
 	<bean id="labConfigurationController"
 		class="org.openmrs.module.laboratorymanagement.web.controller.LabConfigurationController">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
 			<value>/module/@MODULE_ID@/labConfiguration</value>
 		</property>
@@ -110,48 +118,56 @@
 		
 	<bean id="addResultController"
 		class="org.openmrs.module.laboratorymanagement.web.controller.AddResultController">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
 			<value>/module/@MODULE_ID@/addResult</value>
 		</property>
 	</bean>	
 	<bean id="viewStatisticsController"
 		class="org.openmrs.module.laboratorymanagement.web.controller.ViewStatisticsController">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
 			<value>/module/@MODULE_ID@/testStatistics</value>
 		</property>
 	</bean>
 	<bean id="viewAlltestByConceptController"
 		class="org.openmrs.module.laboratorymanagement.web.controller.ViewAlltestByConceptController">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
 			<value>/module/@MODULE_ID@/viewLabtestByConcept</value>
 		</property>
 	</bean>
 	<bean id="patientReportController"
 		class="org.openmrs.module.laboratorymanagement.web.controller.PatientReportController">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
 			<value>/module/@MODULE_ID@/patientReport</value>
 		</property>
 	</bean>
 	<bean id="viewMonthlyReportController"
 		class="org.openmrs.module.laboratorymanagement.web.controller.ViewMonthlyReportController">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
 			<value>/module/@MODULE_ID@/reportedMontly</value>
 		</property>
 	</bean>
 	<bean id="viewLabOrderController"
 		class="org.openmrs.module.laboratorymanagement.web.controller.ViewLabOrderController">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
 			<value>/module/@MODULE_ID@/viewLabOrder</value>
 		</property>
 	</bean>	
 	<bean id="addLabCodeController"
 		class="org.openmrs.module.laboratorymanagement.web.controller.AddLabCodeController">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
 			<value>/module/@MODULE_ID@/viewLabCodeForm</value>
 		</property>
 	</bean>
 	<bean id="editLabOrderController"
 		class="org.openmrs.module.laboratorymanagement.web.controller.EditLabOrderController">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
 			<value>/module/@MODULE_ID@/editLabOrder</value>
 		</property>
@@ -159,12 +175,14 @@
 	
 	<bean id="viewLabOrdersByPatient"
 		class="org.openmrs.module.laboratorymanagement.web.controller.ViewLabOrdersByPatient">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
 			<value>/module/@MODULE_ID@/LabOrderByPatient</value>
 		</property>
 	</bean>
 	<bean id="displayLabExamsController"
 		class="org.openmrs.module.laboratorymanagement.web.controller.DisplayLabExamsController">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
 			<value>/module/@MODULE_ID@/displaylabExams</value>
 		</property>

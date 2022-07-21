@@ -25,12 +25,14 @@ import org.openmrs.module.mohappointment.model.Services;
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
 import org.openmrs.web.WebConstants;
 import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 public class ViewLabOrderController extends ParameterizableViewController {
 	protected final Log log = LogFactory.getLog(getClass());
-
+	@RequestMapping(value = "module/laboratorymanagement/viewLabOrder.form", method = RequestMethod.POST)
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {		
 		Date lastMidnight = LaboratoryMgt.getPreviousMidnight(null);

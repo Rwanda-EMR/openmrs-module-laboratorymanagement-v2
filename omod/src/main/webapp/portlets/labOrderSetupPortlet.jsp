@@ -184,7 +184,7 @@
 <fieldset><legend style="cursor: pointer;">Edit Lab
 Request Form</legend>
 <div id="labOrderForm">
-<form action="labTechSetup.form" method="post">
+<form action="labTechSetup.form" method="POST">
 <div>
 <table>
 	<tr>

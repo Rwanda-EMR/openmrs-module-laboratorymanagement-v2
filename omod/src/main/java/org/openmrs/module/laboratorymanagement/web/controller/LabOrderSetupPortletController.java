@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
-@Controller
-@RequestMapping("**/labOrderSetupPortlet.portlet")
+//@Controller
+//@RequestMapping("**/labOrderSetupPortlet.portlet")
 public class LabOrderSetupPortletController extends PortletController {
 
 	@SuppressWarnings("unchecked")
