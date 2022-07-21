@@ -976,7 +976,7 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		strbuf.append("SELECT  o.order_id  FROM orders o where o.voided=0 and o.patient_Id ="
 				+ patientId + "");
 		strbuf.append("  " + " and  cast(o.date_activated as date) between  '"
-				+ df.format(startDate) + "' and '" + df.format(enddate) + "'");
+				+ df.format(startDate) + " 00:00:00' and '" + df.format(enddate) + " 23:59:59'");
 
 		query = sessionFactory.getCurrentSession().createSQLQuery(
 				strbuf.toString());

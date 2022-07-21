@@ -426,10 +426,10 @@ public class LabUtils {
 			for (ConceptSet setMember : setMembers) {
 				cptsLst.add(setMember.getConcept().getConceptId());
 			}
-
-			List<Order> labOrderslist = laboratoryService.getLabOrders(
-					patientId, cptsLst, startDate, endDate);
-
+			List<Order> labOrderslist=new ArrayList<Order>();
+			if(cptsLst.size()>0) {
+				labOrderslist = laboratoryService.getLabOrders(patientId, cptsLst, startDate, endDate);
+			}
 			if (labOrderslist.size() > 0) {
 				mappedLabOrders.put(cpt, labOrderslist);
 
