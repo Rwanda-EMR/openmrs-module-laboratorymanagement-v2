@@ -332,7 +332,7 @@
 			</c:choose>
 
 		</c:forEach></fieldset>
-	</c:forEach> <input type="submit" value="update" /> <input type="reset"
+	</c:forEach> <input type="submit" name="save" value="Update" /> <input type="submit" name="saveandnotify" value="Update and Notify" /> <input type="reset"
 		value="cancel" /></form>
 </c:if>
 <%@ include file="/WEB-INF/template/footer.jsp"%>

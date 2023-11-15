@@ -1,31 +1,27 @@
 package org.openmrs.module.laboratorymanagement.utils;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Concept;
-import org.openmrs.ConceptName;
-import org.openmrs.ConceptNumeric;
-import org.openmrs.ConceptSet;
-import org.openmrs.Encounter;
-import org.openmrs.EncounterRole;
-import org.openmrs.EncounterType;
-import org.openmrs.Location;
-import org.openmrs.Obs;
-import org.openmrs.Order;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.openmrs.*;
 import org.openmrs.Order.Action;
-import org.openmrs.Patient;
-import org.openmrs.Person;
-import org.openmrs.Provider;
-import org.openmrs.TestOrder;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.OrderContext;
 import org.openmrs.api.context.Context;
+import org.openmrs.api.db.hibernate.HibernateUtil;
 import org.openmrs.module.laboratorymanagement.EveryOrder;
 import org.openmrs.module.laboratorymanagement.LabOrder;
 import org.openmrs.module.laboratorymanagement.LabOrderParent;
@@ -37,7 +33,9 @@ import org.openmrs.module.mohappointment.model.Appointment;
 import org.openmrs.module.mohappointment.model.Services;
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
 import org.openmrs.module.mohbilling.automation.CreateBillOnSaveLabAndPharmacyOrders;
+import org.openmrs.parameter.OrderSearchCriteriaBuilder;
 import org.openmrs.util.OpenmrsConstants;
+import org.springframework.util.StringUtils;
 
 public class LabUtils {
 	protected static final Log log = LogFactory.getLog(LabUtils.class);
@@ -125,6 +123,7 @@ public class LabUtils {
 	public static void addLabresults(Map<String, String[]> parameterMap,
 			HttpServletRequest request) {
 		String comment = "";
+		Patient p= new Patient();
 		for (String parameterName : parameterMap.keySet()) {
 			String resultComments = new String("comment");
 			if (!parameterName.startsWith("labTest-")) {
@@ -173,8 +172,129 @@ public class LabUtils {
 					log.info("is this single answer (" + singleValue+ ") obs for concept " + memberConcept);
 					saveSingleResult(labOrder, singleValue, memberConcept, comment);
 				}
+				p=labOrder.getPatient();
 			}
 		}
+	}
+
+	public static void addLabresultsAndNotifyPatientWithSMS(Map<String, String[]> parameterMap,
+									 HttpServletRequest request) {
+		String comment = "";
+		Patient p= new Patient();
+		for (String parameterName : parameterMap.keySet()) {
+			String resultComments = new String("comment");
+			if (!parameterName.startsWith("labTest-")) {
+				continue;
+			}
+
+			String[] parameterValues = parameterMap.get(parameterName);
+
+			String[] splittedParameterName = parameterName.split("-");
+
+			String conceptIdStr = splittedParameterName[1];
+			String orderIdStr = splittedParameterName[2];
+			//String singleValue = parameterValues[0];
+
+			for (String singleValue : parameterValues) {
+
+
+				// if the value from select box is -2,go to the next test than
+				// continuing
+				if (singleValue.equals("-2"))
+					continue;
+				resultComments = resultComments + "-" + conceptIdStr + "-"
+						+ orderIdStr;
+
+				if (request.getParameter(resultComments) != null) {
+					comment = request.getParameter(resultComments);
+
+				}
+
+				Integer conceptId = Integer.parseInt(conceptIdStr);
+				int orderId = Integer.parseInt(orderIdStr);
+
+				// int parentConceptId=splittedParameterName.length == 4 ?
+				// Integer.parseInt(splittedParameterName[3]) : 0;
+				Order labOrder = Context.getOrderService().getOrder(orderId);
+				Concept memberConcept = Context.getConceptService().getConcept(conceptId);
+
+				// Can this order's concept take multiple answers?
+				Map<Concept, Boolean> multipleAnswerConcepts = GlobalPropertiesMgt.getConceptHasMultipleAnswers();
+				boolean isMultipleAnswer = multipleAnswerConcepts.containsKey(memberConcept);
+
+				if (isMultipleAnswer) {
+					saveMultipleResultsOnOnelabtest(labOrder, parameterValues,	memberConcept, comment);
+				}
+				else {
+					log.info("is this single answer (" + singleValue+ ") obs for concept " + memberConcept);
+					saveSingleResult(labOrder, singleValue, memberConcept, comment);
+				}
+				p=labOrder.getPatient();
+			}
+		}
+
+
+		// ================ SMS =======================
+		try {
+
+			String apiUsername = Context.getAdministrationService().getGlobalProperty("rbcmessaging.mohpih.username");
+			String apiPassword = Context.getAdministrationService().getGlobalProperty("rbcmessaging.mohpih.password");
+			String authorizationURL = Context.getAdministrationService().getGlobalProperty("rbcmessaging.mohpih.authorizationURL");
+			String postURL = Context.getAdministrationService().getGlobalProperty("rbcmessaging.mohpih.postURL");
+			String sender = Context.getAdministrationService().getGlobalProperty("rbcmessaging.mohpih.sender");
+
+			String jsonCredential = "{\"api_username\": \"" + apiUsername + "\",  \"api_password\": \"" + apiPassword + "\"}";
+			HttpPost httpPostCredential = new HttpPost(authorizationURL);
+
+			httpPostCredential.setEntity(new StringEntity(jsonCredential));
+
+			httpPostCredential.setHeader("Content-type", "application/json");
+
+			CloseableHttpClient clientCredential = HttpClients.createDefault();
+			CloseableHttpResponse responseCredential = clientCredential.execute(httpPostCredential);
+			String resultsCredential = EntityUtils.toString(responseCredential.getEntity());
+
+			String access_token = "";
+			String[] resultsStringArray = resultsCredential.split(",");
+			int i = 0;
+			for (String st : resultsStringArray) {
+
+				int j = st.indexOf("access_token");
+				if (j > 0) {
+					System.out.println(st.split("\"")[3]);
+					access_token = "Bearer " + st.split("\"")[3];
+				} else {
+					continue;
+				}
+			}
+			clientCredential.close();
+			UUID uuid = UUID.randomUUID();
+			String uuidAsString = uuid.toString();
+			String phoneNumber = p.getAttribute("Phone number").getValue();
+
+			if (phoneNumber.length() > 0) {
+
+				String messageBody = p.getFamilyName() + " " + p.getGivenName() + ". Ibisubizo by'ibizamini byawe byabonetse. Wakwegera aho muganga wagusuzumye akorera/Lab results available. Please reach out your doctor";
+
+				String json = "{\"msisdn\": \"" + phoneNumber + "\",  \"message\": \"" + messageBody + "\",  \"msgRef\": \"" + uuidAsString + "\", \"sender_id\": \"" + sender + "\"}";
+				HttpPost httpPost = new HttpPost(postURL);
+
+				httpPost.setEntity(new StringEntity(json));
+				httpPost.setHeader("Accept", "application/json");
+				httpPost.setHeader("Content-type", "application/json");
+				httpPost.setHeader("Authorization", access_token);
+
+				CloseableHttpClient client = HttpClients.createDefault();
+				CloseableHttpResponse response = client.execute(httpPost);
+				client.close();
+			}
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		// =============== end SMS ====================
+
+
 	}
 
 	/**
@@ -796,7 +916,7 @@ public class LabUtils {
 	 * @return Map<Date, List<OrderObs>>
 	 */
 	public static Map<Date, List<OrderObs>> getMappedOrderToObs(
-			List<Order> orders, Patient patient) {
+			List<TestOrder> orders, Patient patient) {
 		Object testStatus[] = null;
 		Object obsResult[] = null;
 		List<Object[]> obsList = null;
@@ -804,14 +924,16 @@ public class LabUtils {
 		int labOrderTypeId = Integer.parseInt(GlobalPropertiesMgt
 				.getLabOrderTypeId());
 		List<OrderObs> orderObsList = null;
-		List<Obs> observations = Context.getObsService()
-				.getObservationsByPerson(patient);
+		/*List<Obs> observations = Context.getObsService()
+				.getObservationsByPerson(patient);*/
+		Set<Obs> observations=new HashSet<Obs>();
 		Map<Date, List<OrderObs>> orderObsMap = new HashMap<Date, List<OrderObs>>();
 
 		for (Order order : orders) {
-			if (order.getOrderType().getOrderTypeId() == labOrderTypeId) {
+		//	if (order.getOrderType().getOrderTypeId() == labOrderTypeId) {
 				dates.add(order.getDateActivated());
-			}
+				observations.addAll(order.getEncounter().getObs());
+			//}
 		}
 		Set<Date> dateSet = new HashSet<Date>(dates);
 		if (dateSet.size() > 0) {
@@ -819,8 +941,9 @@ public class LabUtils {
 				orderObsList = new ArrayList<OrderObs>();
 
 				for (Order order : orders) {
-					if (order.getOrderType().getOrderTypeId() == labOrderTypeId
-							&& order.getDateActivated().equals(date)) {
+					/*if (order.getOrderType().getOrderTypeId() == labOrderTypeId
+							&& order.getDateActivated().equals(date)) {*/
+						if (order.getDateActivated().equals(date)) {
 						obsList = new ArrayList<Object[]>();
 						OrderObs orderObs = new OrderObs();
 						for (Obs obs : observations) {
@@ -1298,6 +1421,57 @@ public class LabUtils {
 		return obsToLabOrder;
 
 	}
+	public static List<TestOrder> getLabOrdersByPatient(Patient patient) {
+		log.debug("Getting Drug Orders for Patient: " + patient.getId());
+		OrderSearchCriteriaBuilder b = new OrderSearchCriteriaBuilder();
+		b.setPatient(patient).setIncludeVoided(false).setExcludeDiscontinueOrders(true);
+		b.setOrderTypes(Arrays.asList(getLabOrderType()));
+		List<Order> allOrders = Context.getOrderService().getOrders(b.build());
+		log.debug("Got " + allOrders.size() + " orders");
+		List<LabOrderWrapper> wrappers = new ArrayList<LabOrderWrapper>();
+		for (Order l : allOrders) {
+			l = HibernateUtil.getRealObjectFromProxy(l);
+			if (l instanceof TestOrder) {
+				wrappers.add(new LabOrderWrapper((TestOrder)l));
+			}
+		}
+		log.debug("Converted to " + wrappers.size() + " lab order wrappers for sorting");
+		Collections.sort(wrappers);
+		log.debug("Sorting complete, returning lab orders");
+		return wrappers.stream().map(LabOrderWrapper::getLaOrder).collect(Collectors.toList());
+	}
+
+	public static OrderType getLabOrderType() {
+		String propertyValue = Context.getAdministrationService().getGlobalProperty("laboratorymanagement.orderType.labOrderTypeId");
+		if (StringUtils.isEmpty(propertyValue)) {
+			throw new IllegalStateException("Please configure the laboratorymanagement.orderType.labOrderTypeId global property");
+		}
+		try {
+			int orderTypeId = Integer.parseInt(propertyValue);
+			OrderType ret = Context.getOrderService().getOrderType(orderTypeId);
+			if (ret != null) {
+				return ret;
+			}
+		}
+		catch (Exception e) {}
+		try {
+			OrderType ret = Context.getOrderService().getOrderTypeByUuid(propertyValue);
+			if (ret != null) {
+				return ret;
+			}
+		}
+		catch (Exception e) {}
+		try {
+			OrderType ret = Context.getOrderService().getOrderTypeByName(propertyValue);
+			if (ret != null) {
+				return ret;
+			}
+		}
+		catch (Exception e) {}
+		throw new IllegalStateException("Please ensure that the laboratorymanagement.orderType.labOrderTypeId global property references a uuid, id or name of an order type in the system");
+	}
+
+
 
 	/*public  static Object[] getPatientIdentificationFromLab(int patientId,Date startDate, Date endDate){
 

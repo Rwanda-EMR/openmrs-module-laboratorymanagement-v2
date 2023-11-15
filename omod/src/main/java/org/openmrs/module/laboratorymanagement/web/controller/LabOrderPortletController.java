@@ -1,18 +1,14 @@
 package org.openmrs.module.laboratorymanagement.web.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
 import javax.servlet.http.HttpServletRequest;
-import org.openmrs.Concept;
-import org.openmrs.ConceptName;
-import org.openmrs.Location;
-import org.openmrs.Order;
-import org.openmrs.Patient;
-import org.openmrs.User;
+
+import org.openmrs.*;
 import org.openmrs.api.OrderService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.laboratorymanagement.LabOrder;
 import org.openmrs.module.laboratorymanagement.LabOrderParent;
 import org.openmrs.module.laboratorymanagement.OrderObs;
 import org.openmrs.module.laboratorymanagement.advice.LabTestConstants;
@@ -121,7 +117,9 @@ public class LabOrderPortletController extends PortletController {
 
 		// get observations by Person
 
-		List<Order> orders = orderService.getAllOrdersByPatient(patient);
+		//List<Order> orders = orderService.getAllOrdersByPatient(patient);
+		List<TestOrder> orders = LabUtils.getLabOrdersByPatient(patient);
+
 		Map<Date, List<OrderObs>> orderObsMap = LabUtils.getMappedOrderToObs(orders, patient);
 
 		//Map<String, Object> orderObsMapOrdered = new TreeMap<String, Object>((Comparator<? super String>) orderObsMap);
@@ -152,6 +150,7 @@ public class LabOrderPortletController extends PortletController {
 		model.put("patientId", patientIdstr);
 		model.put("mappedLabOrder", mappedLabOrder);
 		model.put("obsMap", orderObsMap);
+		//model.put("obsMap", sorted);
 		model.put("providerName", providerName);
 		model.put("patienName", patientName);     
 		model.put("labOrderparList", lopList);

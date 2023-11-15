@@ -19,7 +19,21 @@
 <openmrs:htmlInclude
 	file="/moduleResources/laboratorymanagement/scripts/jquery.PrintArea1.js" />
 
+<script>
+$(document).ready(function() {
 
+$("#saveLabOrdersID").click(function(){
+location.reload(false); //loads from browser's cache
+
+});
+
+$("#saveLabOrdersID").click(function(){
+location.reload(true); //loads from server
+
+});
+
+});
+</script>
 <style type="text/css">
 @media print {
 	.non-printable {
@@ -81,8 +95,8 @@
 												"bVisible" :false,
 												"aTargets" : [ 0 ]
 											} ],
-											"aaSortingFixed" : [ [ 0, 'asc' ] ],
-											"aaSorting" : [ [ 1, 'asc' ] ],
+											"aaSortingFixed" : [ [ 0, 'desc' ] ],
+											"aaSorting" : [ [ 1, 'desc' ] ],
 											"sDom" :'lfr<"giveHeight"t>ip'
 										});
 						jQuery('#print_lab_ordonance')
@@ -764,7 +778,7 @@ Request Form</legend>
 	</tr>
 
 </table>
-<input type="submit" name="saveLabOrders" value="Save Lab orders"></div>
+<input type="submit" name="saveLabOrders" value="Save Lab orders" id="saveLabOrdersID"></div>
 
 </form>
 </div>
@@ -799,7 +813,7 @@ Request Form</legend>
 			<c:forEach items="${key.value}" var="orderObs">
 				<c:if test="${empty orderObs.obss}">
 					<tr>
-						<td><openmrs:formatDate date="${orderObs.order.dateActivated}"
+						<td><openmrs:formatDate date="${orderObs.order.dateActivated}" format="yyyy-MM-dd"
 							type="textbox" /></td>
 						<td>&nbsp;</td>
 						<td>${orderObs.order.concept.name.name}</td>
@@ -817,7 +831,7 @@ Request Form</legend>
 				<c:if test="${not empty orderObs.obss}">
 					<c:forEach items="${orderObs.obss}" var="obs">
 						<tr>
-							<td><openmrs:formatDate date="${orderObs.order.dateActivated}"
+							<td><openmrs:formatDate date="${orderObs.order.dateActivated}" format="yyyy-MM-dd"
 								type="textbox" /></td>
 							<td>&nbsp;</td>
 							<td>${obs[0].concept.name.name}</td>

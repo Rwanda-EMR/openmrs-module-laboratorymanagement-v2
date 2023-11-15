@@ -169,6 +169,33 @@ public class AddResultController extends ParameterizableViewController {
 
 			model.put("msg", "Laboratory results are successfully saved !");
 		}
+		if (request.getParameter("saveandnotify") != null) {
+			// Map of the request parameters, with parameter names as map keys
+			// and parameter values as map values
+			Map<String, String[]> parameterMap = request.getParameterMap();
+			LabUtils.addLabresultsAndNotifyPatientWithSMS(parameterMap, request);
+
+			/**
+			 * <<<<<<<<<< APPOINTMENT CONSULTATION WAITING CREATED HERE
+			 * >>>>>>>>>>parameterMap
+			 */
+
+			if (request.getParameter("patient_id") != null
+					&& !request.getParameter("patient_id").equals("")) {
+				patient = Context.getPatientService().getPatient(
+						Integer.parseInt(request.getParameter("patient_id")));
+				LabUtils.createWaitingConsAppointment(patient, null);
+			}
+
+			/**
+			 * <<<<<<<<<< APPOINTMENT STUFF ENDS HERE!!
+			 * >>>>>>>>>>>>>>>>>>>>>>>>>>>
+			 */
+
+			model.put("msg", "Laboratory results are successfully saved !");
+		}
+
+
 
 		return new ModelAndView(getViewName(), model);
 
