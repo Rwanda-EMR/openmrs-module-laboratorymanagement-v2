@@ -916,7 +916,7 @@ public class LabUtils {
 	 * @return Map<Date, List<OrderObs>>
 	 */
 	public static Map<Date, List<OrderObs>> getMappedOrderToObs(
-			List<TestOrder> orders, Patient patient) {
+			List<Order> orders, Patient patient) {
 		Object testStatus[] = null;
 		Object obsResult[] = null;
 		List<Object[]> obsList = null;
@@ -1421,24 +1421,16 @@ public class LabUtils {
 		return obsToLabOrder;
 
 	}
-	public static List<TestOrder> getLabOrdersByPatient(Patient patient) {
-		log.debug("Getting Drug Orders for Patient: " + patient.getId());
+	public static List<Order> getLabOrdersByPatient(Patient patient) {
+		log.debug("Getting Lab Orders for Patient: " + patient.getId());
 		OrderSearchCriteriaBuilder b = new OrderSearchCriteriaBuilder();
 		b.setPatient(patient).setIncludeVoided(false).setExcludeDiscontinueOrders(true);
-		b.setOrderTypes(Arrays.asList(getLabOrderType()));
+		b.setOrderTypes(Collections.singletonList(getLabOrderType()));
 		List<Order> allOrders = Context.getOrderService().getOrders(b.build());
 		log.debug("Got " + allOrders.size() + " orders");
-		List<LabOrderWrapper> wrappers = new ArrayList<LabOrderWrapper>();
-		for (Order l : allOrders) {
-			l = HibernateUtil.getRealObjectFromProxy(l);
-			if (l instanceof TestOrder) {
-				wrappers.add(new LabOrderWrapper((TestOrder)l));
-			}
-		}
-		log.debug("Converted to " + wrappers.size() + " lab order wrappers for sorting");
-		Collections.sort(wrappers);
+		allOrders.sort(Comparator.comparing(Order::getEffectiveStartDate));
 		log.debug("Sorting complete, returning lab orders");
-		return wrappers.stream().map(LabOrderWrapper::getLaOrder).collect(Collectors.toList());
+		return allOrders;
 	}
 
 	public static OrderType getLabOrderType() {
