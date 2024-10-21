@@ -1,12 +1,5 @@
 package org.openmrs.module.laboratorymanagement.utils;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -15,8 +8,22 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.openmrs.*;
+import org.openmrs.Concept;
+import org.openmrs.ConceptName;
+import org.openmrs.ConceptNumeric;
+import org.openmrs.ConceptSet;
+import org.openmrs.Encounter;
+import org.openmrs.EncounterRole;
+import org.openmrs.EncounterType;
+import org.openmrs.Location;
+import org.openmrs.Obs;
+import org.openmrs.Order;
 import org.openmrs.Order.Action;
+import org.openmrs.OrderType;
+import org.openmrs.Patient;
+import org.openmrs.Person;
+import org.openmrs.Provider;
+import org.openmrs.TestOrder;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.OrderContext;
@@ -36,6 +43,23 @@ import org.openmrs.module.mohbilling.automation.CreateBillOnSaveLabAndPharmacyOr
 import org.openmrs.parameter.OrderSearchCriteriaBuilder;
 import org.openmrs.util.OpenmrsConstants;
 import org.springframework.util.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class LabUtils {
 	protected static final Log log = LogFactory.getLog(LabUtils.class);
@@ -950,22 +974,14 @@ public class LabUtils {
 							if (obs.getOrder() != null) {
 								if (order.getOrderId() == obs.getOrder()
 										.getOrderId()) {
-									ConceptNumeric cptNumeric = Context
-											.getConceptService()
-											.getConceptNumeric(
-													obs.getConcept()
-													.getConceptId());
 									obsResult = new Object[] { obs,
-											getNormalRanges(cptNumeric) };
+											getNormalRanges(obs.getConcept()) };
 									obsList.add(obsResult);
 								}
 							}
 
 							if(order.getConcept().isNumeric()) {
-								ConceptNumeric cptNumeric = Context
-										.getConceptService().getConceptNumeric(
-												order.getConcept().getConceptId());
-								testStatus = new Object[] { getNormalRanges(cptNumeric) };
+								testStatus = new Object[] { getNormalRanges(order.getConcept()) };
 							}
 
 						}
@@ -1197,32 +1213,34 @@ public class LabUtils {
 
 	}
 
-	public static String getNormalRanges(ConceptNumeric cptNumeric) {
+	public static String getNormalRanges(Concept cpt) {
 		String normalRange = "";
-		if (cptNumeric != null && cptNumeric.getLowNormal() == null
-				&& cptNumeric.getHiNormal() != null) {
-			normalRange = normalRange + "<" + cptNumeric.getHiNormal() + "   "
-					+ cptNumeric.getUnits();
+		if (cpt.isNumeric()) {
+			ConceptNumeric cptNumeric = Context.getConceptService().getConceptNumeric(cpt.getConceptId());
+			if (cptNumeric != null && cptNumeric.getLowNormal() == null
+					&& cptNumeric.getHiNormal() != null) {
+				normalRange = normalRange + "<" + cptNumeric.getHiNormal() + "   "
+						+ cptNumeric.getUnits();
 
+			}
+			if (cptNumeric != null && cptNumeric.getHiNormal() == null
+					&& cptNumeric.getLowNormal() != null) {
+				normalRange = normalRange + ">" + cptNumeric.getLowNormal() + "   "
+						+ cptNumeric.getUnits();
+
+			}
+			if (cptNumeric != null && cptNumeric.getHiNormal() != null
+					&& cptNumeric.getLowNormal() != null) {
+				normalRange = normalRange + cptNumeric.getLowNormal() + " - "
+						+ cptNumeric.getHiNormal() + "  " + cptNumeric.getUnits();
+
+			}
+			if (cptNumeric != null && cptNumeric.getHiNormal() == null
+					&& cptNumeric.getLowNormal() == null) {
+				normalRange = normalRange + cptNumeric.getUnits();
+
+			}
 		}
-		if (cptNumeric != null && cptNumeric.getHiNormal() == null
-				&& cptNumeric.getLowNormal() != null) {
-			normalRange = normalRange + ">" + cptNumeric.getLowNormal() + "   "
-					+ cptNumeric.getUnits();
-
-		}
-		if (cptNumeric != null && cptNumeric.getHiNormal() != null
-				&& cptNumeric.getLowNormal() != null) {
-			normalRange = normalRange + cptNumeric.getLowNormal() + " - "
-					+ cptNumeric.getHiNormal() + "  " + cptNumeric.getUnits();
-
-		}
-		if (cptNumeric != null && cptNumeric.getHiNormal() == null
-				&& cptNumeric.getLowNormal() == null) {
-			normalRange = normalRange + cptNumeric.getUnits();
-
-		}
-
 		return normalRange;
 	}
 
@@ -1375,20 +1393,14 @@ public class LabUtils {
 
 	}
 
-	public static List<Object[]> getParametersOfLabConcept(
-			List<Obs> obsWithValues) {
+	public static List<Object[]> getParametersOfLabConcept(List<Obs> obsWithValues) {
 		Object testStatus[] = null;
 		ConceptService cptService = Context.getConceptService();
 		List<Object[]> labExamHistory = new ArrayList<Object[]>();
 		for (Obs oneLabObs : obsWithValues) {
-			ConceptNumeric cptNumeric = cptService.getConceptNumeric(oneLabObs
-					.getConcept().getConceptId());
-			// at index 0,put the obs as one Lab obs and then at index 1 the
-			// normal range
+			// at index 0,put the obs as one Lab obs and then at index 1 the normal range
 			if (oneLabObs != null && oneLabObs.getOrder() != null) {
-				testStatus = new Object[] { oneLabObs,
-						getNormalRanges(cptNumeric) };
-
+				testStatus = new Object[] { oneLabObs, getNormalRanges(oneLabObs.getConcept()) };
 				labExamHistory.add(testStatus);
 			}
 		}
