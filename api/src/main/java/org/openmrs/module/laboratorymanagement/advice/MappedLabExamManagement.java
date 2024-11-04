@@ -1,17 +1,7 @@
 package org.openmrs.module.laboratorymanagement.advice;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
-import org.openmrs.ConceptNumeric;
 import org.openmrs.ConceptSet;
 import org.openmrs.Obs;
 import org.openmrs.Order;
@@ -19,6 +9,15 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.laboratorymanagement.service.LaboratoryService;
 import org.openmrs.module.laboratorymanagement.utils.GlobalPropertiesMgt;
+import org.openmrs.module.laboratorymanagement.utils.LabUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MappedLabExamManagement {
 	/**
@@ -80,13 +79,11 @@ public class MappedLabExamManagement {
 			obsWithValues = LaboratoryMgt.getAllTestWithResult(laboratoryService.getLabExamsByExamType(patientId, cptsLst,startDate, endDate));
            
 			for (Obs oneLabObs : obsWithValues) {
-				ConceptNumeric cptNumeric = cptService.getConceptNumeric(oneLabObs.getConcept().getConceptId());
 				// at index 0,put the obs as one Lab obs and then at index 1 the   normal range	
 				if (oneLabObs != null && oneLabObs.getOrder()!=null) {
-					testStatus = new Object[]{oneLabObs,getNormalRanges(cptNumeric) };				
-					
-						labExamHistory.add(testStatus);
-						}	
+					testStatus = new Object[]{oneLabObs, LabUtils.getNormalRanges(oneLabObs.getConcept()) };
+					labExamHistory.add(testStatus);
+				}
 			}
 
 			if (labExamHistory.size() > 0) {
@@ -287,77 +284,6 @@ public class MappedLabExamManagement {
 		return mappedLabOrders;
 	}
 
-	public static String getNormalRanges(ConceptNumeric cptNumeric) {
-		String normalRange = "";
-		if (cptNumeric != null && cptNumeric.getLowNormal() == null
-				&& cptNumeric.getHiNormal() != null) {
-			normalRange = normalRange + "<" + cptNumeric.getHiNormal() + "   "
-					+ cptNumeric.getUnits();
-
-		}
-		if (cptNumeric != null && cptNumeric.getHiNormal() == null
-				&& cptNumeric.getLowNormal() != null) {
-			normalRange = normalRange + ">" + cptNumeric.getLowNormal() + "   "
-					+ cptNumeric.getUnits();
-
-		}
-		if (cptNumeric != null && cptNumeric.getHiNormal() != null
-				&& cptNumeric.getLowNormal() != null) {
-			normalRange = normalRange + cptNumeric.getLowNormal() + " - "
-					+ cptNumeric.getHiNormal() + "  " + cptNumeric.getUnits();
-
-		}
-
-		return normalRange;
-	}
-
-	public static List<Object[]> getLabObsWithResults(int patientId,
-			int parasitConceptId, Date startDate, Date endDate) {
-		List<Object[]> labExamHistory = new ArrayList<Object[]>();
-		ConceptService cptService = Context.getConceptService();
-		List<Integer> cptList = new ArrayList<Integer>();
-		Object testStatus[] = null;
-		LaboratoryService laboratoryService = Context
-				.getService(LaboratoryService.class);
-		Concept parasitConcept = Context.getConceptService().getConcept(
-				parasitConceptId);
-		Collection<ConceptSet> setMembers = parasitConcept.getConceptSets();
-		for (ConceptSet setMemeber : setMembers) {
-
-			if (setMemeber.getConcept().getDatatype().isAnswerOnly()) {
-				for (ConceptSet childConcept : setMemeber.getConcept()
-						.getConceptSets()) {
-					cptList.add(childConcept.getConcept().getConceptId());
-					System.out.println(">>>>>childConceptId>>>>>"
-							+ childConcept.getConcept().getConceptId());
-
-				}
-				List<Obs> obsWithValues = LaboratoryMgt
-						.getAllTestWithResult(laboratoryService
-								.getLabExamsByExamType(patientId, cptList,
-										startDate, endDate));
-
-				for (Obs oneLabObs : obsWithValues) {
-					ConceptNumeric cptNumeric = cptService
-							.getConceptNumeric(oneLabObs.getConcept()
-									.getConceptId());
-					// at index 0,put the obs as one Lab obs and then at index 1
-					// the normal range
-					testStatus = new Object[] { oneLabObs,
-							getNormalRanges(cptNumeric) };
-					if (oneLabObs != null) {
-						labExamHistory.add(testStatus);
-
-					}
-				}
-
-			}
-
-		}
-
-		return labExamHistory;
-
-	}
 	/*get all child of conceptparent
 	 * param Collection<ConceptSet>setMember
 	 * return the Collect<Integer>childConce;ptid
