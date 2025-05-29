@@ -22,8 +22,8 @@
 	<require_version>${openMRSVersion}</require_version>
 	  
 	<require_modules>
-       <require_module version="2.0.1-SNAPSHOT">org.openmrs.module.mohappointment</require_module>
-		<require_module version="2.0.1-SNAPSHOT">org.openmrs.module.mohbilling</require_module>
+       <require_module version="${mohappointmentVersion}">org.openmrs.module.mohappointment</require_module>
+		<require_module version="${mohbillingVersion}">org.openmrs.module.mohbilling</require_module>
 	</require_modules>
 
 	<aware_of_modules>

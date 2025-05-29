@@ -31,13 +31,13 @@
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>mohappointment-omod</artifactId>
-			<version>2.0.1-SNAPSHOT</version>
+			<version>${mohappointmentVersion}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>mohbilling-omod</artifactId>
-			<version>2.0.1-SNAPSHOT</version>
+			<version>${mohbillingVersion}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -48,7 +48,7 @@
 		<dependency>
             <groupId>org.openmrs.module</groupId>
             <artifactId>legacyui-omod</artifactId>
-            <version>1.6.0</version>
+            <version>${legacyuiVersion}</version>
             <scope>provided</scope>
         </dependency>
 		<dependency>
