@@ -449,88 +449,34 @@ public class LabUtils {
 
 	/**
 	 * Saves the selected Lab Orders on the Dashboard by the provider/clinician
-	 * 
-	 * @param labConceptIds
-	 *            selected from the forms
-	 * @param labOrder
-	 * @param patient
-	 *            to whom is ordered Lab order
+	 * @param patient to whom is ordered Lab order
 	 */
-	public static void saveSelectedLabOrders(
-			Map<String, String[]> parameterMap, Patient patient) {
+	public static void saveSelectedLabOrders(Map<String, String[]> parameterMap, Patient patient) {
+		Date now = new Date();
+		Encounter labEncounter = getLabEncounter(patient.getPatientId(), now);
 		String labOrderTypeIdStr = GlobalPropertiesMgt.getLabOrderTypeId();
-		int labOrderTypeId = Integer.parseInt(labOrderTypeIdStr);
-		Set<Concept> billingConceptItems=new HashSet<Concept>();
+		OrderType labOrderType = Context.getOrderService().getOrderType(Integer.parseInt(labOrderTypeIdStr));
 		for (String parameterName : parameterMap.keySet()) {
-
 			if (!parameterName.startsWith("lab-")) {
 				continue;
 			}
 			String[] parameterValues = parameterMap.get(parameterName);
-			String[] splittedParameterName = parameterName.split("-");
-
-			String gpCptIdStr = splittedParameterName[1];
-			String pcptIdstr = splittedParameterName[2];
-			String chldCptIdStr = splittedParameterName.length > 3 ? splittedParameterName[3]
-					: "";
-			String SingleLabConceptIdstr = parameterValues[0];
-			String accessionNumber = "access-" + gpCptIdStr + "-" + pcptIdstr+ "-" + chldCptIdStr;
-
-			Encounter labEncounter = getLabEncounter(patient.getPatientId(), new Date());
-			Context.getEncounterService().saveEncounter(labEncounter);
+			String labTestConceptIdStr = parameterValues[0];
+			Concept labTestConcept = Context.getConceptService().getConcept(Integer.parseInt(labTestConceptIdStr));
 
 			Order labOrder = new TestOrder();
+			labOrder.setOrderType(labOrderType);
 			labOrder.setOrderer(getProvider());
 			labOrder.setPatient(patient);
-			labOrder.setConcept(Context.getConceptService().getConcept(
-					Integer.parseInt(SingleLabConceptIdstr)));
-			labOrder.setDateActivated(new Date());
-
+			labOrder.setConcept(labTestConcept);
+			labOrder.setDateActivated(now);
 			labOrder.setCareSetting(Context.getOrderService().getCareSetting(2)); //Setting Default CareSetting to In-patient
 			labOrder.setAction(Action.NEW);
-			labOrder.setEncounter(labEncounter); 
-
-			List<String> conceptSetsToBill= Arrays.asList(Context.getAdministrationService().getGlobalProperty("laboratorymanagement.conceptSetsToBill").split(","));
-			boolean labExamHasSet=false;
-			for (String s:conceptSetsToBill) {
-				System.out.println("Concept Set: "+s);
-				List<Concept> conceptSetToBill=Context.getConceptService().getConceptsByConceptSet(Context.getConceptService().getConcept(Integer.parseInt(s)));
-				System.out.println("Concept Set member size: "+conceptSetToBill.size());
-				if (conceptSetToBill.contains(Context.getConceptService().getConcept(Integer.parseInt(SingleLabConceptIdstr)))){
-					labExamHasSet=true;
-					System.out.println("The selected lab exam is found in Concept Set :"+SingleLabConceptIdstr);
-					billingConceptItems.add(Context.getConceptService().getConcept(Integer.parseInt(s)));
-					break;
-				}
-			}
-			if (labExamHasSet==false){
-				System.out.println("The selected lab exam is not found in Concept Set :"+SingleLabConceptIdstr);
-				billingConceptItems.add(Context.getConceptService().getConcept(Integer.parseInt(SingleLabConceptIdstr)));
-			}
-
-
-
-			//billingConceptItems.add(Context.getConceptService().getConcept(Integer.parseInt(SingleLabConceptIdstr)));
-
-			// labOrder.setAccessionNumber(accessionNumber);
-			labOrder.setOrderType(Context.getOrderService().getOrderType(Integer.parseInt(GlobalPropertiesMgt
-					.getLabOrderTypeId())));
-			try {
-				Context.getOrderService().saveOrder(labOrder, getOrderContext());
-			} catch (Exception e) {
-				log.error("There was an error saving the Order" +e);
-			}
-
+			labEncounter.addOrder(labOrder);
 		}
-		CreateBillOnSaveLabAndPharmacyOrders.createBillOnSaveLabOrders(billingConceptItems,patient);
+		Context.getEncounterService().saveEncounter(labEncounter);
 	}
 
-	public static OrderContext getOrderContext () {
-		OrderContext orderCtxt = new OrderContext();
-		final String expectedOrderNumber = "Testing";
-		orderCtxt.setAttribute(MoHTimestampOrderNumberGenerator.NEXT_ORDER_NUMBER, expectedOrderNumber);
-		return orderCtxt;
-	}
 	/**
 	 * Finds Lab orders by patient to whom Lab orders are ordered*
 	 * 
