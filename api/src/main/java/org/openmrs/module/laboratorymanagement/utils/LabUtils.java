@@ -951,41 +951,26 @@ public class LabUtils {
 	 * 
 	 * @param patient
 	 */
-	public static void createWaitingLabAppointment(Patient patient,
-			Encounter encounter) {
-		Appointment waitingAppointment = new Appointment();
+	public static void createWaitingLabAppointment(Patient patient, Encounter encounter) {
 		Services service = AppointmentUtil.getServiceByConcept(GlobalPropertiesMgt.getConcept(GlobalPropertiesMgt.LABORATORYSERVICES));
-
-		// Setting appointment attributes
-		waitingAppointment.setAppointmentDate(new Date());
-		waitingAppointment.setAttended(false);
-		waitingAppointment.setVoided(false);
-		waitingAppointment.setCreatedDate(new Date());
-		waitingAppointment.setCreator(Context.getAuthenticatedUser());
-		waitingAppointment.setProvider(Context.getAuthenticatedUser()
-				.getPerson());
-		waitingAppointment
-		.setNote("This is a waiting patient to the Laboratory");
-
-		waitingAppointment.setProvider(Context.getAuthenticatedUser()
-				.getPerson());
-		log.info("________PROVIDER________"
-				+ Context.getAuthenticatedUser().getPerson().getFamilyName());
-
-		waitingAppointment.setPatient(patient);
-		waitingAppointment.setLocation(Context.getLocationService()
-				.getDefaultLocation());
-
-		log.info("<<<<<<<<<____Service____" + service.toString()
-		+ "__________>>>>>>>");
-
-		waitingAppointment.setService(service);
-
-		if (encounter != null)
-			waitingAppointment.setEncounter(encounter);
-
-		AppointmentUtil.saveWaitingAppointment(waitingAppointment);
-
+		Date currentDate = new Date();
+		if (!AppointmentUtil.alreadyHasAppointmentThere(patient, currentDate, service)) {
+			Appointment waitingAppointment = new Appointment();
+			waitingAppointment.setAppointmentDate(new Date());
+			waitingAppointment.setAttended(false);
+			waitingAppointment.setVoided(false);
+			waitingAppointment.setCreatedDate(new Date());
+			waitingAppointment.setCreator(Context.getAuthenticatedUser());
+			waitingAppointment.setProvider(Context.getAuthenticatedUser().getPerson());
+			waitingAppointment.setNote("This is a waiting patient to the Laboratory");
+			waitingAppointment.setPatient(patient);
+			waitingAppointment.setLocation(Context.getLocationService().getDefaultLocation());
+			waitingAppointment.setService(service);
+			if (encounter != null) {
+				waitingAppointment.setEncounter(encounter);
+			}
+			AppointmentUtil.saveWaitingAppointment(waitingAppointment);
+		}
 	}
 
 	/**
