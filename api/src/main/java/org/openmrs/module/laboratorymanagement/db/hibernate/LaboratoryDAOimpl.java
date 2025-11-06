@@ -13,19 +13,20 @@
  */
 package org.openmrs.module.laboratorymanagement.db.hibernate;
 
-import java.awt.Color;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.FontSelector;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -34,7 +35,6 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.exception.SQLGrammarException;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
 import org.openmrs.Encounter;
@@ -51,20 +51,17 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.laboratorymanagement.advice.HeaderFooterMgt;
 import org.openmrs.module.laboratorymanagement.db.LaboratoryDAO;
 
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Font.FontFamily;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.FontSelector;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -909,59 +906,6 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 		}
 
 		return labExamsByCategory;
-	}
-
-	@Override
-	public List<Order> getLabOrders(int patientId, Collection<Integer> cptIds,
-			Date startDate, Date endDate) {
-		// TODO Auto-generated method stub
-
-		OrderService orderServc = Context.getOrderService();
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		List<Order> labOrdeByCategory = new ArrayList<Order>();
-		ObsService labObbService = Context.getObsService();
-		SQLQuery query = null;
-		StringBuffer strbuf = new StringBuffer();
-		strbuf
-				.append("SELECT o.order_id FROM orders o where o.concept_id in ( ");
-		int i = 1;
-		for (Integer onecptId : cptIds) {
-			if (i < cptIds.size()) {
-				strbuf.append(" " + onecptId + ",");
-			}
-			if (i == cptIds.size()) {
-				strbuf.append(" " + onecptId);
-
-			}
-			i = i + 1;
-
-		}
-		strbuf.append(" ) and  o.patient_id=" + patientId);
-		strbuf.append("  and  o.voided= 0 ");
-		/*strbuf.append("  " + " and  cast(o.date_activated as date) between  '"
-				+ df.format(startDate) + "' and '" + df.format(endDate) + "'");*/
-
-		strbuf.append("  " + " and o.date_activated between '"
-				+ df.format(startDate) + "' and '" + df.format(endDate) + " 23:59:59'");
-	query = sessionFactory.getCurrentSession().createSQLQuery(
-				strbuf.toString());
-		System.out.println("ZZZZlaborder query" + query.toString());
-		List<Integer> oderIdsIdFromQuery = new ArrayList<Integer>();
-		try {
-		oderIdsIdFromQuery = query.list();
-		}catch (SQLGrammarException e){
-			System.out.println("Something went wrong in a Query");
-		}
-
-
-
-		for (Integer orderId : oderIdsIdFromQuery) {
-			labOrdeByCategory.add(orderServc.getOrder(orderId));
-		}
-
-		System.out.println(">>>>laborders size" + labOrdeByCategory.size());
-
-		return labOrdeByCategory;
 	}
 
 	@Override

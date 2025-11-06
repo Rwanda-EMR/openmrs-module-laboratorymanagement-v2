@@ -4,8 +4,10 @@ import java.io.IOException;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,11 +21,13 @@ import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Obs;
 import org.openmrs.Order;
+import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.laboratorymanagement.service.LaboratoryService;
 import org.openmrs.module.laboratorymanagement.db.LaboratoryDAO;
 
 import com.itextpdf.text.DocumentException;
+import org.openmrs.parameter.OrderSearchCriteriaBuilder;
 
 
 public class LaboratoryServiceImpl implements LaboratoryService {
@@ -159,11 +163,20 @@ public class LaboratoryServiceImpl implements LaboratoryService {
 	}
 
 	@Override
-	public List<Order> getLabOrders(int patientId, Collection<Integer> cptIds,
-			Date startDate, Date enddate) {
-//		// TODO Auto-generated method stub
-		return laboratoryDAO.getLabOrders(patientId,  cptIds,
-				startDate, enddate);
+	public List<Order> getLabOrders(int patientId, Collection<Integer> cptIds, Date startDate, Date endDate) {
+		Patient patient = Context.getPatientService().getPatient(patientId);
+		Set<Concept> concepts = new HashSet<>();
+		for (Integer conceptId : cptIds) {
+			concepts.add(Context.getConceptService().getConcept(conceptId));
+		}
+		OrderSearchCriteriaBuilder criteriaBuilder = new OrderSearchCriteriaBuilder();
+		criteriaBuilder.setPatient(patient);
+		criteriaBuilder.setIncludeVoided(false);
+		criteriaBuilder.setConcepts(concepts);
+		criteriaBuilder.setActivatedOnOrAfterDate(startDate);
+		criteriaBuilder.setActivatedOnOrBeforeDate(endDate);
+		criteriaBuilder.setExcludeDiscontinueOrders(true);
+		return Context.getOrderService().getOrders(criteriaBuilder.build());
 	}
 
 	@Override

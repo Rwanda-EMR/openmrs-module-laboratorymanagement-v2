@@ -474,55 +474,30 @@ public class LabUtils {
 
 	/**
 	 * Finds Lab orders by patient to whom Lab orders are ordered*
-	 * 
-	 * @param patient
-	 * @param startDate
-	 * @param endDate
-	 * @param location
-	 * @return Map<Concept, Collection<Order>>
 	 */
-	public static Map<Concept, Collection<Order>> findPatientLabOrders(
-			int patientId, Date startDate, Date endDate, Location location) {
-		LaboratoryService laboratoryService = Context
-				.getService(LaboratoryService.class);
-		Collection<Order> labOrders = laboratoryService
-				.getLabOrdersBetweentwoDate(patientId, startDate, endDate);
-
-		Map<Concept, Collection<Order>> mappedLabOrders = new HashMap<Concept, Collection<Order>>();
-		ConceptService cptService = Context.getConceptService();
-
-		//	int intLabSetIds[] = { 8004, 7836, 7217, 7192, 7243, 7244, 7265, 7222, 7193, 7918, 7991,7835, 8046,105411,105417,105406 };
-
-
-		//List<Concept> conceptLabSetToOrder= GlobalPropertiesMgt.getConceptList(GlobalPropertiesMgt.LABEXAMSToORDER);
-
-
-		List<Concept> conceptLabSetToOrder=new ArrayList<Concept>();
+	public static Map<Concept, Collection<Order>> findPatientLabOrders(int patientId, Date startDate, Date endDate) {
+		LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
+		Map<Concept, Collection<Order>> mappedLabOrders = new HashMap<>();
+		List<Concept> conceptLabSetToOrder=new ArrayList<>();
 		String conceptLabSetToOrderString=Context.getAdministrationService().getGlobalProperty(GlobalPropertiesMgt.LABEXAMSToORDER);
 		for (String s:conceptLabSetToOrderString.split(",")){
 			conceptLabSetToOrder.add(Context.getConceptService().getConcept(Integer.parseInt(s)));
 		}
-
-		//		for (int labSetid : intLabSetIds) {
 		for (Concept cpt : conceptLabSetToOrder) {
-			//			Concept cpt = cptService.getConcept(labSetid);
 			Collection<ConceptSet> setMembers = cpt.getConceptSets();
-			Collection<Integer> cptsLst = new ArrayList<Integer>();
+			Collection<Integer> cptsLst = new ArrayList<>();
 			for (ConceptSet setMember : setMembers) {
 				cptsLst.add(setMember.getConcept().getConceptId());
 			}
-			List<Order> labOrderslist=new ArrayList<Order>();
-			if(cptsLst.size()>0) {
+			List<Order> labOrderslist=new ArrayList<>();
+			if(!cptsLst.isEmpty()) {
 				labOrderslist = laboratoryService.getLabOrders(patientId, cptsLst, startDate, endDate);
 			}
-			if (labOrderslist.size() > 0) {
+			if (!labOrderslist.isEmpty()) {
 				mappedLabOrders.put(cpt, labOrderslist);
-
 			}
 		}
-		log.info(">>>>>>>>>lab mapped size is" + mappedLabOrders.size());
 		return mappedLabOrders;
-
 	}
 
 	/**
