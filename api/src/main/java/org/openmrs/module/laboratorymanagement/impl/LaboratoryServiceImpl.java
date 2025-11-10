@@ -165,30 +165,23 @@ public class LaboratoryServiceImpl implements LaboratoryService {
 	@Override
 	public List<Order> getLabOrders(int patientId, Collection<Integer> cptIds, Date startDate, Date endDate) {
 		Patient patient = Context.getPatientService().getPatient(patientId);
-		Set<Concept> concepts = new HashSet<>();
-		for (Integer conceptId : cptIds) {
-			concepts.add(Context.getConceptService().getConcept(conceptId));
-		}
 		OrderSearchCriteriaBuilder criteriaBuilder = new OrderSearchCriteriaBuilder();
 		criteriaBuilder.setPatient(patient);
 		criteriaBuilder.setIncludeVoided(false);
-		criteriaBuilder.setConcepts(concepts);
+		if (cptIds != null) {
+			Set<Concept> concepts = new HashSet<>();
+			for (Integer conceptId : cptIds) {
+				concepts.add(Context.getConceptService().getConcept(conceptId));
+			}
+			criteriaBuilder.setConcepts(concepts);
+		}
 		criteriaBuilder.setActivatedOnOrAfterDate(startDate);
 		criteriaBuilder.setActivatedOnOrBeforeDate(endDate);
 		criteriaBuilder.setExcludeDiscontinueOrders(true);
+		criteriaBuilder.setExcludeCanceledAndExpired(true);
 		return Context.getOrderService().getOrders(criteriaBuilder.build());
 	}
 
-	@Override
-	public List<Order> getLabOrdersBetweentwoDate(int patientId,
-			Date startDate, Date enddate) {
-		// TODO Auto-generated method stub
-		return laboratoryDAO.getLabOrdersBetweentwoDate(patientId,	startDate, enddate);
-	}
-	public List<Order> getLabOrdersBetweentwoDate(Date startDate, Date enddate){
-		// TODO Auto-generated method stub
-		return laboratoryDAO.getLabOrdersBetweentwoDate(startDate, enddate);
-	}
 	public List<Order> getLabOrdersByLabCode(String  labCode){
 		return laboratoryDAO.getLabOrdersByLabCode(labCode);
 	}

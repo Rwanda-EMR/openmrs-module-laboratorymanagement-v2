@@ -909,62 +909,6 @@ public class LaboratoryDAOimpl implements LaboratoryDAO {
 	}
 
 	@Override
-	public List<Order> getLabOrdersBetweentwoDate(int patientId,
-			Date startDate, Date enddate) {
-		// TODO Auto-generated method stub
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		SQLQuery query = null;
-		List<Order> ordersList = new ArrayList<Order>();
-		OrderService orderServic = Context.getOrderService();
-		StringBuffer strbuf = new StringBuffer();
-		strbuf.append("SELECT  o.order_id  FROM orders o where o.voided=0 and o.patient_Id ="
-				+ patientId + "");
-		strbuf.append("  " + " and  cast(o.date_activated as date) between  '"
-				+ df.format(startDate) + " 00:00:00' and '" + df.format(enddate) + " 23:59:59'");
-
-		query = sessionFactory.getCurrentSession().createSQLQuery(
-				strbuf.toString());
-		System.out.println(">>>>>order query" + query.toString());
-
-		List<Integer> orderIdsFromQuery = query.list();
-		for (Integer orderId : orderIdsFromQuery) {
-			ordersList.add(orderServic.getOrder(orderId));
-
-		}
-		System.out.println("OrderListBetween two dates" + ordersList);
-
-		return ordersList;
-
-	}
-
-	@Override
-	public List<Order> getLabOrdersBetweentwoDate(Date startDate, Date enddate) {
-		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		SQLQuery query = null;
-		List<Order> ordersList = new ArrayList<Order>();
-		OrderService orderServic = Context.getOrderService();
-		StringBuffer strbuf = new StringBuffer();
-		strbuf.append("SELECT  o.order_id  FROM orders o where  o.voided=0 and " + "");
-		strbuf.append("  " + "  cast(o.date_activated as date) between  '"
-				+ df.format(startDate) + "' and '" + df.format(enddate) + "'");
-
-		query = sessionFactory.getCurrentSession().createSQLQuery(
-				strbuf.toString());
-		System.out.println(">>>>>order query" + query.toString());
-
-		List<Integer> orderIdsFromQuery = query.list();
-		for (Integer orderId : orderIdsFromQuery) {
-			ordersList.add(orderServic.getOrder(orderId));
-
-		}
-		System.out.println("OrderListBetween two dates" + ordersList);
-
-		return ordersList;
-	}
-
-	@Override
 	public List<Order> getLabOrdersByLabCode(String labCode) {
 		// TODO Auto-generated method stub
 

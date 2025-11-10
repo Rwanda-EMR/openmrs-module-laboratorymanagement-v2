@@ -563,22 +563,16 @@ public class LabUtils {
 	 * Adds Lab code to Patient Lab orders
 	 * 
 	 * @param patientId
-	 * @param labOrder
 	 * @param labCode
 	 * @param startDate
 	 * @param endDate
 	 */
-	public static void addLabCodeToOrders(int patientId, String labCode,
-			Date startDate, Date endDate) {
-		LaboratoryService laboratoryService = Context
-				.getService(LaboratoryService.class);
-		Collection<Order> labOrders = laboratoryService
-				.getLabOrdersBetweentwoDate(patientId, startDate, endDate);
+	public static void addLabCodeToOrders(int patientId, String labCode, Date startDate, Date endDate) {
+		LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
+		Collection<Order> labOrders = laboratoryService.getLabOrders(patientId, null, startDate, endDate);
 		for (Order laborder : labOrders) {
 			laboratoryService.addLabCodeToOrders(laborder, labCode);
-			log.info(">>>>>>>Rulindo >lab order start date>>>"
-					+ laborder.getDateActivated() + " and lab code" + labCode);
-			laborder.setAccessionNumber(labCode); //Jut for the UI
+			laborder.setAccessionNumber(labCode); //Just for the UI
 		}
 
 	}
