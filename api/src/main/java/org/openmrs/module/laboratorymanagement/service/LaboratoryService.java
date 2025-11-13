@@ -1,14 +1,6 @@
 package org.openmrs.module.laboratorymanagement.service;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.itextpdf.text.DocumentException;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
 import org.openmrs.Encounter;
@@ -16,7 +8,13 @@ import org.openmrs.EncounterType;
 import org.openmrs.Obs;
 import org.openmrs.Order;
 
-import com.itextpdf.text.DocumentException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public interface LaboratoryService {
 
@@ -80,14 +78,13 @@ public interface LaboratoryService {
  * Auto generated method comment
  * 
  * @param patientId
- * @param cptsLst
+ * @param cptIds
  * @param startDate
  * @param enddate
  * @return
  */
 	public List<Order> getLabOrders(int patientId, Collection<Integer> cptIds, Date startDate, Date enddate);
-	public List<Order> getLabOrdersBetweentwoDate(int patientId	,Date startDate, Date enddate);
-	public List<Order> getLabOrdersBetweentwoDate(Date startDate, Date enddate);
+
 	public List<Order> getLabOrdersByLabCode(String  labCode);
 	public List<Obs> getObsByLabOrder(int orderId);
 	/**

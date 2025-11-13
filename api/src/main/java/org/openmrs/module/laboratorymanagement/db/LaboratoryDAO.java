@@ -72,12 +72,6 @@ public interface LaboratoryDAO {
 	public List<Obs> getAllPositiveLabExams(Date startDate, Date endDate,
 			int conceptId);
 
-	public List<Order> getLabOrders(int patientId, Collection<Integer> cptIds,
-			Date startDate, Date enddate);
-
-	public List<Order> getLabOrdersBetweentwoDate(int patientId,
-			Date startDate, Date enddate);
-	public List<Order> getLabOrdersBetweentwoDate(Date startDate, Date enddate);
 	public List<Order> getLabOrdersByLabCode(String labCode);
 
 	public Collection<Order> getPatientLabordersBetweendates(int patientId,

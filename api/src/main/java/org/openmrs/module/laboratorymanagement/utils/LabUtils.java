@@ -26,9 +26,7 @@ import org.openmrs.Provider;
 import org.openmrs.TestOrder;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
-import org.openmrs.api.OrderContext;
 import org.openmrs.api.context.Context;
-import org.openmrs.api.db.hibernate.HibernateUtil;
 import org.openmrs.module.laboratorymanagement.EveryOrder;
 import org.openmrs.module.laboratorymanagement.LabOrder;
 import org.openmrs.module.laboratorymanagement.LabOrderParent;
@@ -39,7 +37,6 @@ import org.openmrs.module.laboratorymanagement.service.LaboratoryService;
 import org.openmrs.module.mohappointment.model.Appointment;
 import org.openmrs.module.mohappointment.model.Services;
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
-import org.openmrs.module.mohbilling.automation.CreateBillOnSaveLabAndPharmacyOrders;
 import org.openmrs.parameter.OrderSearchCriteriaBuilder;
 import org.openmrs.util.OpenmrsConstants;
 import org.springframework.util.StringUtils;
@@ -48,7 +45,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -59,7 +55,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class LabUtils {
 	protected static final Log log = LogFactory.getLog(LabUtils.class);
@@ -449,139 +444,60 @@ public class LabUtils {
 
 	/**
 	 * Saves the selected Lab Orders on the Dashboard by the provider/clinician
-	 * 
-	 * @param labConceptIds
-	 *            selected from the forms
-	 * @param labOrder
-	 * @param patient
-	 *            to whom is ordered Lab order
+	 * @param patient to whom is ordered Lab order
 	 */
-	public static void saveSelectedLabOrders(
-			Map<String, String[]> parameterMap, Patient patient) {
+	public static void saveSelectedLabOrders(Map<String, String[]> parameterMap, Patient patient) {
+		Date now = new Date();
+		Encounter labEncounter = getLabEncounter(patient.getPatientId(), now);
 		String labOrderTypeIdStr = GlobalPropertiesMgt.getLabOrderTypeId();
-		int labOrderTypeId = Integer.parseInt(labOrderTypeIdStr);
-		Set<Concept> billingConceptItems=new HashSet<Concept>();
+		OrderType labOrderType = Context.getOrderService().getOrderType(Integer.parseInt(labOrderTypeIdStr));
 		for (String parameterName : parameterMap.keySet()) {
-
 			if (!parameterName.startsWith("lab-")) {
 				continue;
 			}
 			String[] parameterValues = parameterMap.get(parameterName);
-			String[] splittedParameterName = parameterName.split("-");
-
-			String gpCptIdStr = splittedParameterName[1];
-			String pcptIdstr = splittedParameterName[2];
-			String chldCptIdStr = splittedParameterName.length > 3 ? splittedParameterName[3]
-					: "";
-			String SingleLabConceptIdstr = parameterValues[0];
-			String accessionNumber = "access-" + gpCptIdStr + "-" + pcptIdstr+ "-" + chldCptIdStr;
-
-			Encounter labEncounter = getLabEncounter(patient.getPatientId(), new Date());
-			Context.getEncounterService().saveEncounter(labEncounter);
+			String labTestConceptIdStr = parameterValues[0];
+			Concept labTestConcept = Context.getConceptService().getConcept(Integer.parseInt(labTestConceptIdStr));
 
 			Order labOrder = new TestOrder();
+			labOrder.setOrderType(labOrderType);
 			labOrder.setOrderer(getProvider());
 			labOrder.setPatient(patient);
-			labOrder.setConcept(Context.getConceptService().getConcept(
-					Integer.parseInt(SingleLabConceptIdstr)));
-			labOrder.setDateActivated(new Date());
-
+			labOrder.setConcept(labTestConcept);
+			labOrder.setDateActivated(now);
 			labOrder.setCareSetting(Context.getOrderService().getCareSetting(2)); //Setting Default CareSetting to In-patient
 			labOrder.setAction(Action.NEW);
-			labOrder.setEncounter(labEncounter); 
-
-			List<String> conceptSetsToBill= Arrays.asList(Context.getAdministrationService().getGlobalProperty("laboratorymanagement.conceptSetsToBill").split(","));
-			boolean labExamHasSet=false;
-			for (String s:conceptSetsToBill) {
-				System.out.println("Concept Set: "+s);
-				List<Concept> conceptSetToBill=Context.getConceptService().getConceptsByConceptSet(Context.getConceptService().getConcept(Integer.parseInt(s)));
-				System.out.println("Concept Set member size: "+conceptSetToBill.size());
-				if (conceptSetToBill.contains(Context.getConceptService().getConcept(Integer.parseInt(SingleLabConceptIdstr)))){
-					labExamHasSet=true;
-					System.out.println("The selected lab exam is found in Concept Set :"+SingleLabConceptIdstr);
-					billingConceptItems.add(Context.getConceptService().getConcept(Integer.parseInt(s)));
-					break;
-				}
-			}
-			if (labExamHasSet==false){
-				System.out.println("The selected lab exam is not found in Concept Set :"+SingleLabConceptIdstr);
-				billingConceptItems.add(Context.getConceptService().getConcept(Integer.parseInt(SingleLabConceptIdstr)));
-			}
-
-
-
-			//billingConceptItems.add(Context.getConceptService().getConcept(Integer.parseInt(SingleLabConceptIdstr)));
-
-			// labOrder.setAccessionNumber(accessionNumber);
-			labOrder.setOrderType(Context.getOrderService().getOrderType(Integer.parseInt(GlobalPropertiesMgt
-					.getLabOrderTypeId())));
-			try {
-				Context.getOrderService().saveOrder(labOrder, getOrderContext());
-			} catch (Exception e) {
-				log.error("There was an error saving the Order" +e);
-			}
-
+			labEncounter.addOrder(labOrder);
 		}
-		CreateBillOnSaveLabAndPharmacyOrders.createBillOnSaveLabOrders(billingConceptItems,patient);
+		Context.getEncounterService().saveEncounter(labEncounter);
 	}
 
-	public static OrderContext getOrderContext () {
-		OrderContext orderCtxt = new OrderContext();
-		final String expectedOrderNumber = "Testing";
-		orderCtxt.setAttribute(MoHTimestampOrderNumberGenerator.NEXT_ORDER_NUMBER, expectedOrderNumber);
-		return orderCtxt;
-	}
 	/**
 	 * Finds Lab orders by patient to whom Lab orders are ordered*
-	 * 
-	 * @param patient
-	 * @param startDate
-	 * @param endDate
-	 * @param location
-	 * @return Map<Concept, Collection<Order>>
 	 */
-	public static Map<Concept, Collection<Order>> findPatientLabOrders(
-			int patientId, Date startDate, Date endDate, Location location) {
-		LaboratoryService laboratoryService = Context
-				.getService(LaboratoryService.class);
-		Collection<Order> labOrders = laboratoryService
-				.getLabOrdersBetweentwoDate(patientId, startDate, endDate);
-
-		Map<Concept, Collection<Order>> mappedLabOrders = new HashMap<Concept, Collection<Order>>();
-		ConceptService cptService = Context.getConceptService();
-
-		//	int intLabSetIds[] = { 8004, 7836, 7217, 7192, 7243, 7244, 7265, 7222, 7193, 7918, 7991,7835, 8046,105411,105417,105406 };
-
-
-		//List<Concept> conceptLabSetToOrder= GlobalPropertiesMgt.getConceptList(GlobalPropertiesMgt.LABEXAMSToORDER);
-
-
-		List<Concept> conceptLabSetToOrder=new ArrayList<Concept>();
+	public static Map<Concept, Collection<Order>> findPatientLabOrders(int patientId, Date startDate, Date endDate) {
+		LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
+		Map<Concept, Collection<Order>> mappedLabOrders = new HashMap<>();
+		List<Concept> conceptLabSetToOrder=new ArrayList<>();
 		String conceptLabSetToOrderString=Context.getAdministrationService().getGlobalProperty(GlobalPropertiesMgt.LABEXAMSToORDER);
 		for (String s:conceptLabSetToOrderString.split(",")){
 			conceptLabSetToOrder.add(Context.getConceptService().getConcept(Integer.parseInt(s)));
 		}
-
-		//		for (int labSetid : intLabSetIds) {
 		for (Concept cpt : conceptLabSetToOrder) {
-			//			Concept cpt = cptService.getConcept(labSetid);
 			Collection<ConceptSet> setMembers = cpt.getConceptSets();
-			Collection<Integer> cptsLst = new ArrayList<Integer>();
+			Collection<Integer> cptsLst = new ArrayList<>();
 			for (ConceptSet setMember : setMembers) {
 				cptsLst.add(setMember.getConcept().getConceptId());
 			}
-			List<Order> labOrderslist=new ArrayList<Order>();
-			if(cptsLst.size()>0) {
+			List<Order> labOrderslist=new ArrayList<>();
+			if(!cptsLst.isEmpty()) {
 				labOrderslist = laboratoryService.getLabOrders(patientId, cptsLst, startDate, endDate);
 			}
-			if (labOrderslist.size() > 0) {
+			if (!labOrderslist.isEmpty()) {
 				mappedLabOrders.put(cpt, labOrderslist);
-
 			}
 		}
-		log.info(">>>>>>>>>lab mapped size is" + mappedLabOrders.size());
 		return mappedLabOrders;
-
 	}
 
 	/**
@@ -647,22 +563,16 @@ public class LabUtils {
 	 * Adds Lab code to Patient Lab orders
 	 * 
 	 * @param patientId
-	 * @param labOrder
 	 * @param labCode
 	 * @param startDate
 	 * @param endDate
 	 */
-	public static void addLabCodeToOrders(int patientId, String labCode,
-			Date startDate, Date endDate) {
-		LaboratoryService laboratoryService = Context
-				.getService(LaboratoryService.class);
-		Collection<Order> labOrders = laboratoryService
-				.getLabOrdersBetweentwoDate(patientId, startDate, endDate);
+	public static void addLabCodeToOrders(int patientId, String labCode, Date startDate, Date endDate) {
+		LaboratoryService laboratoryService = Context.getService(LaboratoryService.class);
+		Collection<Order> labOrders = laboratoryService.getLabOrders(patientId, null, startDate, endDate);
 		for (Order laborder : labOrders) {
 			laboratoryService.addLabCodeToOrders(laborder, labCode);
-			log.info(">>>>>>>Rulindo >lab order start date>>>"
-					+ laborder.getDateActivated() + " and lab code" + labCode);
-			laborder.setAccessionNumber(labCode); //Jut for the UI
+			laborder.setAccessionNumber(labCode); //Just for the UI
 		}
 
 	}
@@ -1010,41 +920,26 @@ public class LabUtils {
 	 * 
 	 * @param patient
 	 */
-	public static void createWaitingLabAppointment(Patient patient,
-			Encounter encounter) {
-		Appointment waitingAppointment = new Appointment();
+	public static void createWaitingLabAppointment(Patient patient, Encounter encounter) {
 		Services service = AppointmentUtil.getServiceByConcept(GlobalPropertiesMgt.getConcept(GlobalPropertiesMgt.LABORATORYSERVICES));
-
-		// Setting appointment attributes
-		waitingAppointment.setAppointmentDate(new Date());
-		waitingAppointment.setAttended(false);
-		waitingAppointment.setVoided(false);
-		waitingAppointment.setCreatedDate(new Date());
-		waitingAppointment.setCreator(Context.getAuthenticatedUser());
-		waitingAppointment.setProvider(Context.getAuthenticatedUser()
-				.getPerson());
-		waitingAppointment
-		.setNote("This is a waiting patient to the Laboratory");
-
-		waitingAppointment.setProvider(Context.getAuthenticatedUser()
-				.getPerson());
-		log.info("________PROVIDER________"
-				+ Context.getAuthenticatedUser().getPerson().getFamilyName());
-
-		waitingAppointment.setPatient(patient);
-		waitingAppointment.setLocation(Context.getLocationService()
-				.getDefaultLocation());
-
-		log.info("<<<<<<<<<____Service____" + service.toString()
-		+ "__________>>>>>>>");
-
-		waitingAppointment.setService(service);
-
-		if (encounter != null)
-			waitingAppointment.setEncounter(encounter);
-
-		AppointmentUtil.saveWaitingAppointment(waitingAppointment);
-
+		Date currentDate = new Date();
+		if (!AppointmentUtil.alreadyHasAppointmentThere(patient, currentDate, service)) {
+			Appointment waitingAppointment = new Appointment();
+			waitingAppointment.setAppointmentDate(new Date());
+			waitingAppointment.setAttended(false);
+			waitingAppointment.setVoided(false);
+			waitingAppointment.setCreatedDate(new Date());
+			waitingAppointment.setCreator(Context.getAuthenticatedUser());
+			waitingAppointment.setProvider(Context.getAuthenticatedUser().getPerson());
+			waitingAppointment.setNote("This is a waiting patient to the Laboratory");
+			waitingAppointment.setPatient(patient);
+			waitingAppointment.setLocation(Context.getLocationService().getDefaultLocation());
+			waitingAppointment.setService(service);
+			if (encounter != null) {
+				waitingAppointment.setEncounter(encounter);
+			}
+			AppointmentUtil.saveWaitingAppointment(waitingAppointment);
+		}
 	}
 
 	/**

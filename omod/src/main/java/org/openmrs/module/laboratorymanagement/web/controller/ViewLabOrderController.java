@@ -95,7 +95,7 @@ public class ViewLabOrderController extends ParameterizableViewController {
 			long startTime = System.currentTimeMillis();
 			long endTime = 0;
 
-			mappedLabOrders = LabUtils.findPatientLabOrders(patientId,	startDate, endDate, null);
+			mappedLabOrders = LabUtils.findPatientLabOrders(patientId,	startDate, endDate);
 
 
 			endTime = System.currentTimeMillis();
