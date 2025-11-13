@@ -57,20 +57,20 @@
 			<props>
 			
 
-				<prop key="module/@MODULE_ID@/viewLabOrder.form">viewLabOrderController</prop>
-				<prop key="module/@MODULE_ID@/labCode.form">addLabCodeController</prop>	
-				<prop key="module/@MODULE_ID@/editLabOrder.form"> editLabOrderController</prop>							
-				<prop key="module/@MODULE_ID@/viewLabOrdersByPatient.form">viewLabOrdersByPatient</prop>									
-				<prop key="module/@MODULE_ID@/addResult.form">addResultController</prop>						
-				<prop key="module/@MODULE_ID@/testStatistics.form">viewStatisticsController</prop>
-				<prop key="module/@MODULE_ID@/testByConcept.form">viewAlltestByConceptController</prop>
-				<prop key="module/@MODULE_ID@/printLabResult.form">exportToPDF</prop>
-			    <prop key="module/@MODULE_ID@/chart.htm">labChartController</prop>
-			    <prop key="module/@MODULE_ID@/patientReport.form">patientReportController</prop>
-			     <prop key="module/@MODULE_ID@/monthlyReport.form">viewMonthlyReportController</prop>
-			    <prop key="module/@MODULE_ID@/labConfiguration.form">labConfigurationController</prop>
-				<prop key="module/@MODULE_ID@/labTechSetup.form">labTechSetupController</prop>
-				<prop key="module/@MODULE_ID@/displayLabExams.form">displayLabExamsController</prop>
+				<prop key="module/laboratorymanagement/viewLabOrder.form">viewLabOrderController</prop>
+				<prop key="module/laboratorymanagement/labCode.form">addLabCodeController</prop>
+				<prop key="module/laboratorymanagement/editLabOrder.form"> editLabOrderController</prop>
+				<prop key="module/laboratorymanagement/viewLabOrdersByPatient.form">viewLabOrdersByPatient</prop>
+				<prop key="module/laboratorymanagement/addResult.form">addResultController</prop>
+				<prop key="module/laboratorymanagement/testStatistics.form">viewStatisticsController</prop>
+				<prop key="module/laboratorymanagement/testByConcept.form">viewAlltestByConceptController</prop>
+				<prop key="module/laboratorymanagement/printLabResult.form">exportToPDF</prop>
+			    <prop key="module/laboratorymanagement/chart.htm">labChartController</prop>
+			    <prop key="module/laboratorymanagement/patientReport.form">patientReportController</prop>
+			     <prop key="module/laboratorymanagement/monthlyReport.form">viewMonthlyReportController</prop>
+			    <prop key="module/laboratorymanagement/labConfiguration.form">labConfigurationController</prop>
+				<prop key="module/laboratorymanagement/labTechSetup.form">labTechSetupController</prop>
+				<prop key="module/laboratorymanagement/displayLabExams.form">displayLabExamsController</prop>
 			    <prop key="**/labOrderPortlet.portlet">labOrderPortletController</prop>
 				<prop key="**/labOrderSetupPortlet.portlet">labOrderSetupPortletController</prop>
 
@@ -80,22 +80,22 @@
 
 	<!-- Controllers -->
 	<bean id="labOrderPortletController"
-		class="@MODULE_PACKAGE@.web.controller.LabOrderPortletController" />
+		class="org.openmrs.module.laboratorymanagement.web.controller.LabOrderPortletController" />
 
 	<bean id="labOrderSetupPortletController"
-		  class="@MODULE_PACKAGE@.web.controller.LabOrderSetupPortletController" />
+		  class="org.openmrs.module.laboratorymanagement.web.controller.LabOrderSetupPortletController" />
 
 	<bean id="labTechSetupController"
-		  class="@MODULE_PACKAGE@.web.controller.LabTechSetupController">
+		  class="org.openmrs.module.laboratorymanagement.web.controller.LabTechSetupController">
 		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 	<property name="viewName">
-		<value>/module/@MODULE_ID@/labTechSetupForm</value>
+		<value>/module/laboratorymanagement/labTechSetupForm</value>
 	</property>
 	</bean>
 
-	<bean id="labTestChartView" class="@MODULE_PACKAGE@.web.chart.EvolutionOfClientRegisteredPerDay"/>
+	<bean id="labTestChartView" class="org.openmrs.module.laboratorymanagement.web.chart.EvolutionOfClientRegisteredPerDay"/>
 
-	<bean id="labChartController" class="@MODULE_PACKAGE@.web.controller.ChartStatsQueryController">
+	<bean id="labChartController" class="org.openmrs.module.laboratorymanagement.web.controller.ChartStatsQueryController">
 		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="chartViews">
 			<map>
@@ -108,7 +108,7 @@
 		class="org.openmrs.module.laboratorymanagement.web.controller.LabConfigurationController">
 		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
-			<value>/module/@MODULE_ID@/labConfiguration</value>
+			<value>/module/laboratorymanagement/labConfiguration</value>
 		</property>
 	</bean>
 	
@@ -120,56 +120,56 @@
 		class="org.openmrs.module.laboratorymanagement.web.controller.AddResultController">
 		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
-			<value>/module/@MODULE_ID@/addResult</value>
+			<value>/module/laboratorymanagement/addResult</value>
 		</property>
 	</bean>	
 	<bean id="viewStatisticsController"
 		class="org.openmrs.module.laboratorymanagement.web.controller.ViewStatisticsController">
 		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
-			<value>/module/@MODULE_ID@/testStatistics</value>
+			<value>/module/laboratorymanagement/testStatistics</value>
 		</property>
 	</bean>
 	<bean id="viewAlltestByConceptController"
 		class="org.openmrs.module.laboratorymanagement.web.controller.ViewAlltestByConceptController">
 		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
-			<value>/module/@MODULE_ID@/viewLabtestByConcept</value>
+			<value>/module/laboratorymanagement/viewLabtestByConcept</value>
 		</property>
 	</bean>
 	<bean id="patientReportController"
 		class="org.openmrs.module.laboratorymanagement.web.controller.PatientReportController">
 		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
-			<value>/module/@MODULE_ID@/patientReport</value>
+			<value>/module/laboratorymanagement/patientReport</value>
 		</property>
 	</bean>
 	<bean id="viewMonthlyReportController"
 		class="org.openmrs.module.laboratorymanagement.web.controller.ViewMonthlyReportController">
 		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
-			<value>/module/@MODULE_ID@/reportedMontly</value>
+			<value>/module/laboratorymanagement/reportedMontly</value>
 		</property>
 	</bean>
 	<bean id="viewLabOrderController"
 		class="org.openmrs.module.laboratorymanagement.web.controller.ViewLabOrderController">
 		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
-			<value>/module/@MODULE_ID@/viewLabOrder</value>
+			<value>/module/laboratorymanagement/viewLabOrder</value>
 		</property>
 	</bean>	
 	<bean id="addLabCodeController"
 		class="org.openmrs.module.laboratorymanagement.web.controller.AddLabCodeController">
 		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
-			<value>/module/@MODULE_ID@/viewLabCodeForm</value>
+			<value>/module/laboratorymanagement/viewLabCodeForm</value>
 		</property>
 	</bean>
 	<bean id="editLabOrderController"
 		class="org.openmrs.module.laboratorymanagement.web.controller.EditLabOrderController">
 		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
-			<value>/module/@MODULE_ID@/editLabOrder</value>
+			<value>/module/laboratorymanagement/editLabOrder</value>
 		</property>
 	</bean>
 	
@@ -177,14 +177,14 @@
 		class="org.openmrs.module.laboratorymanagement.web.controller.ViewLabOrdersByPatient">
 		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
-			<value>/module/@MODULE_ID@/LabOrderByPatient</value>
+			<value>/module/laboratorymanagement/LabOrderByPatient</value>
 		</property>
 	</bean>
 	<bean id="displayLabExamsController"
 		class="org.openmrs.module.laboratorymanagement.web.controller.DisplayLabExamsController">
 		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
-			<value>/module/@MODULE_ID@/displaylabExams</value>
+			<value>/module/laboratorymanagement/displaylabExams</value>
 		</property>
 	</bean>
 	

@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.2//EN" "http://resources.openmrs.org/doctype/config-1.2.dtd">
 
 <module configVersion="1.2">
 	
 	<!-- Base Module Properties -->
-	<id>@MODULE_ID@</id>
-	<name>@MODULE_NAME@</name>
-	<version>@MODULE_VERSION@</version>
-	<package>org.openmrs.module.laboratorymanagement</package>
+	<id>${project.parent.artifactId}</id>
+	<name>${project.parent.name}</name>
+	<version>${project.parent.version}</version>
+	<package>${project.parent.groupId}.${project.parent.artifactId}</package>
 	<author>PIH/MoH</author>
 	<description>
 			Laboratory Module. helpful track the flow of patient lab.
 	</description>
 
-	<activator>@MODULE_PACKAGE@.LaboratoryModuleActivator</activator>
+	<activator>org.openmrs.module.laboratorymanagement.LaboratoryModuleActivator</activator>
 	
-	<!-- <updateURL>https://dev.openmrs.org/modules/download/@MODULE_ID@/update.rdf</updateURL>
+	<!-- <updateURL>https://dev.openmrs.org/modules/download/laboratorymanagement/update.rdf</updateURL>
 -->
 	<!-- /Base Module Properties -->
 	
@@ -30,84 +29,76 @@
 		<aware_of_module>org.openmrs.module.legacyui</aware_of_module>
 	</aware_of_modules>
 
-
 	<!-- Extensions -->
 	<extension>
 		<point>org.openmrs.tracmodule.list</point>
-		<class>@MODULE_PACKAGE@.extension.html.AdminList</class>
+		<class>org.openmrs.module.laboratorymanagement.extension.html.AdminList</class>
 	</extension>
 	
 	<extension>
 		<point>org.openmrs.patientDashboardTab</point>
-		<class>@MODULE_PACKAGE@.extension.html.LabOrderDashboardTab</class>
-	</extension>	
-	
-	<!-- Advice  	
-	<advice>
-		<point>org.openmrs.api.ObsService</point>
-		<class>@MODULE_PACKAGE@.advice.LaboratoryServiceAdvice</class>
-	</advice>-->
+		<class>org.openmrs.module.laboratorymanagement.extension.html.LabOrderDashboardTab</class>
+	</extension>
 		
 	<globalProperty>
-		<property>@MODULE_ID@.labtests.conceptIds</property>
+		<property>laboratorymanagement.labtests.conceptIds</property>
 		<defaultValue>5497,21,856,1553</defaultValue>
 		<description>This should be a list of conceptIds corresponding to lab-tests </description>
 	</globalProperty>
 	
 	 
 	<globalProperty>
-		<property>@MODULE_ID@.encounterType.labEncounterTypeId</property>
+		<property>laboratorymanagement.encounterType.labEncounterTypeId</property>
 		<defaultValue></defaultValue>
 		<description>The encounter type occured between  the Clinician/physician and the Patient.
 		</description>
 	</globalProperty>
 		
 	<globalProperty>
-		<property>@MODULE_ID@.encounterType.labOrderEncounterTypeId</property>
+		<property>laboratorymanagement.encounterType.labOrderEncounterTypeId</property>
 		<defaultValue></defaultValue>
 		<description>The encounter type occured between a clinician and Patient 
 		</description>
 	</globalProperty>
 	
 	<globalProperty>
-		<property>@MODULE_ID@.orderType.labOrderTypeId</property>
+		<property>laboratorymanagement.orderType.labOrderTypeId</property>
 		<defaultValue>1</defaultValue>
 		<description>The order type used to order lab exams</description>
 	</globalProperty>
 	
 	<globalProperty>
-		<property>@MODULE_ID@.multipleAnswerConceptIds</property>
+		<property>laboratorymanagement.multipleAnswerConceptIds</property>
 		<defaultValue>304</defaultValue>
 		<description>List of concept IDs whose concepts can have multiple answers</description>
 	</globalProperty>
 	 
 	<globalProperty>
-		<property>@MODULE_ID@.labExamCategory</property>
+		<property>laboratorymanagement.labExamCategory</property>
 		<defaultValue>8004,7222,7192,7244,7265,7243,7835,105411,105417,105406</defaultValue>
 		<description>This is the Lab Exam Category</description>
 	</globalProperty>
 
 	<globalProperty>
-		<property>@MODULE_ID@.healthfacility.name</property>
+		<property>laboratorymanagement.healthfacility.name</property>
 		<defaultValue>Healtfacility.name</defaultValue>
 		<description>Health facility name</description>
 	</globalProperty>
 	<globalProperty>
-		<property>@MODULE_ID@.healthfacility.POBOX</property>
+		<property>laboratorymanagement.healthfacility.POBOX</property>
 		<defaultValue>Healtfacility.POBOX</defaultValue>
 		<description>Health facility P.O.BOX</description>
 	</globalProperty>
 	<globalProperty>
-		<property>@MODULE_ID@.healthfacility.telephone</property>
+		<property>laboratorymanagement.healthfacility.telephone</property>
 		<defaultValue>Healtfacility.telephone</defaultValue>
 		<description>Health facility telephone number</description>
 	</globalProperty>
 	<globalProperty>
-		<property>@MODULE_ID@.healthfacility.email</property>
+		<property>laboratorymanagement.healthfacility.email</property>
 		<defaultValue>Healtfacility.email</defaultValue>
 		<description>Health facility email account</description>
 	</globalProperty>
-
 
 	<globalProperty>
 		<property>laboratorymanagement.LabExamsToOrder</property>
@@ -159,8 +150,6 @@
 		<description>bacteriology concept id </description>
 	</globalProperty>
 
-
-
 	<globalProperty>
 		<property>laboratorymanagement.LabTestConstants.urineChemistry</property>
 		<defaultValue>7243</defaultValue>
@@ -211,9 +200,6 @@
 		<description>Concept ids of concept set(s) to bill and match with </description>
 	</globalProperty>
 
-
-
-
 	<!-- Required Privileges -->
 	
 	<privilege>
@@ -232,40 +218,9 @@
 		<name>Patient Dashboard - View Laboratory Order</name>
 		<description>The user can view the Laboratory tab on the Patient dashboard</description>
 	</privilege>
-
-
-	
-	
-	<!--
-	<dwr>
-		<allow>
-			<create creator="new" javascript="DWRFormEntryService">
-				<param name="class" value="org.openmrs.module.@MODULE_ID@.web.DWRFormEntryService"/>
-				<include method="enterForm"/>
-			</create>
-		</allow>
-
-		<signatures>
-			<![CDATA[
-			import @MODULE_PACKAGE@.web.DWRFormEntryService;
-			DWRFormEntryService.enterForm(Integer patientId, Integer formId, boolean useEncounter, List<String> fields);
-			]]>
-		</signatures>	
-	</dwr>
-	-->
-	
-	<!-- Servlets -->
-	<!-- Accessed through the url /pageContext()/moduleServlet/<moduleId>/<servlet-name> 
-	<servlet>
-		<servlet-name>formDownload</servlet-name>
-		<servlet-class>@MODULE_PACKAGE@.web.FormDownloadServlet</servlet-class>
-	</servlet>
-	-->
-	<!-- /Servlets -->
-	
 	
 	<!-- Internationalization -->
-	<!-- All message codes should start with @MODULE_ID@.* -->
+	<!-- All message codes should start with laboratorymanagement.* -->
 	<messages>
 		<lang>en</lang>
 		<file>messages.properties</file>
@@ -275,7 +230,6 @@
 		<file>messages_fr.properties</file>
 	</messages>
 	<!-- /Internationalization -->
-	
-	
+
 </module>
 
