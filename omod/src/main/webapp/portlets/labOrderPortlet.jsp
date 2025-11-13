@@ -193,6 +193,8 @@ location.reload(true); //loads from server
 					});
 </script>
 
+<c:if test="${model.hideOrderForm != 'true'}">
+
 <b><Oderable Exams></b>
 <div align="center"><b>${model.msg}</b></div>
 <fieldset><legend id="toggleForm" style="cursor: pointer;">Lab
@@ -784,7 +786,7 @@ Request Form</legend>
 </div>
 </fieldset>
 
-
+</c:if>
 
 <div id="dt_example">
 <div id="container">
