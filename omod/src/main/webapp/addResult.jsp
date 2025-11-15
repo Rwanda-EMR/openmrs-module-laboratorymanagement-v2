@@ -106,8 +106,9 @@
 			<c:set var="obsResult" value="${resultsMap[order]}" />
 			<c:set var="fieldName" 	value="labTest-${order.concept.conceptId}-${order.orderId}" />
 			<c:set var="resultComment" 	value="comment-${order.concept.conceptId}-${order.orderId}" />
+			<c:set var="isPanel" value="${concept.datatype.answerOnly || fn:length(concept.setMembers) > 0}" />
 			<c:choose>
-				<c:when test="${concept.numeric}">
+				<c:when test="${!isPanel && concept.numeric}">
 					<table>
 						<tr>
 							<td colspan="3" style="width: 250px; font-weight: italic"><c:out
@@ -124,7 +125,7 @@
 					</table>
 				</c:when>
 
-				<c:when test="${concept.datatype.text}">
+				<c:when test="${!isPanel && concept.datatype.text}">
 					<table>
 
 						<tr>
@@ -154,7 +155,7 @@
 					</table>
 				</c:when>
 
-				<c:when test="${concept.datatype.coded}">
+				<c:when test="${!isPanel && concept.datatype.coded}">
 					<table>
 						<tr>
 							<td colspan="3" style="width: 250px; font-weight: italic"><c:out
@@ -191,7 +192,7 @@
 					</table>
 				</c:when>
 
-				  <c:when test="${concept.datatype.answerOnly}">
+				  <c:when test="${isPanel}">
 					<c:forEach var="oneGroupedtest" items="${groupedTests}"
 						varStatus="num">
 						<c:set var="conceptName" value="${concept.name}" />

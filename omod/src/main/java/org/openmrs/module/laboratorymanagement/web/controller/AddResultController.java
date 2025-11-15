@@ -89,7 +89,7 @@ public class AddResultController extends ParameterizableViewController {
 							List<Obs> obsList = laboratoryService.getObsByLabOrder(labOrder.getOrderId());
 
 							// If order concept is a construct
-							if (labOrder.getConcept().getDatatype().isAnswerOnly()) {
+							if (labOrder.getConcept().getDatatype().isAnswerOnly() || !labOrder.getConcept().getSetMembers().isEmpty()) {
 								// Declaration of Map<x,y> where x stands for
 								// CptChildren and Y the Obs of that Cpt
 								Map<Concept, Obs> orderResults = new HashMap<Concept, Obs>();
